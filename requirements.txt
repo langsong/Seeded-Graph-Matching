@@ -1,0 +1,4 @@
+graspologic
+numpy
+matplotlib
+scipy
