@@ -4,17 +4,26 @@ import scipy.stats as st
 from graspologic.simulations import sbm_corr
 from graspologic.match import graph_match
 
-def gen_SBM_graphs(directed=False, loops=False, n_per_block=150, n_blocks=3, rho=0.9, block_probs=None):
-    """
-    Generates a pair of correlated SBM graphs and shuffles the second graph.
-    """
-    if block_probs is None:
-        # Default probabilities as outlined in the SGM tutorial
-        block_probs = np.array([
+# --- Constants ---
+
+# SBM Constants
+N_PER_BLOCK = 200
+N_BLOCKS = 3
+RHO = .5
+BLOCK_PROBS = np.array([
             [0.7, 0.3, 0.4],
             [0.3, 0.7, 0.3],
             [0.4, 0.3, 0.7]
         ])
+
+#Experiment Constants
+TRIALS_PER_SEED_NUMBER = 25
+SEED_COUNTS = [0, 2, 4, 6, 8]
+
+def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=RHO, block_probs=BLOCK_PROBS):
+    """
+    Generates a pair of correlated SBM graphs and shuffles the second graph.
+    """
     
     n = [n_per_block] * n_blocks
     
@@ -87,7 +96,7 @@ def match_ratio(predicted_permutation, optimal_permutation):
     """
     return np.mean(predicted_permutation == optimal_permutation)
 
-def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials=10):
+def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
     """
     Runs graph matching trials, extracts confidence intervals, and plots the results.
     """
@@ -148,15 +157,11 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
     
     return results
 
-if __name__ == "__main__":
-    # Settings mapped from the tutorial context provided
-    seed_counts_to_test = [0, 2, 4, 6, 8]
-    trials_per_seed_count = 50  # Reduced to 10 for timely execution, increase as desired
-    
+if __name__ == "__main__":    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
         graph_gen_func=gen_SBM_graphs,
         seeding_funcs_list=[random_seeds, blocked_random_seeds],
-        seed_nums_list=seed_counts_to_test,
-        n_trials=trials_per_seed_count
+        seed_nums_list=SEED_COUNTS,
+        n_trials=TRIALS_PER_SEED_NUMBER
     )
