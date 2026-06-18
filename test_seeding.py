@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
 from graspologic.simulations import sbm_corr
-from graspologic.match import GraphMatch
+from graspologic.match import graph_match
 
-def gen_SBM_graphs(directed=False, loops=False, n_per_block=100, n_blocks=3, rho=0.9, block_probs=None):
+def gen_SBM_graphs(directed=False, loops=False, n_per_block=150, n_blocks=3, rho=0.9, block_probs=None):
     """
     Generates a pair of correlated SBM graphs and shuffles the second graph.
     """
@@ -96,6 +96,7 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
     
     for s in seed_nums_list:
         print(f"Running trials for {s} seeds...")
+        
         for trial in range(n_trials):
             # 1. Generate Graphs
             G1, G2_shuffled, optimal_perm = graph_gen_func()
@@ -103,19 +104,13 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
             for seeding_func in seeding_funcs_list:
                 # 2. Grab Seeds
                 seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
+                partial_match = np.column_stack((seeds_G1, seeds_G2))
                 
                 # 3. Fit Graph Match Model
-                gm = GraphMatch()
-                
-                # For 0 seeds, None is passed. Otherwise, arrays are passed.
-                if s == 0:
-                    gm.fit(G1, G2_shuffled)
-                else:
-                    gm.fit(G1, G2_shuffled, seeds_A=seeds_G1, seeds_B=seeds_G2)
+                _, perm_inds, _, _ = graph_match(G1, G2_shuffled, partial_match=partial_match)
                 
                 # 4. Compute and Store Score
-                predicted_perm = gm.indices_
-                score = match_ratio(predicted_perm, optimal_perm)
+                score = match_ratio(perm_inds, optimal_perm)
                 results[seeding_func.__name__][s].append(score)
                 
     # --- Plotting the Results ---
@@ -155,8 +150,8 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
 
 if __name__ == "__main__":
     # Settings mapped from the tutorial context provided
-    seed_counts_to_test = [0, 5, 10, 15, 20]
-    trials_per_seed_count = 10  # Reduced to 10 for timely execution, increase as desired
+    seed_counts_to_test = [0, 2, 4, 6, 8]
+    trials_per_seed_count = 50  # Reduced to 10 for timely execution, increase as desired
     
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
