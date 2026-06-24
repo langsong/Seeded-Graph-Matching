@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
 from graspologic.simulations import sbm_corr
+from graspologic.simulations import sample_edges
 from graspologic.match import graph_match
 
 # --- Constants ---
@@ -9,18 +10,23 @@ from graspologic.match import graph_match
 # SBM Constants
 N_PER_BLOCK = 200
 N_BLOCKS = 3
-RHO = .5
+SBM_RHO = .5
 BLOCK_PROBS = np.array([
             [0.7, 0.3, 0.4],
             [0.3, 0.7, 0.3],
             [0.4, 0.3, 0.7]
         ])
 
+#Erdos Renyi Constants
+N_ER_NODES = 600
+EDGE_PROBABILITY = .2
+ER_RHO = .8
+
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 25
 SEED_COUNTS = [0, 2, 4, 6, 8]
 
-def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=RHO, block_probs=BLOCK_PROBS):
+def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
     """
     Generates a pair of correlated SBM graphs and shuffles the second graph.
     """
@@ -43,6 +49,25 @@ def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_block
     
     return G1, G2_shuffled, optimal_permutation
 
+def gen_ER_graphs(n=N_ER_NODES, p=EDGE_PROBABILITY, rho=ER_RHO, directed=False, loops=False):
+    """
+    Generates a pair of correlated Erdős-Rényi graphs (G1, G2).
+    """
+    # 1. Create the base probability matrix for an Erdős-Rényi graph.
+    # Every possible edge shares the exact same probability 'p'.
+    P = np.full((n, n), p)
+    
+    # 2. Sample two correlated child graphs from the base probability matrix
+    G1, G2 = sample_edges(P, rho, directed=directed, loops=loops)
+    
+    # 3. Create a random permutation to shuffle Graph 2
+    optimal_permutation = np.random.permutation(n)
+    
+    # Apply the permutation to both rows and columns of G2
+    G2_shuffled = G2[optimal_permutation, :][:, optimal_permutation]
+    
+    return G1, G2_shuffled, optimal_permutation
+
 def random_seeds(G1, G2, n_seeds, optimal_permutation):
     """
     Randomly selects 'n_seeds' vertices from G1 and their true pairs in G2.
@@ -52,6 +77,27 @@ def random_seeds(G1, G2, n_seeds, optimal_permutation):
         
     n_nodes = G1.shape[0]
     seeds_G1 = np.random.choice(n_nodes, n_seeds, replace=False)
+    seeds_G2 = optimal_permutation[seeds_G1]
+    
+    return seeds_G1, seeds_G2
+
+def highest_degree_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects the 'n_seeds' vertices from G1 with the highest total degrees 
+    and returns them along with their true pairs in G2.
+    """
+    if n_seeds == 0:
+        return np.array([]), np.array([])
+        
+    # Calculate the degree of each node in G1. 
+    degrees = np.sum(G1, axis=1)
+    
+    # Get the indices that would sort the degrees in ascending order, 
+    # then take the last 'n_seeds' elements and reverse them to get highest-to-lowest.
+    highest_degree_nodes = np.argsort(degrees)[-n_seeds:][::-1]
+    
+    # Map the highest degree G1 vertices to their corresponding shuffled vertices in G2
+    seeds_G1 = highest_degree_nodes
     seeds_G2 = optimal_permutation[seeds_G1]
     
     return seeds_G1, seeds_G2
@@ -161,7 +207,7 @@ if __name__ == "__main__":
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
         graph_gen_func=gen_SBM_graphs,
-        seeding_funcs_list=[random_seeds, blocked_random_seeds],
+        seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds],
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
