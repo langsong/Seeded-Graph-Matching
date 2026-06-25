@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import matplotlib.pyplot as plt
 import scipy.stats as st
 from graspologic.simulations import sbm_corr
@@ -102,7 +103,7 @@ def highest_degree_seeds(G1, G2, n_seeds, optimal_permutation):
     
     return seeds_G1, seeds_G2
 
-def blocked_random_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=3):
+def blocked_random_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=N_BLOCKS):
     """
     Selects seeds distributed evenly across the SBM blocks.
     """
@@ -136,6 +137,50 @@ def blocked_random_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=3):
     
     return seeds_G1, seeds_G2
 
+def blocked_highest_degree_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=N_BLOCKS, n_per_block=N_PER_BLOCK):
+    """
+    Selects an equal number of seeds from each SBM block, prioritizing the 
+    highest total degree nodes within each block.
+    """
+    if n_seeds == 0:
+        return np.array([]), np.array([])
+        
+    # Calculate how many seeds must be pulled from each block
+    seeds_per_block = n_seeds // n_blocks
+    if seeds_per_block == 0:
+        # Fallback if n_seeds < n_blocks: try to give 1 seed to the first block(s)
+        seeds_per_block = 1 
+        
+    # Calculate the degree of every node in G1
+    degrees = np.sum(G1, axis=1)
+    
+    seeds_G1 = []
+    
+    # Iterate through each block using the equal block sizes
+    for b in range(n_blocks):
+        current_start_idx = b * n_per_block
+        current_end_idx = current_start_idx + n_per_block
+        
+        # Isolate the degrees corresponding only to the current block's nodes
+        block_degrees = degrees[current_start_idx:current_end_idx]
+        
+        # Sort indices within the block by degree in ascending order,
+        # extract the top required number of elements, and reverse for highest-to-lowest
+        top_block_indices = np.argsort(block_degrees)[-seeds_per_block:][::-1]
+        
+        # Map the block-relative indices back to absolute G1 node indices
+        absolute_indices = top_block_indices + current_start_idx
+        seeds_G1.extend(absolute_indices)
+        
+    # If the divisions didn't match perfectly (e.g. fallback gave too many), 
+    # slice down to the exact requested n_seeds
+    seeds_G1 = np.array(seeds_G1)[:n_seeds]
+    
+    # Map the chosen G1 seed vertices to their corresponding shuffled vertices in G2
+    seeds_G2 = optimal_permutation[seeds_G1]
+    
+    return seeds_G1, seeds_G2
+
 def match_ratio(predicted_permutation, optimal_permutation):
     """
     Computes the fraction of vertices correctly matched.
@@ -147,7 +192,8 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
     Runs graph matching trials, extracts confidence intervals, and plots the results.
     """
     # Initialize a dictionary to hold all results
-    results = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
+    results_accuracy = {func.__name__: {num: [] for num in seed_nums_list} for func in seeding_funcs_list}
+    results_runtime = {func.__name__: {num: [] for num in seed_nums_list} for func in seeding_funcs_list}
     
     for s in seed_nums_list:
         print(f"Running trials for {s} seeds...")
@@ -162,22 +208,28 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
                 partial_match = np.column_stack((seeds_G1, seeds_G2))
                 
                 # 3. Fit Graph Match Model
+                start_time = time.process_time()
                 _, perm_inds, _, _ = graph_match(G1, G2_shuffled, partial_match=partial_match)
+                end_time = time.process_time()
+
+                # 4. Calculate elapsed time
+                elapsed_time = end_time - start_time
+                results_runtime[seeding_func.__name__][s].append(elapsed_time)
                 
                 # 4. Compute and Store Score
                 score = match_ratio(perm_inds, optimal_perm)
-                results[seeding_func.__name__][s].append(score)
+                results_accuracy[seeding_func.__name__][s].append(score)
                 
-    # --- Plotting the Results ---
+    # --- Plotting the Accuracy ---
     plt.figure(figsize=(10, 6))
     
-    for func_name in results:
+    for func_name in results_accuracy:
         means = []
         ci_lower = []
         ci_upper = []
         
         for s in seed_nums_list:
-            data = results[func_name][s]
+            data = results_accuracy[func_name][s]
             mean_val = np.mean(data)
             
             # Calculate 95% Confidence Interval using Standard Error
@@ -195,19 +247,52 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
         
     plt.xlabel('Number of Seeds', fontsize=12)
     plt.ylabel('Match Ratio (Accuracy)', fontsize=12)
-    plt.title('Seeded Graph Matching: Random vs. Blocked Random Seeding', fontsize=14)
+    plt.title('Match Ratio by Seedng Strategy', fontsize=14)
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    plt.show()
+
+    # --- Plotting the Runtime ---
+    plt.figure(figsize=(10, 6))
+    
+    for func_name in results_runtime:
+        means = []
+        ci_lower = []
+        ci_upper = []
+        
+        for s in seed_nums_list:
+            data = results_runtime[func_name][s]
+            mean_val = np.mean(data)
+            
+            # Calculate 95% Confidence Interval using Standard Error
+            se = st.sem(data) if len(data) > 1 else 0
+            ci = se * 1.96 
+            
+            means.append(mean_val)
+            ci_lower.append(mean_val - ci)
+            ci_upper.append(mean_val + ci)
+            
+        # Plot mean lines
+        plt.plot(seed_nums_list, means, label=func_name, marker='o')
+        # Plot confidence intervals
+        plt.fill_between(seed_nums_list, ci_lower, ci_upper, alpha=0.2)
+        
+    plt.xlabel('Number of Seeds', fontsize=12)
+    plt.ylabel('Runtime', fontsize=12)
+    plt.title('Runtime by seeding strategy', fontsize=14)
     plt.legend()
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.tight_layout()
     plt.show()
     
-    return results
+    return results_accuracy, results_runtime
 
 if __name__ == "__main__":    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
         graph_gen_func=gen_SBM_graphs,
-        seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds],
+        seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds],
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
