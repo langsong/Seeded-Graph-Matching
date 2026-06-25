@@ -25,7 +25,7 @@ ER_RHO = .8
 
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 25
-SEED_COUNTS = [4, 5, 6, 7, 8]
+SEED_COUNTS = [4, 5, 6, 7, 8, 9]
 
 def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
     """
@@ -147,9 +147,7 @@ def blocked_highest_degree_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=
         
     # Calculate how many seeds must be pulled from each block
     seeds_per_block = n_seeds // n_blocks
-    if seeds_per_block == 0:
-        # Fallback if n_seeds < n_blocks: try to give 1 seed to the first block(s)
-        seeds_per_block = 1 
+    remainder = n_seeds % n_blocks
         
     # Calculate the degree of every node in G1
     degrees = np.sum(G1, axis=1)
@@ -163,10 +161,13 @@ def blocked_highest_degree_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=
         
         # Isolate the degrees corresponding only to the current block's nodes
         block_degrees = degrees[current_start_idx:current_end_idx]
+
+        # Calculate number of seeds in current block
+        block_seeds = seeds_per_block + 1 if b <= remainder else seeds_per_block
         
         # Sort indices within the block by degree in ascending order,
         # extract the top required number of elements, and reverse for highest-to-lowest
-        top_block_indices = np.argsort(block_degrees)[-seeds_per_block:][::-1]
+        top_block_indices = np.argsort(block_degrees)[-block_seeds:][::-1]
         
         # Map the block-relative indices back to absolute G1 node indices
         absolute_indices = top_block_indices + current_start_idx
