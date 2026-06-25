@@ -25,7 +25,7 @@ ER_RHO = .8
 
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 25
-SEED_COUNTS = [0, 2, 4, 6, 8]
+SEED_COUNTS = [4, 5, 6, 7, 8]
 
 def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
     """
