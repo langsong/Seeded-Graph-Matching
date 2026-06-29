@@ -5,6 +5,7 @@ import scipy.stats as st
 from graspologic.simulations import sbm_corr
 from graspologic.simulations import sample_edges
 from graspologic.match import graph_match
+import networkx as nx
 
 # --- Constants ---
 
@@ -163,7 +164,7 @@ def blocked_highest_degree_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=
         block_degrees = degrees[current_start_idx:current_end_idx]
 
         # Calculate number of seeds in current block
-        block_seeds = seeds_per_block + 1 if b <= remainder else seeds_per_block
+        block_seeds = seeds_per_block + 1 if b < remainder else seeds_per_block
         
         # Sort indices within the block by degree in ascending order,
         # extract the top required number of elements, and reverse for highest-to-lowest
@@ -181,6 +182,28 @@ def blocked_highest_degree_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=
     seeds_G2 = optimal_permutation[seeds_G1]
     
     return seeds_G1, seeds_G2
+
+def betweenness_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects seeds based on the highest betweenness centrality in Graph 1
+    """
+    # 1. Convert G1 from a NumPy adjacency matrix to a NetworkX Graph
+    G1_nx = nx.from_numpy_array(G1)
+    
+    # 2. Calculate the betweenness centrality of each node (uses Brandes' Algorithm)
+    betweenness_dict = nx.betweenness_centrality(G1_nx)
+    
+    # 3. Sort node indices by their betweenness centrality in descending order
+    sorted_nodes = sorted(betweenness_dict.keys(), key=lambda node: betweenness_dict[node], reverse=True)
+    
+    # 4. Extract the top n_seeds vertices with the highest betweenness
+    seeds_g1 = sorted_nodes[:n_seeds]
+    
+    # 5. Retrieve their true counterpart pairings for Graph 2 using the unshuffling array
+    seeds_g2 = [optimal_permutation[v] for v in seeds_g1]
+    
+    # Return as two aligned numpy arrays (or np.column_stack if your script expects a 2D array)
+    return np.array(seeds_g1), np.array(seeds_g2)
 
 def match_ratio(predicted_permutation, optimal_permutation):
     """
@@ -293,7 +316,7 @@ if __name__ == "__main__":
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
         graph_gen_func=gen_SBM_graphs,
-        seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds],
+        seeding_funcs_list=[random_seeds, blocked_highest_degree_seeds, betweenness_seeds],
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
