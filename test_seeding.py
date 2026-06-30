@@ -1,140 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
-from graspologic.simulations import sbm_corr
-from graspologic.simulations import sample_edges
 from graspologic.match import graph_match
-
-# --- Constants ---
-
-# SBM Constants
-N_PER_BLOCK = 200
-N_BLOCKS = 3
-SBM_RHO = .5
-BLOCK_PROBS = np.array([
-            [0.7, 0.3, 0.4],
-            [0.3, 0.7, 0.3],
-            [0.4, 0.3, 0.7]
-        ])
-
-#Erdos Renyi Constants
-N_ER_NODES = 600
-EDGE_PROBABILITY = .2
-ER_RHO = .8
-
-#Experiment Constants
-TRIALS_PER_SEED_NUMBER = 25
-SEED_COUNTS = [0, 2, 4, 6, 8]
-
-def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
-    """
-    Generates a pair of correlated SBM graphs and shuffles the second graph.
-    """
-    
-    n = [n_per_block] * n_blocks
-    
-    # Generate correlated SBMs (G1 and G2 are natively perfectly aligned)
-    G1, G2 = sbm_corr(n, block_probs, rho, directed=directed, loops=loops)
-    
-    # Shuffle G2 to simulate an unknown permutation
-    total_nodes = sum(n)
-    shuffle_perm = np.random.permutation(total_nodes)
-    
-    # To recover the alignment, we track the inverse of our shuffle (the unshuffle)
-    unshuffle_perm = np.argsort(shuffle_perm)
-    G2_shuffled = G2[shuffle_perm][:, shuffle_perm]
-    
-    # The optimal permutation maps node i in G1 to unshuffle_perm[i] in G2_shuffled
-    optimal_permutation = unshuffle_perm
-    
-    return G1, G2_shuffled, optimal_permutation
-
-def gen_ER_graphs(n=N_ER_NODES, p=EDGE_PROBABILITY, rho=ER_RHO, directed=False, loops=False):
-    """
-    Generates a pair of correlated Erdős-Rényi graphs (G1, G2).
-    """
-    # 1. Create the base probability matrix for an Erdős-Rényi graph.
-    # Every possible edge shares the exact same probability 'p'.
-    P = np.full((n, n), p)
-    
-    # 2. Sample two correlated child graphs from the base probability matrix
-    G1, G2 = sample_edges(P, rho, directed=directed, loops=loops)
-    
-    # 3. Create a random permutation to shuffle Graph 2
-    optimal_permutation = np.random.permutation(n)
-    
-    # Apply the permutation to both rows and columns of G2
-    G2_shuffled = G2[optimal_permutation, :][:, optimal_permutation]
-    
-    return G1, G2_shuffled, optimal_permutation
-
-def random_seeds(G1, G2, n_seeds, optimal_permutation):
-    """
-    Randomly selects 'n_seeds' vertices from G1 and their true pairs in G2.
-    """
-    if n_seeds == 0:
-        return np.array([]), np.array([])
-        
-    n_nodes = G1.shape[0]
-    seeds_G1 = np.random.choice(n_nodes, n_seeds, replace=False)
-    seeds_G2 = optimal_permutation[seeds_G1]
-    
-    return seeds_G1, seeds_G2
-
-def highest_degree_seeds(G1, G2, n_seeds, optimal_permutation):
-    """
-    Selects the 'n_seeds' vertices from G1 with the highest total degrees 
-    and returns them along with their true pairs in G2.
-    """
-    if n_seeds == 0:
-        return np.array([]), np.array([])
-        
-    # Calculate the degree of each node in G1. 
-    degrees = np.sum(G1, axis=1)
-    
-    # Get the indices that would sort the degrees in ascending order, 
-    # then take the last 'n_seeds' elements and reverse them to get highest-to-lowest.
-    highest_degree_nodes = np.argsort(degrees)[-n_seeds:][::-1]
-    
-    # Map the highest degree G1 vertices to their corresponding shuffled vertices in G2
-    seeds_G1 = highest_degree_nodes
-    seeds_G2 = optimal_permutation[seeds_G1]
-    
-    return seeds_G1, seeds_G2
-
-def blocked_random_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=3):
-    """
-    Selects seeds distributed evenly across the SBM blocks.
-    """
-    if n_seeds == 0:
-        return np.array([]), np.array([])
-        
-    n_nodes = G1.shape[0]
-    nodes_per_block = n_nodes // n_blocks
-    seeds_per_block = n_seeds // n_blocks
-    
-    seeds_G1 = []
-    
-    # Pull an equal number of seeds from each block
-    for b in range(n_blocks):
-        block_start = b * nodes_per_block
-        block_end = (b + 1) * nodes_per_block
-        block_nodes = np.arange(block_start, block_end)
-        
-        b_seeds = np.random.choice(block_nodes, seeds_per_block, replace=False)
-        seeds_G1.extend(b_seeds)
-        
-    # Handle remainder if n_seeds is not perfectly divisible by n_blocks
-    remainder = n_seeds - (seeds_per_block * n_blocks)
-    if remainder > 0:
-        remaining_nodes = np.setdiff1d(np.arange(n_nodes), seeds_G1)
-        extra_seeds = np.random.choice(remaining_nodes, remainder, replace=False)
-        seeds_G1.extend(extra_seeds)
-        
-    seeds_G1 = np.array(seeds_G1)
-    seeds_G2 = optimal_permutation[seeds_G1]
-    
-    return seeds_G1, seeds_G2
+from ExpandWhenStuck import graph_match_percolation
+from config import *
+from SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds
+from Graphs import gen_ER_graphs, gen_SBM_graphs
 
 def match_ratio(predicted_permutation, optimal_permutation):
     """
@@ -203,11 +74,119 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
     
     return results
 
+
+def compare_algorithms(graph_gen_func, seeding_func, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
+    """
+    Compares graph matching algorithms
+    using identical random initial seeds.
+    """
+
+    algorithms = ["graspologic_graph_match", "expand_when_stuck"]
+
+    results = {
+        alg: {s: [] for s in seed_nums_list}
+        for alg in algorithms
+    }
+
+    for s in seed_nums_list:
+
+        print(f"Running trials for {s} seeds...")
+
+        for trial in range(n_trials):
+
+            # Generate graphs
+            G1, G2_shuffled, optimal_perm = graph_gen_func()
+
+            # Generate same seeds for both algorithms
+            seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
+            partial_match = np.column_stack((seeds_G1, seeds_G2))
+
+
+            # Algorithm 1: Graspologic
+            _, perm_inds, _, _ = graph_match(G1, G2_shuffled, partial_match=partial_match)
+
+            score = match_ratio(perm_inds, optimal_perm)
+
+            results["graspologic_graph_match"][s].append(score)
+
+            # Algorithm 2: ExpandWhenStuck
+
+            result = graph_match_percolation(
+                G1,
+                G2_shuffled,
+                partial_match,
+                r=2,
+                ExpandWhenStuck=True
+            )
+            perm_inds = np.zeros(G1.shape[0], dtype=int)
+            perm_inds[result["corr_A"]] = result["corr_B"]
+
+
+            score = match_ratio(perm_inds, optimal_perm)
+            results["expand_when_stuck"][s].append(score)
+
+
+    # Plot results
+    plt.figure(figsize=(10,6))
+
+    for alg in results:
+
+        means = []
+        ci_lower = []
+        ci_upper = []
+
+        for s in seed_nums_list:
+
+            data = results[alg][s]
+
+            mean_val = np.mean(data)
+
+            se = st.sem(data)
+            ci = 1.96 * se
+
+            means.append(mean_val)
+            ci_lower.append(mean_val-ci)
+            ci_upper.append(mean_val+ci)
+
+
+        plt.plot(
+            seed_nums_list,
+            means,
+            marker='o',
+            label=alg
+        )
+
+        plt.fill_between(
+            seed_nums_list,
+            ci_lower,
+            ci_upper,
+            alpha=0.2
+        )
+
+
+    plt.xlabel("Number of Random Seeds")
+    plt.ylabel("Match Ratio")
+    plt.title("Graph Matching Algorithm Comparison")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+    return results
+
+
 if __name__ == "__main__":    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
-    compare_seeding(
+    compare_algorithms(
         graph_gen_func=gen_SBM_graphs,
-        seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds],
+        seeding_func=random_seeds,
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
+    # compare_seeding(
+    #     graph_gen_func=gen_SBM_graphs,
+    #     seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds],
+    #     seed_nums_list=SEED_COUNTS,
+    #     n_trials=TRIALS_PER_SEED_NUMBER
+    # )
