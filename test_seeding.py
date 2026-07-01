@@ -3,7 +3,7 @@ import time
 import matplotlib.pyplot as plt
 import scipy.stats as st
 from graspologic.simulations import sbm_corr
-from graspologic.simulations import sample_edges
+from graspologic.simulations import er_corr
 from graspologic.match import graph_match
 import networkx as nx
 
@@ -57,10 +57,10 @@ def gen_ER_graphs(n=N_ER_NODES, p=EDGE_PROBABILITY, rho=ER_RHO, directed=False, 
     """
     # 1. Create the base probability matrix for an Erdős-Rényi graph.
     # Every possible edge shares the exact same probability 'p'.
-    P = np.full((n, n), p)
+    #P = np.full((n, n), p)
     
     # 2. Sample two correlated child graphs from the base probability matrix
-    G1, G2 = sample_edges(P, rho, directed=directed, loops=loops)
+    G1, G2 = er_corr(n, p, rho, directed=directed, loops=loops)
     
     # 3. Create a random permutation to shuffle Graph 2
     optimal_permutation = np.random.permutation(n)
@@ -315,8 +315,8 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
 if __name__ == "__main__":    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
-        graph_gen_func=gen_SBM_graphs,
-        seeding_funcs_list=[random_seeds, blocked_highest_degree_seeds, betweenness_seeds],
+        graph_gen_func=gen_ER_graphs,
+        seeding_funcs_list=[random_seeds, highest_degree_seeds, betweenness_seeds],
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
