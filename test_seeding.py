@@ -1,9 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.stats as st
+from multiprocessing import Pool
 from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
+from Plotting import plot_results
 from SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds
 from Graphs import gen_ER_graphs, gen_SBM_graphs
 
@@ -111,15 +111,13 @@ def compare_algorithms(graph_gen_func, seeding_func, seed_nums_list, n_trials=TR
 
             # Algorithm 2: ExpandWhenStuck
 
-            result = graph_match_percolation(
+            perm_inds = graph_match_percolation(
                 G1,
                 G2_shuffled,
                 partial_match,
                 r=2,
                 ExpandWhenStuck=True
             )
-            perm_inds = np.zeros(G1.shape[0], dtype=int)
-            perm_inds[result["corr_A"]] = result["corr_B"]
 
 
             score = match_ratio(perm_inds, optimal_perm)
@@ -175,15 +173,163 @@ def compare_algorithms(graph_gen_func, seeding_func, seed_nums_list, n_trials=TR
 
     return results
 
+def graspologic_algorithm(G1, G2, partial_match):
+
+    _, perm_inds, _, _ = graph_match(
+        G1,
+        G2,
+        partial_match=partial_match
+    )
+
+    return perm_inds
+
+
+def run_trial(graph_gen_func, seeding_func, n_seeds, algorithms):
+    """
+    Runs a single graph matching trial.
+    Returns
+    -------
+    dictionary matching algorithms to their scores, eg.
+        {
+            "graspologic_graph_match": score,
+            "expand_when_stuck": score,
+            ...
+        }
+    """
+
+    # Generate graph pair
+    G1, G2_shuffled, optimal_perm = graph_gen_func()
+
+    # Generate seeds
+    seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, n_seeds, optimal_perm)
+
+    partial_match = np.column_stack((seeds_G1, seeds_G2))
+
+    scores = {}
+
+    for name, algorithm in algorithms.items():
+        predicted_perm = algorithm(G1, G2_shuffled, partial_match)
+        scores[name] = match_ratio(
+            predicted_perm,
+            optimal_perm
+        )
+    return scores
+
+
+def build_jobs(
+    graph_gen_func,
+    seeding_func,
+    seed_nums,
+    algorithms,
+    n_trials,
+):
+    """
+    Creates a list of independent graph matching jobs.
+    """
+
+    jobs = []
+
+    for n_seeds in seed_nums:
+        for _ in range(n_trials):
+
+            jobs.append(
+                (
+                    graph_gen_func,
+                    seeding_func,
+                    n_seeds,
+                    algorithms,
+                )
+            )
+
+    return jobs
+
+def run_trial_wrapper(job):
+    """
+    Allows multiprocessing to call run_trial
+    using a single argument.
+    """
+    return job, run_trial(*job)
+
+def run_experiments(jobs):
+    """
+    Runs a list of graph matching jobs in parallel.
+
+    Returns
+    -------
+    results:
+        {
+            algorithm_name:
+                {
+                    n_seeds:
+                        [accuracy scores]
+                }
+        }
+    """
+
+    # Run jobs in parallel
+    with Pool() as pool:
+        raw_results = pool.map(
+            run_trial_wrapper,
+            jobs
+        )
+
+
+    # Initialize result dictionary
+    seed_nums = sorted(
+        set(job[2] for job in jobs)
+    )
+
+    algorithms = jobs[0][3]
+
+    results = {
+        algorithm: {
+            n_seeds: []
+            for n_seeds in seed_nums
+        }
+        for algorithm in algorithms
+    }
+
+
+    # Organize results
+    for job, scores in raw_results:
+
+        n_seeds = job[2]
+
+        for algorithm_name, score in scores.items():
+
+            results[algorithm_name][n_seeds].append(score)
+
+
+    return results
+
 
 if __name__ == "__main__":    
+    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
-    compare_algorithms(
-        graph_gen_func=gen_SBM_graphs,
-        seeding_func=random_seeds,
-        seed_nums_list=SEED_COUNTS,
-        n_trials=TRIALS_PER_SEED_NUMBER
-    )
+    # compare_algorithms(
+    #     graph_gen_func=gen_SBM_graphs,
+    #     seeding_func=random_seeds,
+    #     seed_nums_list=SEED_COUNTS,
+    #     n_trials=TRIALS_PER_SEED_NUMBER
+    # )
+
+    algorithms = {
+        "graspologic_graph_match": graspologic_algorithm,
+        "expand_when_stuck": graph_match_percolation,
+    }
+
+    jobs = build_jobs(
+    graph_gen_func=gen_SBM_graphs,
+    seeding_func=random_seeds,
+    seed_nums=SEED_COUNTS,
+    algorithms=algorithms,
+    n_trials=TRIALS_PER_SEED_NUMBER,
+)
+
+
+    results = run_experiments(jobs)
+
+    print(results)
     # compare_seeding(
     #     graph_gen_func=gen_SBM_graphs,
     #     seeding_funcs_list=[random_seeds, blocked_random_seeds, highest_degree_seeds],

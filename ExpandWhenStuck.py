@@ -159,10 +159,18 @@ def graph_match_percolation(
 
     Z = Z[order]
 
+    # Convert correspondence pairs into permutation format
+    # perm[i] = vertex in B matched to vertex i in A
+    perm = np.full(n, -1, dtype=int)
 
-    return {
-        "corr_A": Z[:,0],
-        "corr_B": Z[:,1],
-        "match_order": order,
-        "seeds": seeds_original
-    }
+    perm[Z[:,0]] = Z[:,1]
+
+    return perm
+
+    # original returns, might be useful for debugging
+    # return {
+    #     "corr_A": Z[:,0],
+    #     "corr_B": Z[:,1],
+    #     "match_order": order,
+    #     "seeds": seeds_original
+    # }
