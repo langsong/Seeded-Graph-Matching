@@ -59,10 +59,41 @@ def plot_results(results, seed_nums_list):
         )
 
 
-    plt.xlabel("Number of Random Seeds")
+    plt.xlabel("Number of Seeds")
     plt.ylabel("Match Ratio")
-    plt.title("Graph Matching Algorithm Comparison")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
+    
+def format_for_plotting(grouped_results, label_key):
+    """
+    Converts grouped experiment results into the format expected by plot_results.
+
+    Parameters
+    ----------
+    grouped_results : list
+        Output of run_experiments()
+
+    label_key : str
+        Which field should become the plot legend.
+        Examples:
+            "algorithm"
+            "seeding_func"
+            "graph_gen_func"
+    """
+
+    results = {}
+
+    for experiment in grouped_results:
+
+        label = experiment[label_key].__name__
+        seed_count = experiment["seed_count"]
+
+        if label not in results:
+            results[label] = {}
+
+        results[label][seed_count] = experiment["scores"]
+
+    return results

@@ -17,4 +17,7 @@ ER_RHO = .8
 
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 25
-SEED_COUNTS = [4, 6, 10, 20, 30, 40, 60, 70]
+SEED_COUNTS = [3,10, 15, 20, 50,]
+
+# TRIALS_PER_SEED_NUMBER = 2
+# SEED_COUNTS = [1,3]

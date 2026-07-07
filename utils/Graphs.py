@@ -6,19 +6,20 @@ def gen_ER_graphs(n=N_ER_NODES, p=EDGE_PROBABILITY, rho=ER_RHO, directed=False, 
     """
     Generates a pair of correlated Erdős-Rényi graphs (G1, G2).
     """
-    G1, G2 = er_corr(
-        n=n,
-        p=p,
-        r=rho,
-        directed=directed,
-        loops=loops,
-    )
-
-    # Randomly permute graph 2
-    permutation = np.random.permutation(n)
-    G2_shuffled = G2[np.ix_(permutation, permutation)]
-
-    return G1, G2_shuffled, permutation
+    # 1. Create the base probability matrix for an Erdős-Rényi graph.
+    # Every possible edge shares the exact same probability 'p'.
+    #P = np.full((n, n), p)
+    
+    # 2. Sample two correlated child graphs from the base probability matrix
+    G1, G2 = er_corr(n, p, rho, directed=directed, loops=loops)
+    
+    # 3. Create a random permutation to shuffle Graph 2
+    optimal_permutation = np.random.permutation(n)
+    
+    # Apply the permutation to both rows and columns of G2
+    G2_shuffled = G2[optimal_permutation, :][:, optimal_permutation]
+    
+    return G1, G2_shuffled, optimal_permutation
 
 def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
     """

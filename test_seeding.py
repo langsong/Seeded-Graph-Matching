@@ -1,129 +1,12 @@
 import numpy as np
 import time
-from Experiments import run_experiments, build_jobs
+from Experiments import run_experiments
 from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
-from utils.Plotting import plot_results
-from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds
+from utils.Plotting import plot_results, format_for_plotting
+from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds,jaccard_neighboorhood_seeds,neighbor_degree_seeds
 from utils.Graphs import gen_ER_graphs, gen_SBM_graphs
-
-def match_ratio(predicted_permutation, optimal_permutation):
-    """
-    Computes the fraction of vertices correctly matched.
-    """
-    return np.mean(predicted_permutation == optimal_permutation)
-
-# def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
-#     """
-#     Runs graph matching trials, extracts confidence intervals, and plots the results.
-#     """
-#     # Initialize a dictionary to hold all results
-#     results = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
-    
-#     for s in seed_nums_list:
-#         print(f"Running trials for {s} seeds...")
-        
-#         for trial in range(n_trials):
-#             # 1. Generate Graphs
-#             G1, G2_shuffled, optimal_perm = graph_gen_func()
-            
-#             for seeding_func in seeding_funcs_list:
-#                 # 2. Grab Seeds
-#                 seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
-#                 partial_match = np.column_stack((seeds_G1, seeds_G2))
-                
-#                 # 3. Fit Graph Match Model
-#                 _, perm_inds, _, _ = graph_match(G1, G2_shuffled, partial_match=partial_match)
-                
-#                 # 4. Compute and Store Score
-#                 score = match_ratio(perm_inds, optimal_perm)
-#                 results[seeding_func.__name__][s].append(score)
-                
-#     # --- Plotting the Results ---
-#     plt.figure(figsize=(10, 6))
-    
-#     for func_name in results:
-#         means = []
-#         ci_lower = []
-#         ci_upper = []
-        
-#         for s in seed_nums_list:
-#             data = results[func_name][s]
-#             mean_val = np.mean(data)
-            
-#             # Calculate 95% Confidence Interval using Standard Error
-#             se = st.sem(data) if len(data) > 1 else 0
-#             ci = se * 1.96 
-            
-#             means.append(mean_val)
-#             ci_lower.append(mean_val - ci)
-#             ci_upper.append(mean_val + ci)
-            
-#         # Plot mean lines
-#         plt.plot(seed_nums_list, means, label=func_name, marker='o')
-#         # Plot confidence intervals
-#         plt.fill_between(seed_nums_list, ci_lower, ci_upper, alpha=0.2)
-        
-#     plt.xlabel('Number of Seeds', fontsize=12)
-#     plt.ylabel('Match Ratio (Accuracy)', fontsize=12)
-#     plt.title('Seeded Graph Matching: Random vs. Blocked Random Seeding', fontsize=14)
-#     plt.legend()
-#     plt.grid(True, linestyle='--', alpha=0.7)
-#     plt.tight_layout()
-#     plt.show()
-    
-#     return results
-
-
-def compare_algorithms(graph_gen_func, seeding_func, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
-    """
-    Compares graph matching algorithms
-    using identical random initial seeds.
-    """
-
-    algorithms = ["graspologic_graph_match", "expand_when_stuck"]
-
-    results = {
-        alg: {s: [] for s in seed_nums_list}
-        for alg in algorithms
-    }
-
-    for s in seed_nums_list:
-
-        print(f"Running trials for {s} seeds...")
-
-        for _ in range(n_trials):
-
-            # Generate graphs
-            G1, G2_shuffled, optimal_perm = graph_gen_func()
-
-            # Generate same seeds for both algorithms
-            seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
-            partial_match = np.column_stack((seeds_G1, seeds_G2))
-
-
-            # Algorithm 1: Graspologic
-            _, perm_inds, _, _ = graph_match(G1, G2_shuffled, partial_match=partial_match)
-
-            score = match_ratio(perm_inds, optimal_perm)
-
-            results["graspologic_graph_match"][s].append(score)
-
-            # Algorithm 2: ExpandWhenStuck
-
-            perm_inds = graph_match_percolation(
-                G1,
-                G2_shuffled,
-                partial_match,
-                r=2,
-                ExpandWhenStuck=True
-            )
-
-
-            score = match_ratio(perm_inds, optimal_perm)
-            results["expand_when_stuck"][s].append(score)
-    return results
 
 def graspologic_algorithm(G1, G2, partial_match):
 
@@ -135,88 +18,190 @@ def graspologic_algorithm(G1, G2, partial_match):
 
     return perm_inds
 
+def match_ratio(predicted_permutation, optimal_permutation):
+    """
+    Computes the fraction of vertices correctly matched.
+    """
+    return np.mean(predicted_permutation == optimal_permutation)
+
+# Plots results of 2+ seeding methods on the same algorithm and graph generation function over 25 trials of varying seed numbers
+def compare_seeding(graph_gen_func, seeding_funcs_list, algorithm, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
+    results = run_experiments(
+        graph_gen_funcs=[graph_gen_func],
+        seeding_funcs=seeding_funcs_list,
+        seed_nums=seed_nums_list,
+        algorithms=[algorithm],
+        n_trials=n_trials,
+    )
+    formatted_results = format_for_plotting(results, "seeding_func")
+    plot_results(formatted_results, SEED_COUNTS)
+
+    return formatted_results
+
+
+def compare_algorithms(graph_gen_func, seeding_func, algorithms, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
+    results = run_experiments(
+        graph_gen_funcs=[graph_gen_func],
+        seeding_funcs=[seeding_func],
+        seed_nums=seed_nums_list,
+        algorithms=algorithms,
+        n_trials=n_trials,
+    )
+    formatted_results = format_for_plotting(results, "algorithm")
+    plot_results(formatted_results, SEED_COUNTS)
+
+    return formatted_results
+
+
+def compare_seeding_sequential(graph_gen_func, seeding_funcs_list, algorithm, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
+    """
+    Runs graph matching trials, extracts confidence intervals, and plots the results.
+    """
+    # Initialize a dictionary to hold all results
+    results = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
+    
+    for s in seed_nums_list:
+        print(f"Running trials for {s} seeds...")
+        
+        for _ in range(n_trials):
+            # 1. Generate Graphs
+            G1, G2_shuffled, optimal_perm = graph_gen_func()
+            
+            for seeding_func in seeding_funcs_list:
+                # 2. Grab Seeds
+                seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
+                partial_match = np.column_stack((seeds_G1, seeds_G2))
+                
+                # 3. Fit Graph Match Model
+                perm_inds = algorithm(G1, G2_shuffled, partial_match)                
+                # 4. Compute and Store Score
+                score = match_ratio(perm_inds, optimal_perm)
+                results[seeding_func.__name__][s].append(score)
+    return results
+
+def compare_algorithms_sequential(graph_gen_func, seeding_func, algorithms, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
+    """
+    Compares graph matching algorithms
+    using identical random initial seeds.
+    """
+
+
+    results = {
+        alg.__name__: {s: [] for s in seed_nums_list}
+        for alg in algorithms
+    }
+
+    for s in seed_nums_list:
+
+        print(f"Running trials for {s} seeds...")
+
+        for trial in range(n_trials):
+            # Generate graphs
+            G1, G2_shuffled, optimal_perm = graph_gen_func()
+
+            # Generate same seeds for both algorithms
+            seeds_G1, seeds_G2 = seeding_func(G1, G2_shuffled, s, optimal_perm)
+            partial_match = np.column_stack((seeds_G1, seeds_G2))
+
+            for alg in algorithms:
+                perm_inds = alg(G1, G2_shuffled, partial_match)
+                score = match_ratio(perm_inds, optimal_perm)
+
+                results[alg.__name__][s].append(score)
+            
+    return results
+
 
 if __name__ == "__main__":
-    algorithms = {
-    "graspologic_graph_match": graspologic_algorithm,
-    "expand_when_stuck": graph_match_percolation,
-    }
-    print("Starting benchmark...\n")
+    algorithms = [
+        graspologic_algorithm,
+        graph_match_percolation
+    ]
+    res=compare_seeding(graph_gen_func=gen_SBM_graphs,
+                    seeding_funcs_list=[jaccard_neighboorhood_seeds, neighbor_degree_seeds, random_seeds],
+                    algorithm=graph_match_percolation,
+                    seed_nums_list=SEED_COUNTS,
+                    n_trials=TRIALS_PER_SEED_NUMBER)
+    print(res)
 
 
-    # -----------------------------
-    # Sequential version
-    # -----------------------------
-
-    print("Running sequential version...")
-
-    start = time.perf_counter()
-
-    sequential_results = compare_algorithms(
-        graph_gen_func=gen_SBM_graphs,
-        seeding_func=random_seeds,
-        seed_nums_list=SEED_COUNTS,
-        n_trials=TRIALS_PER_SEED_NUMBER
-    )
-
-    sequential_time = time.perf_counter() - start
+    # algorithms = [
+    #     graspologic_algorithm,
+    #     graph_match_percolation
+    # ]
+    # print("Starting benchmark...\n")
 
 
-    print("\nSequential runtime:")
-    print(f"{sequential_time:.2f} seconds")
+    # # -----------------------------
+    # # Sequential version
+    # # -----------------------------
+
+    # print("Running sequential version...")
+
+    # start = time.perf_counter()
+
+    # sequential_results = compare_algorithms_sequential(
+    #     graph_gen_func=gen_SBM_graphs,
+    #     seeding_func=random_seeds,
+    #     algorithms=algorithms,
+    #     seed_nums_list=SEED_COUNTS,
+    #     n_trials=TRIALS_PER_SEED_NUMBER
+    # )
+
+    # sequential_time = time.perf_counter() - start
 
 
-    print("\nSequential results:")
-    print(sequential_results)
+    # print("\nSequential runtime:")
+    # print(f"{sequential_time:.2f} seconds")
 
 
-
-    # -----------------------------
-    # Parallel version
-    # -----------------------------
-
-    print("\n\nRunning parallel version...")
-
-    jobs = build_jobs(
-        graph_gen_func=gen_SBM_graphs,
-        seeding_func=random_seeds,
-        seed_nums=SEED_COUNTS,
-        algorithms=algorithms,
-        n_trials=TRIALS_PER_SEED_NUMBER,
-    )
-
-
-    start = time.perf_counter()
-
-    parallel_results = run_experiments(
-        jobs
-    )
-
-    parallel_time = time.perf_counter() - start
-
-
-    print("\nParallel runtime:")
-    print(f"{parallel_time:.2f} seconds")
-
-
-    print("\nParallel results:")
-    print(parallel_results)
+    # print("\nSequential results:")
+    # print(sequential_results)
 
 
 
-    # -----------------------------
-    # Speedup
-    # -----------------------------
+    # # -----------------------------
+    # # Parallel version
+    # # -----------------------------
 
-    print("\n\nSpeedup:")
-    print(
-        f"{sequential_time / parallel_time:.2f}x faster"
-    )
+    # print("\n\nRunning parallel version...")
+
+
+    # start = time.perf_counter()
+
+    # parallel_results = run_experiments(
+    #     graph_gen_funcs=[gen_SBM_graphs],
+    #     seeding_funcs=[random_seeds],
+    #     seed_nums=SEED_COUNTS,
+    #     algorithms=algorithms,
+    #     n_trials=TRIALS_PER_SEED_NUMBER,
+    # )
+    # parallel_results = format_for_plotting(parallel_results, "algorithm")
+    # parallel_time = time.perf_counter() - start
+
+
+    # print("\nParallel runtime:")
+    # print(f"{parallel_time:.2f} seconds")
+
+
+    # print("\nParallel results:")
+    # print(parallel_results)
+
+
+
+    # # -----------------------------
+    # # Speedup
+    # # -----------------------------
+
+    # print("\n\nSpeedup:")
+    # print(
+    #     f"{sequential_time / parallel_time:.2f}x faster"
+    # )
 
 
     # Optional plotting
-    plot_results(
-        parallel_results,
-        SEED_COUNTS
-    )
+    # plot_results(
+    #     parallel_results,
+    #     SEED_COUNTS
+    # )
     
