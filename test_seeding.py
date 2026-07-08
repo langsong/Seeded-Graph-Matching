@@ -5,7 +5,7 @@ from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
 from utils.Plotting import plot_results, format_for_plotting
-from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds,jaccard_neighboorhood_seeds,neighbor_degree_seeds
+from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds,neighbor_degree_seeds,gen_correlated_powerlaw_graphs
 from utils.Graphs import gen_ER_graphs, gen_SBM_graphs
 
 def graspologic_algorithm(G1, G2, partial_match):
@@ -33,10 +33,7 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, algorithm, seed_nums_lis
         algorithms=[algorithm],
         n_trials=n_trials,
     )
-    formatted_results = format_for_plotting(results, "seeding_func")
-    plot_results(formatted_results, SEED_COUNTS)
-
-    return formatted_results
+    return results
 
 
 def compare_algorithms(graph_gen_func, seeding_func, algorithms, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
@@ -47,15 +44,12 @@ def compare_algorithms(graph_gen_func, seeding_func, algorithms, seed_nums_list,
         algorithms=algorithms,
         n_trials=n_trials,
     )
-    formatted_results = format_for_plotting(results, "algorithm")
-    plot_results(formatted_results, SEED_COUNTS)
-
-    return formatted_results
+    return results
 
 
 def compare_seeding_sequential(graph_gen_func, seeding_funcs_list, algorithm, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
     """
-    Runs graph matching trials, extracts confidence intervals, and plots the results.
+    Runs graph matching trials, extracts confidence intervals
     """
     # Initialize a dictionary to hold all results
     results = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
@@ -84,8 +78,6 @@ def compare_algorithms_sequential(graph_gen_func, seeding_func, algorithms, seed
     Compares graph matching algorithms
     using identical random initial seeds.
     """
-
-
     results = {
         alg.__name__: {s: [] for s in seed_nums_list}
         for alg in algorithms
@@ -117,11 +109,19 @@ if __name__ == "__main__":
         graspologic_algorithm,
         graph_match_percolation
     ]
+    start = time.perf_counter()
     res=compare_seeding(graph_gen_func=gen_SBM_graphs,
-                    seeding_funcs_list=[jaccard_neighboorhood_seeds, neighbor_degree_seeds, random_seeds],
+                    seeding_funcs_list=[neighbor_degree_seeds, random_seeds],
                     algorithm=graph_match_percolation,
                     seed_nums_list=SEED_COUNTS,
                     n_trials=TRIALS_PER_SEED_NUMBER)
+    
+    t = time.perf_counter() - start
+    print(f"{t:.2f} seconds")
+    
+    formatted_results = format_for_plotting(res, "seeding_func")
+    plot_results(formatted_results, SEED_COUNTS)
+    
     print(res)
 
 
