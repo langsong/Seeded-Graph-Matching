@@ -5,8 +5,8 @@ from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
 from utils.Plotting import plot_results, format_for_plotting
-from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds,neighbor_degree_seeds,gen_correlated_powerlaw_graphs
-from utils.Graphs import gen_ER_graphs, gen_SBM_graphs
+from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds,neighbor_degree_seeds, jaccard_neighborhood_seeds,spectral_unique_seeds
+from utils.Graphs import gen_ER_graphs, gen_SBM_graphs, gen_correlated_powerlaw_graphs
 
 def graspologic_algorithm(G1, G2, partial_match):
 
@@ -110,8 +110,8 @@ if __name__ == "__main__":
         graph_match_percolation
     ]
     start = time.perf_counter()
-    res=compare_seeding(graph_gen_func=gen_SBM_graphs,
-                    seeding_funcs_list=[neighbor_degree_seeds, random_seeds],
+    res=compare_seeding(graph_gen_func=gen_ER_graphs,
+                    seeding_funcs_list=[highest_degree_seeds, random_seeds],
                     algorithm=graph_match_percolation,
                     seed_nums_list=SEED_COUNTS,
                     n_trials=TRIALS_PER_SEED_NUMBER)
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     formatted_results = format_for_plotting(res, "seeding_func")
     plot_results(formatted_results, SEED_COUNTS)
     
-    print(res)
+    # print(res)
 
 
     # algorithms = [

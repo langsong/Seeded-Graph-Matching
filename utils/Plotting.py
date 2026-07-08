@@ -11,7 +11,7 @@ def plot_results(results, seed_nums_list):
     ----------
     results:
         {
-            algorithm_name:
+            label:
                 {
                     n_seeds:
                         [accuracy scores]
