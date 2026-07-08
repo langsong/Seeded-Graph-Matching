@@ -1,243 +1,176 @@
-# This still needs cleaning up, optimzing, etc.
 import numpy as np
-# A and B are numpy adjacency matrices, both (n,n)
-# seeds is (k,2) where each element is [i,j], a vertex i from A
-# corresponding to a vertex j from B 
-def cal_mark(x, y):
-    """
-    R equivalent:
-        1 - abs(x-y)/max(abs(x),abs(y))
-    """
-    return 1 - np.abs(x-y) / np.maximum(np.abs(x), np.abs(y))
-
-
 def graph_match_percolation(
-        A,
-        B,
-        seeds,
-        similarity=None,
-        r=2,
-        ExpandWhenStuck=False
+    A,
+    B,
+    seeds,
+    r=2,
+    ExpandWhenStuck=True
 ):
-    n = max(A[0].shape[0], B[0].shape[0]) # num vertices (of the larger graph)
+    """
+    Parameters
+    A : int array
+        Adjacency matrix of graph A.
+    B : int array
+        Adjacency matrix of graph B.
+    seeds : np.ndarray
+        Shape (k,2). Each row [i,j] means vertex i in A corresponds to vertex j in B.
+    r : int
+        Minimum number of supporting matched neighbors required.
+    ExpandWhenStuck : bool
+        Whether to use ExpandWhenStuck.
 
-    nc = len(A)
+    Returns
+    -------
+    dict
+        corr_A, corr_B, match_order, seeds
+    """
+    A = np.asarray(A)
+    B = np.asarray(B)
+    n = A.shape[0]
 
-    # copy seeds
-    seeds_ori = seeds.copy()
+    seeds = np.asarray(seeds, dtype=int)
 
-    Z = seeds.copy()   # matched nodes
+    seeds_original = seeds.copy()
 
-    ns = len(seeds)
+    # Current matches
+    Z = seeds.copy()
 
-    # mark matrix
-    M = np.zeros((n,n))
-
-
-    # initialize similarity
-    if similarity is not None:
-        if np.sum(np.abs(similarity)) != 0:
-            M[:, :] = similarity
+    # Mark matrix
+    M = np.zeros((n,n), dtype=np.int16)
 
 
-    # remove seed rows/columns from consideration
-    for a,b in seeds_ori:
+    # Precompute adjacency lists
+    neighbors_A = [
+        np.flatnonzero(A[i])
+        for i in range(n)
+    ]
 
+    neighbors_B = [
+        np.flatnonzero(B[i])
+        for i in range(n)
+    ]
+
+    # Precompute degrees for tie-breaking
+    deg_A = np.sum(A, axis=1)
+    deg_B = np.sum(B, axis=1)
+
+
+    # Remove seed vertices from consideration
+    for a,b in seeds:
         M[a,:] = -n*n
         M[:,b] = -n*n
 
 
-    iter = 1
+    current_seeds = seeds.copy()
 
 
-    while ns != 0 or ( # we won't use similarity in our exprmt
-        similarity is not None
-        and np.sum(np.abs(similarity)) != 0
-        and iter == 1
-    ):
-        # MARK NEIGHBORS
-        if ns != 0:
+    while len(current_seeds) > 0:
+        # Mark neighbors of seeds
+        for a_seed, b_seed in current_seeds:
 
-            for ch in range(nc): # this is just 1 for our experiments
-                directed = not (
-                    np.array_equal(A[ch], A[ch].T)
-                    and
-                    np.array_equal(B[ch], B[ch].T)
+            A_adj = neighbors_A[a_seed]
+            B_adj = neighbors_B[b_seed]
+
+            if len(A_adj) == 0 or len(B_adj) == 0:
+                continue
+
+            # Binary graphs:
+            # every neighbor pair gets +1
+            M[np.ix_(A_adj, B_adj)] += 1
+
+
+
+        # Greedy percolation
+        while np.max(M) >= r:
+            max_score = np.max(M)
+            candidates = np.argwhere(M == max_score)
+
+            # Tie breaking using degree difference
+            if len(candidates) > 1:
+                degree_diff = (
+                    np.abs(
+                        deg_A[candidates[:,0]]
+                        -
+                        deg_B[candidates[:,1]]
+                    )
                 )
 
-
-                for seed in seeds:
-
-                    a_seed = seed[0]
-                    b_seed = seed[1]
-
-
-                    A_adj = np.where(A[ch][a_seed,:] != 0)[0] #neighbors of a_seed
-                    B_adj = np.where(B[ch][b_seed,:] != 0)[0] #neighbors of b_seed
-
-                    if len(A_adj) != 0 and len(B_adj) != 0:
-                        # cal_mark is just going to give us 1
-                        mark = cal_mark(
-                            A[ch][a_seed,A_adj][:,None],
-                            B[ch][b_seed,B_adj][None,:]
-                        )
-
-                        M[np.ix_(A_adj,B_adj)] += mark
-
-
-                    # directed graphs: transpose
-                    if directed:
-
-                        A[ch] = A[ch].T
-                        B[ch] = B[ch].T
-
-
-                        A_adj = np.where(A[ch][a_seed,:] != 0)[0]
-                        B_adj = np.where(B[ch][b_seed,:] != 0)[0]
-
-
-                        if len(A_adj) != 0 and len(B_adj) != 0:
-
-                            mark = cal_mark(
-                                A[ch][a_seed,A_adj][:,None],
-                                B[ch][b_seed,B_adj][None,:]
-                            )
-
-                            M[np.ix_(A_adj,B_adj)] += mark
-
-
-                        A[ch] = A[ch].T
-                        B[ch] = B[ch].T
-
-        
-        # MATCH PAIRS WITH SCORE >= r
-        while np.max(M) >= r:
-
-
-            max_val = np.max(M)
-
-            max_ind = np.argwhere(M == max_val)
-
-
-            # tie-breaking
-            if len(max_ind) != 1:
-                # among the pairs with the highest score select the unmatched pair [i,j]
-                # with the minimum degree difference
-                degree_diff = np.zeros(len(max_ind))
-
-                for ch in range(nc):
-                    degree_diff += np.abs(
-                        np.sum(A[ch],axis=1)[max_ind[:,0]]
-                        -
-                        np.sum(B[ch],axis=1)[max_ind[:,1]]
-                    )
                 best = np.where(
                     degree_diff == np.min(degree_diff)
                 )[0]
 
-                # if theres ties in degree difference, choose randomly
-                max_ind = max_ind[
+                chosen = candidates[
                     np.random.choice(best)
                 ]
+
             else:
-                max_ind = max_ind[0]
+                chosen = candidates[0]
 
 
-            a_match = max_ind[0]
-            b_match = max_ind[1]
+            a_match, b_match = chosen
 
-            # UPDATE MARK MATRIX
-            for ch in range(nc):
+            # Propagate marks from new match
+            A_adj = neighbors_A[a_match]
+            B_adj = neighbors_B[b_match]
 
-                directed = not (
-                    np.array_equal(A[ch], A[ch].T)
-                    and
-                    np.array_equal(B[ch], B[ch].T)
-                )
+            if len(A_adj) > 0 and len(B_adj) > 0:
+                M[np.ix_(A_adj,B_adj)] += 1
 
 
-                A_adj = np.where(
-                    A[ch][a_match,:] != 0
-                )[0]
-
-                B_adj = np.where(
-                    B[ch][b_match,:] != 0
-                )[0]
-
-
-                if len(A_adj)!=0 and len(B_adj)!=0:
-
-                    mark = cal_mark(
-                        A[ch][a_match,A_adj][:,None],
-                        B[ch][b_match,B_adj][None,:]
-                    )
-
-                    M[np.ix_(A_adj,B_adj)] += mark
-
-
-
-                if directed:
-                    A[ch] = A[ch].T
-                    B[ch] = B[ch].T
-                    A_adj = np.where(
-                        A[ch][a_match,:] != 0
-                    )[0]
-                    B_adj = np.where(
-                        B[ch][b_match,:] != 0
-                    )[0]
-                    if len(A_adj)!=0 and len(B_adj)!=0:
-                        mark = cal_mark(
-                            A[ch][a_match,A_adj][:,None],
-                            B[ch][b_match,B_adj][None,:]
-                        )
-                        M[np.ix_(A_adj,B_adj)] += mark
-                    A[ch] = A[ch].T
-                    B[ch] = B[ch].T
-
-
-
-            # remove matched vertices
+            # Remove matched vertices
             M[a_match,:] = -n*n
             M[:,b_match] = -n*n
 
 
-            # append match
+            # Add match
             Z = np.vstack(
-                [
+                (
                     Z,
-                    np.array([[a_match,b_match]])
-                ]
+                    [a_match,b_match]
+                )
             )
-
-        # EXPAND WHEN STUCK
-        iter += 1
-        ns = 0
-
-
-        if ExpandWhenStuck:
-
-            seeds_old = seeds.copy()
+            
+        # ExpandWhenStuck
+        if not ExpandWhenStuck:
+            break
 
 
-            seeds = np.argwhere(
-                (M > 0) &
-                (M < r)
+        old_seeds = current_seeds.copy()
+
+        current_seeds = np.argwhere(
+            (M > 0) &
+            (M < r)
+        )
+
+        # stop if expansion did nothing
+        if (
+            len(current_seeds) == len(old_seeds)
+            and np.array_equal(
+                current_seeds,
+                old_seeds
             )
-
-
-            ns = len(seeds)
-
-            if np.array_equal(seeds, seeds_old):
-                break
+        ):
+            break
 
 
 
-    # RETURN MATCHING
+    # Sort matches by A vertex
     order = np.argsort(Z[:,0])
-    corr = Z[order]
-    return {
-        "corr_A": corr[:,0],
-        "corr_B": corr[:,1],
-        "match_order": order,
-        "seeds": seeds_ori
-    }
+
+    Z = Z[order]
+
+    # Convert correspondence pairs into permutation format
+    # perm[i] = vertex in B matched to vertex i in A
+    perm = np.full(n, -1, dtype=int)
+
+    perm[Z[:,0]] = Z[:,1]
+
+    return perm
+
+    # original returns, might be useful for debugging
+    # return {
+    #     "corr_A": Z[:,0],
+    #     "corr_B": Z[:,1],
+    #     "match_order": order,
+    #     "seeds": seeds_original
+    # }
