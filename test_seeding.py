@@ -34,7 +34,7 @@ PL_RHO = .8
 
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 25
-SEED_COUNTS = [40, 60, 100, 150, 250, 400]
+SEED_COUNTS = [2, 4, 6, 8, 10]
 
 def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_blocks=N_BLOCKS, rho=SBM_RHO, block_probs=BLOCK_PROBS):
     """
@@ -248,6 +248,39 @@ def betweenness_seeds(G1, G2, n_seeds, optimal_permutation):
     # Return as two aligned numpy arrays (or np.column_stack if your script expects a 2D array)
     return np.array(seeds_g1), np.array(seeds_g2)
 
+
+def triangle_degree_ratio_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects seeds based on the ratio of a node's degree to the number of triangles 
+    it participates in plus 1 within G1. Pairs the selected nodes with their correct 
+    matches in G2 using the optimal_permutation.
+    """
+    # Convert G1 from a NumPy adjacency matrix to a NetworkX graph
+    G_nx = nx.from_numpy_array(G1)
+
+    # Calculate degrees and number of triangles for all nodes
+    degrees = dict(G_nx.degree())
+    triangles = nx.triangles(G_nx)
+    
+    scores = {}
+    for node in G_nx.nodes():
+        deg = degrees[node]
+        tri = triangles[node]
+        
+        # Calculate score by adding 1 to the denominator
+        scores[node] = deg / (tri + 1)
+
+    # Sort nodes by their ratio score in descending order
+    sorted_nodes = sorted(scores.keys(), key=lambda x: scores[x], reverse=True)
+    
+    # Pick the top n_seeds nodes from G1
+    seeds_g1 = np.array(sorted_nodes[:n_seeds], dtype=int)
+    
+    # Map them to their correct counterparts in G2 using the optimal permutation
+    seeds_g2 = optimal_permutation[seeds_g1]
+    
+    return seeds_g1, seeds_g2
+
 def match_ratio(predicted_permutation, optimal_permutation):
     """
     Computes the fraction of vertices correctly matched.
@@ -358,8 +391,8 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, seed_nums_list, n_trials
 if __name__ == "__main__":    
     # print("Initiating SGM Experiments... this might take a minute depending on core count.")
     compare_seeding(
-        graph_gen_func=gen_correlated_powerlaw_graphs,
-        seeding_funcs_list=[random_seeds, highest_degree_seeds, betweenness_seeds],
+        graph_gen_func=gen_SBM_graphs,
+        seeding_funcs_list=[random_seeds, highest_degree_seeds, betweenness_seeds, triangle_degree_ratio_seeds],
         seed_nums_list=SEED_COUNTS,
         n_trials=TRIALS_PER_SEED_NUMBER
     )
