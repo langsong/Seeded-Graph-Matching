@@ -138,38 +138,6 @@ def betweenness_seeds(G1, G2, n_seeds, optimal_permutation):
     # Return as two aligned numpy arrays (or np.column_stack if your script expects a 2D array)
     return np.array(seeds_g1), np.array(seeds_g2)
 
-def jaccard_neighboorhood_seeds(G1, G2, n_seeds, optimal_permutation):
-
-    if n_seeds == 0:
-        return np.array([]), np.array([])
-
-    n = G1.shape[0]
-
-    scores = []
-
-    for i in range(n):
-
-        neighbors1 = set(np.where(G1[i] > 0)[0])
-
-        jaccards = []
-
-        for j in range(n):
-
-            neighbors2 = set(np.where(G2[j] > 0)[0])
-
-            intersection = len(neighbors1 & neighbors2)
-            union = len(neighbors1 | neighbors2)
-
-            if union > 0:
-                jaccards.append(intersection / union)
-
-        scores.append(max(jaccards))
-
-    seeds_G1 = np.argsort(scores)[-n_seeds:]
-
-    seeds_G2 = optimal_permutation[seeds_G1]
-
-    return seeds_G1, seeds_G2
 
 def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
@@ -192,6 +160,8 @@ def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
     return seeds_G1, seeds_G2
 
+
+# sum of degrees of all neighbors 
 def neighbor_degree_seeds(G1, G2, n_seeds, optimal_permutation):
 
     degrees = np.sum(G1, axis=1)
