@@ -1,6 +1,7 @@
 import numpy as np
 import time
 from Experiments import run_experiments
+from graspologic.simulations import sample_edges_corr
 from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
