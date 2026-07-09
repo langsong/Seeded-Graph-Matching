@@ -15,10 +15,13 @@ def gen_ER_graphs(n=N_ER_NODES, p=EDGE_PROBABILITY, rho=ER_RHO, directed=False, 
     G1, G2 = er_corr(n, p, rho, directed=directed, loops=loops)
     
     # 3. Create a random permutation to shuffle Graph 2
-    optimal_permutation = np.random.permutation(n)
+    shuffle_perm = np.random.permutation(n)
     
     # Apply the permutation to both rows and columns of G2
-    G2_shuffled = G2[optimal_permutation, :][:, optimal_permutation]
+    G2_shuffled = G2[shuffle_perm, :][:, shuffle_perm]
+
+    # Compute unshuffling
+    optimal_permutation = np.argsort(shuffle_perm)
     
     return G1, G2_shuffled, optimal_permutation
 
@@ -78,7 +81,10 @@ def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, direct
     G1, G2 = sample_edges_corr(deg_matrix, corr_mat, directed=directed, loops=loops)
     
     # 5. Shuffle G2 to simulate an actual graph matching problem
-    optimal_perm = np.random.permutation(n)
-    G2_shuffled = G2[optimal_perm][:, optimal_perm]
+    shuffle_perm = np.random.permutation(n)
+    G2_shuffled = G2[shuffle_perm][:, shuffle_perm]
+
+    # Compute unshuffling
+    optimal_permutation = np.argsort(shuffle_perm)
     
-    return G1, G2_shuffled, optimal_perm
+    return G1, G2_shuffled, optimal_permutation
