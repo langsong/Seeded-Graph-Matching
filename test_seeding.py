@@ -155,7 +155,7 @@ if __name__ == "__main__":
     formatted_results = format_for_plotting(res, "seeding_func")
     plot_results(formatted_results, SEED_COUNTS)
     
-    print(res)
+    # print(res)
 
 
     # algorithms = [

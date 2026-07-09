@@ -13,7 +13,7 @@ BLOCK_PROBS = np.array([
 #Erdos Renyi Constants
 N_ER_NODES = 600
 EDGE_PROBABILITY = .2
-ER_RHO = .8
+ER_RHO = .5
 
 #Power Law Constants
 N_PL_NODES = 600
