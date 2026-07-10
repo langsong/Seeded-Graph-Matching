@@ -5,8 +5,13 @@ from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
 from utils.Plotting import plot_results, format_for_plotting
+<<<<<<< HEAD
 from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds, neighbor_degree_seeds, jaccard_cluster_seeds, spectral_unique_seeds
 from utils.Graphs import gen_ER_graphs, gen_SBM_graphs, gen_correlated_powerlaw_graphs
+=======
+from utils.SeedingMethods import *
+from utils.Graphs import *
+>>>>>>> 3063138e06cde40c1a4a3da277ef00b83162005c
 
 def graspologic_algorithm(G1, G2, partial_match):
 
@@ -17,6 +22,39 @@ def graspologic_algorithm(G1, G2, partial_match):
     )
 
     return perm_inds
+
+
+def triangle_degree_ratio_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects seeds based on the ratio of a node's degree to the number of triangles 
+    it participates in plus 1 within G1. Pairs the selected nodes with their correct 
+    matches in G2 using the optimal_permutation.
+    """
+    # Convert G1 from a NumPy adjacency matrix to a NetworkX graph
+    G_nx = nx.from_numpy_array(G1)
+
+    # Calculate degrees and number of triangles for all nodes
+    degrees = dict(G_nx.degree())
+    triangles = nx.triangles(G_nx)
+    
+    scores = {}
+    for node in G_nx.nodes():
+        deg = degrees[node]
+        tri = triangles[node]
+        
+        # Calculate score by adding 1 to the denominator
+        scores[node] = deg / (tri + 1)
+
+    # Sort nodes by their ratio score in descending order
+    sorted_nodes = sorted(scores.keys(), key=lambda x: scores[x], reverse=True)
+    
+    # Pick the top n_seeds nodes from G1
+    seeds_g1 = np.array(sorted_nodes[:n_seeds], dtype=int)
+    
+    # Map them to their correct counterparts in G2 using the optimal permutation
+    seeds_g2 = optimal_permutation[seeds_g1]
+    
+    return seeds_g1, seeds_g2
 
 def match_ratio(predicted_permutation, optimal_permutation):
     """

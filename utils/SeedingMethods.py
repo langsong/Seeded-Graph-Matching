@@ -245,3 +245,84 @@ def jaccard_cluster_seeds(G1, G2, n_seeds, optimal_permutation):
     seeds_G2 = optimal_permutation[seeds_G1]
 
     return seeds_G1, seeds_G2
+
+def jaccard_neighborhood_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects the 'n_seeds' vertices from G1 with the highest average
+    Jaccard neighborhood similarity among their neighbors and returns
+    them along with their true pairs in G2.
+    """
+    if n_seeds == 0:
+        return np.array([]), np.array([])
+
+    n_nodes = G1.shape[0]
+    jaccard_scores = np.zeros(n_nodes)
+
+    # Convert adjacency matrix to neighbor sets for faster computation
+    neighbors = [
+        set(np.where(G1[i] > 0)[0])
+        for i in range(n_nodes)
+    ]
+
+    # Calculate average neighbor-neighbor Jaccard score for each node
+    for node in range(n_nodes):
+        node_neighbors = neighbors[node]
+
+        # Nodes with no neighbors cannot have a Jaccard score
+        if len(node_neighbors) == 0:
+            jaccard_scores[node] = 0
+            continue
+
+        total_similarity = 0
+
+        for neighbor in node_neighbors:
+            neighbor_neighbors = neighbors[neighbor]
+
+            intersection = len(node_neighbors.intersection(neighbor_neighbors))
+            union = len(node_neighbors.union(neighbor_neighbors))
+
+            if union > 0:
+                total_similarity += intersection / union
+
+        jaccard_scores[node] = total_similarity / len(node_neighbors)
+
+    # Select nodes with highest Jaccard neighborhood scores
+    highest_jaccard_nodes = np.argsort(jaccard_scores)[-n_seeds:][::-1]
+
+    # Map G1 seeds to their true G2 matches
+    seeds_G1 = highest_jaccard_nodes
+    seeds_G2 = optimal_permutation[seeds_G1]
+
+    return seeds_G1, seeds_G2
+
+def triangle_degree_ratio_seeds(G1, G2, n_seeds, optimal_permutation):
+    """
+    Selects seeds based on the ratio of a node's degree to the number of triangles 
+    it participates in plus 1 within G1. Pairs the selected nodes with their correct 
+    matches in G2 using the optimal_permutation.
+    """
+    # Convert G1 from a NumPy adjacency matrix to a NetworkX graph
+    G_nx = nx.from_numpy_array(G1)
+
+    # Calculate degrees and number of triangles for all nodes
+    degrees = dict(G_nx.degree())
+    triangles = nx.triangles(G_nx)
+    
+    scores = {}
+    for node in G_nx.nodes():
+        deg = degrees[node]
+        tri = triangles[node]
+        
+        # Calculate score by adding 1 to the denominator
+        scores[node] = deg / (tri + 1)
+
+    # Sort nodes by their ratio score in descending order
+    sorted_nodes = sorted(scores.keys(), key=lambda x: scores[x], reverse=True)
+    
+    # Pick the top n_seeds nodes from G1
+    seeds_g1 = np.array(sorted_nodes[:n_seeds], dtype=int)
+    
+    # Map them to their correct counterparts in G2 using the optimal permutation
+    seeds_g2 = optimal_permutation[seeds_g1]
+    
+    return seeds_g1, seeds_g2
