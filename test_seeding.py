@@ -5,13 +5,8 @@ from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
 from utils.Plotting import plot_results, format_for_plotting
-<<<<<<< HEAD
-from utils.SeedingMethods import random_seeds, blocked_random_seeds, highest_degree_seeds, blocked_highest_degree_seeds, betweenness_seeds, neighbor_degree_seeds, jaccard_cluster_seeds, spectral_unique_seeds
-from utils.Graphs import gen_ER_graphs, gen_SBM_graphs, gen_correlated_powerlaw_graphs
-=======
 from utils.SeedingMethods import *
 from utils.Graphs import *
->>>>>>> 3063138e06cde40c1a4a3da277ef00b83162005c
 
 def graspologic_algorithm(G1, G2, partial_match):
 
