@@ -6,7 +6,7 @@ from ExpandWhenStuck import graph_match_percolation
 from config import *
 from utils.Plotting import plot_results, format_for_plotting
 from utils.SeedingMethods import *
-from utils.Graphs import gen_ER_graphs, gen_SBM_graphs
+from utils.Graphs import *
 
 def graspologic_algorithm(G1, G2, partial_match):
 
@@ -143,8 +143,8 @@ if __name__ == "__main__":
         graph_match_percolation
     ]
     start = time.perf_counter()
-    res=compare_seeding(graph_gen_func=gen_SBM_graphs,
-                    seeding_funcs_list=[random_seeds, spectral_unique_seeds, betweenness_seeds, triangle_degree_ratio_seeds],
+    res=compare_seeding(graph_gen_func=gen_PAPER_graphs,
+                    seeding_funcs_list=[random_seeds, betweenness_seeds, triangle_degree_ratio_seeds, highest_degree_seeds],
                     algorithm=graspologic_algorithm,
                     seed_nums_list=SEED_COUNTS,
                     n_trials=TRIALS_PER_SEED_NUMBER)
