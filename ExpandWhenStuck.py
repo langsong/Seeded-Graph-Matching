@@ -19,10 +19,6 @@ def graph_match_percolation(
     ExpandWhenStuck : bool
         Whether to use ExpandWhenStuck.
 
-    Returns
-    -------
-    dict
-        corr_A, corr_B, match_order, seeds
     """
     A = np.asarray(A)
     B = np.asarray(B)

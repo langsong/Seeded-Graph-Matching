@@ -13,7 +13,7 @@ BLOCK_PROBS = np.array([
 #Erdos Renyi Constants
 N_ER_NODES = 600
 EDGE_PROBABILITY = .2
-ER_RHO = .5
+ER_RHO = .6
 
 #Power Law Constants
 N_PL_NODES = 600
@@ -22,6 +22,6 @@ PL_RHO = .8
 
 #Experiment Constants
 TRIALS_PER_SEED_NUMBER = 15
-SEED_COUNTS = [3,10,11,12,13,14,15,16,17,18,19,20,50]
+SEED_COUNTS = [4,6,10,15,20,25,35,50,75,100,150,200]
 
 np.random.seed(1234)

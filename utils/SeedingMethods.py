@@ -175,51 +175,73 @@ def neighbor_degree_seeds(G1, G2, n_seeds, optimal_permutation):
 
     return seeds_G1, seeds_G2
 
-def jaccard_neighborhood_seeds(G1, G2, n_seeds, optimal_permutation):
+
+
+
+def jaccard_cluster_seeds(G1, G2, n_seeds, optimal_permutation):
     """
-    Selects the 'n_seeds' vertices from G1 with the highest average
-    Jaccard neighborhood similarity among their neighbors and returns
-    them along with their true pairs in G2.
+    Selects seeds by growing a connected cluster.
+
+    Starts from a random node. At each step, considers the seed set,
+    examines all its unselected neighbors, and adds the neighbor with the highest
+    Jaccard neighborhood similarity to the seed it is adjacent to.
+
+    If the current seed cluster has no unselected neighbors, a new random
+    node is chosen to start another cluster.
     """
     if n_seeds == 0:
         return np.array([]), np.array([])
 
-    n_nodes = G1.shape[0]
-    jaccard_scores = np.zeros(n_nodes)
+    n = G1.shape[0]
 
-    # Convert adjacency matrix to neighbor sets for faster computation
+    # Precompute neighbor sets
     neighbors = [
         set(np.where(G1[i] > 0)[0])
-        for i in range(n_nodes)
+        for i in range(n)
     ]
 
-    # Calculate average neighbor-neighbor Jaccard score for each node
-    for node in range(n_nodes):
-        node_neighbors = neighbors[node]
+    # Pick the first seed randomly
+    first_seed = np.random.randint(n)
 
-        # Nodes with no neighbors cannot have a Jaccard score
-        if len(node_neighbors) == 0:
-            jaccard_scores[node] = 0
-            continue
+    seeds = [first_seed]
+    seed_set = {first_seed}
 
-        total_similarity = 0
+    while len(seeds) < n_seeds:
 
-        for neighbor in node_neighbors:
-            neighbor_neighbors = neighbors[neighbor]
+        best_candidate = None
+        best_score = -1
 
-            intersection = len(node_neighbors.intersection(neighbor_neighbors))
-            union = len(node_neighbors.union(neighbor_neighbors))
+        # Look at every current seed
+        for seed in seeds:
 
-            if union > 0:
-                total_similarity += intersection / union
+            for candidate in neighbors[seed]:
 
-        jaccard_scores[node] = total_similarity / len(node_neighbors)
+                if candidate in seed_set:
+                    continue
 
-    # Select nodes with highest Jaccard neighborhood scores
-    highest_jaccard_nodes = np.argsort(jaccard_scores)[-n_seeds:][::-1]
+                intersection = len(neighbors[seed] & neighbors[candidate])
+                union = len(neighbors[seed] | neighbors[candidate])
 
-    # Map G1 seeds to their true G2 matches
-    seeds_G1 = highest_jaccard_nodes
+                score = intersection / union if union > 0 else 0
+
+                if score > best_score:
+                    best_score = score
+                    best_candidate = candidate
+
+        # If no neighboring candidates remain, restart from a random node
+        if best_candidate is None:
+
+            remaining = list(set(range(n)) - seed_set)
+
+            if not remaining:
+                break
+
+            best_candidate = np.random.choice(remaining)
+
+        seeds.append(best_candidate)
+        seed_set.add(best_candidate)
+
+    seeds_G1 = np.array(seeds)
     seeds_G2 = optimal_permutation[seeds_G1]
 
     return seeds_G1, seeds_G2
