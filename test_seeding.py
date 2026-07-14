@@ -128,11 +128,11 @@ if __name__ == "__main__":
     t = time.process_time() - start
     print(f"{t:.2f} seconds")
     
-    formatted_acuracies = format_for_plotting(accuracies, "seeding_func")
-    formatted_runtimes = format_for_plotting(runtimes, "seeding_func")
+    #formatted_acuracies = format_for_plotting(accuracies, "seeding_func")
+    #formatted_runtimes = format_for_plotting(runtimes, "seeding_func")
     
-    plot_results(formatted_acuracies, SEED_COUNTS, y_label="Match Ratio")
-    plot_results(formatted_runtimes, SEED_COUNTS, y_label="CPU time")
+    plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio")
+    plot_results(runtimes, SEED_COUNTS, y_label="CPU time")
     
     # print(res)
 

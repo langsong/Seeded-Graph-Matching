@@ -72,7 +72,7 @@ def plot_results(results, seed_nums_list, y_label="Match Ratio", show_plot=True,
         plt.show()
 
     
-def format_for_plotting(grouped_results : dict[str, dict[int, list]], label_key):
+def format_for_plotting(grouped_results : list, label_key):
     """
     Converts grouped experiment results into the format expected by plot_results.
 
