@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as st
 
 
-def plot_results(results, seed_nums_list):
+def plot_results(results, seed_nums_list, y_label="Match Ratio"):
     """
     Plots mean accuracy and 95% confidence intervals.
 
@@ -60,7 +60,7 @@ def plot_results(results, seed_nums_list):
 
 
     plt.xlabel("Number of Seeds")
-    plt.ylabel("Match Ratio")
+    plt.ylabel(y_label)
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
