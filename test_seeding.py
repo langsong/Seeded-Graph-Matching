@@ -192,23 +192,107 @@ def seed_quality_experiment(
 
 
 if __name__ == "__main__":
+    algorithms = [
+        graspologic_algorithm,
+        graph_match_percolation
+    ]
+    start = time.process_time()
+    accuracies, runtimes = compare_seeding_sequential(graph_gen_func=gen_PAPER_graphs,
+                    seeding_funcs_list=[random_seeds, betweenness_seeds, triangle_degree_ratio_seeds, highest_degree_seeds],
+                    algorithm=graspologic_algorithm,
+                    seed_nums_list=SEED_COUNTS,
+                    n_trials=TRIALS_PER_SEED_NUMBER)
     
+    t = time.process_time() - start
+    print(f"{t:.2f} seconds")
+    
+    #formatted_acuracies = format_for_plotting(accuracies, "seeding_func")
+    #formatted_runtimes = format_for_plotting(runtimes, "seeding_func")
+    
+    plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio")
+    plot_results(runtimes, SEED_COUNTS, y_label="CPU time")
+    
+    # print(res)
+
+
     # algorithms = [
     #     graspologic_algorithm,
     #     graph_match_percolation
     # ]
-    start = time.perf_counter()
-    # res=compare_seeding(graph_gen_func=gen_correlated_powerlaw_graphs,
-    #                 seeding_funcs_list=[random_seeds,neighbor_degree_seeds,highest_degree_seeds, expanding_highest_degree_seeds],
-    #                 algorithm=graph_match_percolation,
-    #                 seed_nums_list=SEED_COUNTS,
-    #                 n_trials=TRIALS_PER_SEED_NUMBER)
+    # print("Starting benchmark...\n")
+
+
+    # # -----------------------------
+    # # Sequential version
+    # # -----------------------------
+
+    # print("Running sequential version...")
+
+    # start = time.perf_counter()
+
+    # sequential_results = compare_algorithms_sequential(
+    #     graph_gen_func=gen_SBM_graphs,
+    #     seeding_func=random_seeds,
+    #     algorithms=algorithms,
+    #     seed_nums_list=SEED_COUNTS,
+    #     n_trials=TRIALS_PER_SEED_NUMBER
+    # )
+
+    # sequential_time = time.perf_counter() - start
+
+
+    # print("\nSequential runtime:")
+    # print(f"{sequential_time:.2f} seconds")
+
+
+    # print("\nSequential results:")
+    # print(sequential_results)
+
+
+
+    # # -----------------------------
+    # # Parallel version
+    # # -----------------------------
+
+    # print("\n\nRunning parallel version...")
+
+
+    # start = time.perf_counter()
+
+    # parallel_results = run_experiments(
+    #     graph_gen_funcs=[gen_SBM_graphs],
+    #     seeding_funcs=[random_seeds],
+    #     seed_nums=SEED_COUNTS,
+    #     algorithms=algorithms,
+    #     n_trials=TRIALS_PER_SEED_NUMBER,
+    # )
+    # parallel_results = format_for_plotting(parallel_results, "algorithm")
+    # parallel_time = time.perf_counter() - start
+
+
+    # print("\nParallel runtime:")
+    # print(f"{parallel_time:.2f} seconds")
+
+
+    # print("\nParallel results:")
+    # print(parallel_results)
+
+
+
+    # # -----------------------------
+    # # Speedup
+    # # -----------------------------
+
+    # print("\n\nSpeedup:")
+    # print(
+    #     f"{sequential_time / parallel_time:.2f}x faster"
+    # )
+
+
+    # Optional plotting
+    # plot_results(
+    #     parallel_results,
+    #     SEED_COUNTS
+    # )
     
-    seed_quality_experiment(seed_internal_edges)
-    t = time.perf_counter() - start
-    # print(f"{t:.2f} seconds")
-    
-    # formatted_results = format_for_plotting(res, "seeding_func")
-    # print(formatted_results)
-    # plot_results(formatted_results, SEED_COUNTS)
     
