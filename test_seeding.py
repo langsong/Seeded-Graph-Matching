@@ -54,8 +54,7 @@ def compare_seeding_sequential(graph_gen_func, seeding_funcs_list, algorithm, se
     Runs graph matching trials, extracts confidence intervals
     """
     # Initialize a dictionary to hold all results
-    accuracies = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
-    runtimes = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
+    results = {func.__name__: {s: [] for s in seed_nums_list} for func in seeding_funcs_list}
     
     for s in seed_nums_list:
         print(f"Running trials for {s} seeds...")
@@ -70,19 +69,11 @@ def compare_seeding_sequential(graph_gen_func, seeding_funcs_list, algorithm, se
                 partial_match = np.column_stack((seeds_G1, seeds_G2))
                 
                 # 3. Fit Graph Match Model
-                start = time.process_time()
-                perm_inds = algorithm(G1, G2_shuffled, partial_match)
-                end = time.process_time()
-                runtime = start - end
-                
+                perm_inds = algorithm(G1, G2_shuffled, partial_match)                
                 # 4. Compute and Store Score
                 score = match_ratio(perm_inds, optimal_perm)
-
-                # 5. Store results
-                accuracies[seeding_func.__name__][s].append(score)
-                runtimes[seeding_func.__name__][s].append(runtime)
-    
-    return accuracies, runtimes
+                results[seeding_func.__name__][s].append(score)
+    return results
 
 def compare_algorithms_sequential(graph_gen_func, seeding_func, algorithms, seed_nums_list, n_trials=TRIALS_PER_SEED_NUMBER):
     """
@@ -98,7 +89,7 @@ def compare_algorithms_sequential(graph_gen_func, seeding_func, algorithms, seed
 
         print(f"Running trials for {s} seeds...")
 
-        for _ in range(n_trials):
+        for trial in range(n_trials):
             # Generate graphs
             G1, G2_shuffled, optimal_perm = graph_gen_func()
 
