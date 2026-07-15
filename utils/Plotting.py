@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as st
 
 
-def plot_results(results, seed_nums_list):
+def plot_results(results, seed_nums_list, y_label="Match Ratio", show_plot=True, out_file=None):
     """
     Plots mean accuracy and 95% confidence intervals.
 
@@ -60,14 +60,19 @@ def plot_results(results, seed_nums_list):
 
 
     plt.xlabel("Number of Seeds")
-    plt.ylabel("Match Ratio")
+    plt.ylabel(y_label)
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+    
+    if out_file:
+        plt.savefig(out_file)
+    
+    if show_plot:
+        plt.show()
 
     
-def format_for_plotting(grouped_results, label_key):
+def format_for_plotting(grouped_results : list, label_key):
     """
     Converts grouped experiment results into the format expected by plot_results.
 
