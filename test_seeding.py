@@ -1,6 +1,5 @@
 import numpy as np
 import time
-from multiprocessing import Pool
 import matplotlib.pyplot as plt
 from Experiments import run_experiments
 from graspologic.match import graph_match
