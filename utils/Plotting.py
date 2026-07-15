@@ -97,3 +97,30 @@ def format_for_plotting(grouped_results, label_key):
         results[label][seed_count] = experiment["scores"]
 
     return results
+
+def plot_seed_quality(
+    metric_values,
+    accuracy_values,
+    metric_name,
+    xlabel,
+    n_trials,
+    n_seeds
+):
+    """
+    Plots a seed metric against graph matching accuracy.
+    """
+
+    correlation = np.corrcoef(metric_values, accuracy_values)[0, 1]
+    print(f"\nPearson correlation: {correlation:.4f}")
+
+    plt.figure(figsize=(8, 6))
+    plt.scatter(metric_values, accuracy_values)
+
+    plt.xlabel(xlabel)
+    plt.ylabel("Match Ratio")
+    plt.title(
+        f"{metric_name} ({n_trials} Trials, {n_seeds} Seeds)"
+    )
+
+    plt.grid(True)
+    plt.show()
