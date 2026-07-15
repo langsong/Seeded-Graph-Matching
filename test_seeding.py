@@ -47,7 +47,7 @@ def compare_algorithms(graph_gen_func, seeding_func, algorithms, seed_nums_list,
         n_trials=n_trials,
     )
     
-    results = format_for_plotting(results, "seeding_func")
+    results = format_for_plotting(results, "algorithm")
     return results
 
 
