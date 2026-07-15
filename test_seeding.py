@@ -4,7 +4,7 @@ from Experiments import run_experiments
 from graspologic.match import graph_match
 from ExpandWhenStuck import graph_match_percolation
 from config import *
-from utils.Plotting import plot_results, format_for_plotting
+from utils.Plotting import *
 from utils.SeedingMethods import *
 from utils.Graphs import *
 
@@ -33,6 +33,8 @@ def compare_seeding(graph_gen_func, seeding_funcs_list, algorithm, seed_nums_lis
         algorithms=[algorithm],
         n_trials=n_trials,
     )
+
+    results = format_for_plotting(results, "seeding_func")
     return results
 
 
@@ -127,10 +129,6 @@ if __name__ == "__main__":
     
     t = time.process_time() - start
     print(f"{t:.2f} seconds")
-    
-    # ATTENTION: Uncomment the following lines for parallel versions
-    #formatted_acuracies = format_for_plotting(accuracies, "seeding_func")
-    #formatted_runtimes = format_for_plotting(runtimes, "seeding_func")
     
     plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio")
     plot_results(runtimes, SEED_COUNTS, y_label="CPU time")
