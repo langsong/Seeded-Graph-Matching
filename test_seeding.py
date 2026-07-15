@@ -128,6 +128,7 @@ if __name__ == "__main__":
     t = time.process_time() - start
     print(f"{t:.2f} seconds")
     
+    # ATTENTION: Uncomment the following lines for parallel versions
     #formatted_acuracies = format_for_plotting(accuracies, "seeding_func")
     #formatted_runtimes = format_for_plotting(runtimes, "seeding_func")
     
