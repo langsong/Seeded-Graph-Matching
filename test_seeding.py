@@ -75,7 +75,7 @@ def compare_seeding_sequential(graph_gen_func, seeding_funcs_list, algorithm, se
                 start = time.process_time()
                 perm_inds = algorithm(G1, G2_shuffled, partial_match)
                 end = time.process_time()
-                runtime = start - end
+                runtime = end - start
                 
                 # 4. Compute and Store Score
                 score = match_ratio(perm_inds, optimal_perm)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         graph_match_percolation
     ]
     start = time.process_time()
-    accuracies, runtimes = compare_seeding_sequential(graph_gen_func=gen_PAPER_graphs,
+    accuracies, runtimes = compare_seeding_sequential(graph_gen_func=gen_ER_graphs,
                     seeding_funcs_list=[random_seeds, betweenness_seeds, triangle_degree_ratio_seeds, highest_degree_seeds],
                     algorithm=graspologic_algorithm,
                     seed_nums_list=SEED_COUNTS,
