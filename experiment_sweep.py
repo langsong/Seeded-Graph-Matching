@@ -45,8 +45,8 @@ def run_experiment_sweep(tests):
         
         # 3. Call plot_results to save the visualization into the new folder
         # Pass the save_folder path so the function knows where to write the file
-        plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio", out_file=f"results/{test_name}/acuracy_by_seed_count.png")
-        plot_results(runtimes, SEED_COUNTS, y_label="CPU time", out_file=f"results/{test_name}/runtime_by_seed_count.png")
+        plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio", show_plot=False, out_file=f"results/{test_name}/acuracy_by_seed_count.png")
+        plot_results(runtimes, SEED_COUNTS, y_label="CPU time", show_plot=False, out_file=f"results/{test_name}/runtime_by_seed_count.png")
 
 if __name__ == "__main__":
     run_experiment_sweep(TESTS)
