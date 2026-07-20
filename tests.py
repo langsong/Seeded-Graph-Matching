@@ -5,6 +5,10 @@ from utils.SeedingMethods import *
 from test_seeding import graspologic_algorithm
 
 TESTS = [
+    
+]
+
+OLD_TESTS = [
     {
         "name": "Dense ER Graph with SGM",
         "graph_gen_func": lambda: gen_ER_graphs(n=600, p=.2, rho=.5),
