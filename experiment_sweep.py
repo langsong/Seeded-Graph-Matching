@@ -43,8 +43,8 @@ def run_experiment_sweep(tests):
         )
         
         # 3. Call plot_results to save the visualization into the new folder
-        plot_results(accuracies, SEED_COUNTS, y_label="Match Ratio", show_plot=False, out_file=f"results/{test_name}/accuracy_by_seed_count.png")
-        plot_results(runtimes, SEED_COUNTS, y_label="CPU time", show_plot=False, out_file=f"results/{test_name}/runtime_by_seed_count.png")
+        plot_results(accuracies, seed_numbers, y_label="Match Ratio", show_plot=False, out_file=f"results/{test_name}/accuracy_by_seed_count.png")
+        plot_results(runtimes, seed_numbers, y_label="CPU time", show_plot=False, out_file=f"results/{test_name}/runtime_by_seed_count.png")
 
         # 4. Save results as json files
         with open(f"results/{test_name}/accuracy_data.json", "w") as f:
