@@ -2,3 +2,5 @@ graspologic
 numpy
 matplotlib
 scipy
+networkx
+sklearn
