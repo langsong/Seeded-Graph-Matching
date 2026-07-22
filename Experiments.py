@@ -1,5 +1,6 @@
 import numpy as np
 from multiprocessing import Pool
+from config import *
 
 def run_trial(graph_gen_func, seeding_func, n_seeds, algorithm):
     """
@@ -141,87 +142,3 @@ def run_experiments(graph_gen_funcs, seeding_funcs, seed_nums, algorithms, n_tri
 
     return grouped_results
 
-
-
-    # # Initialize result dictionary
-    # seed_nums = sorted(
-    #     set(job[2] for job in jobs)
-    # )
-
-    # algorithms = jobs[0][3]
-
-    # results = {
-    #     algorithm: {
-    #         n_seeds: []
-    #         for n_seeds in seed_nums
-    #     }
-    #     for algorithm in algorithms
-    # }
-
-
-    # # Organize results
-    # for job, scores in raw_results:
-
-    #     n_seeds = job[2]
-
-    #     for algorithm_name, score in scores.items():
-
-    #         results[algorithm_name][n_seeds].append(score)
-
-
-    # return results
-
-# def run_experiments(jobs):
-#     """
-#     Runs a list of graph matching jobs in parallel.
-
-#     Parameters
-#     ----------
-#     jobs : list of dict
-
-#     Returns
-#     -------
-#     results:
-#         {
-#             label:
-#                 {
-#                     seed_count:
-#                         [scores]
-#                 }
-#         }
-#     """
-
-#     # Run jobs in parallel
-#     with Pool(processes=8) as pool:
-#         raw_results = pool.map(
-#             run_trial_wrapper,
-#             jobs
-#         )
-
-#     # Discover labels and seed counts
-#     labels = sorted(
-#         {job["label"] for job in jobs}
-#     )
-
-#     seed_counts = sorted(
-#         {job["seed_count"] for job in jobs}
-#     )
-
-#     # Initialize results dictionary
-#     results = {
-#         label: {
-#             seed_count: []
-#             for seed_count in seed_counts
-#         }
-#         for label in labels
-#     }
-
-#     # Store scores
-#     for job, score in raw_results:
-
-#         label = job["label"]
-#         seed_count = job["seed_count"]
-
-#         results[label][seed_count].append(score)
-
-#     return results

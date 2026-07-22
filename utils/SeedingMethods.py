@@ -3,6 +3,10 @@ from sklearn.manifold import SpectralEmbedding
 from sklearn.metrics import pairwise_distances
 import networkx as nx
 from config import *
+from FeatureEngineering.model import predict_seed_score
+import joblib
+
+RF_MODEL = None
 
 def random_seeds(G1, G2, n_seeds, optimal_permutation):
     """
@@ -139,7 +143,6 @@ def betweenness_seeds(G1, G2, n_seeds, optimal_permutation):
     # Return as two aligned numpy arrays (or np.column_stack if your script expects a 2D array)
     return np.array(seeds_g1), np.array(seeds_g2)
 
-
 def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
     embedding = SpectralEmbedding(
@@ -161,7 +164,6 @@ def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
     return seeds_G1, seeds_G2
 
-
 # sum of degrees of all neighbors 
 def neighbor_degree_seeds(G1, G2, n_seeds, optimal_permutation):
 
@@ -175,103 +177,75 @@ def neighbor_degree_seeds(G1, G2, n_seeds, optimal_permutation):
 
     return seeds_G1, seeds_G2
 
-def jaccard_neighborhood_seeds(G1, G2, n_seeds, optimal_permutation):
+def jaccard_cluster_seeds(G1, G2, n_seeds, optimal_permutation):
     """
-    Selects the 'n_seeds' vertices from G1 with the highest average
-    Jaccard neighborhood similarity among their neighbors and returns
-    them along with their true pairs in G2.
-    """
-    if n_seeds == 0:
-        return np.array([]), np.array([])
+    Selects seeds by growing a connected cluster.
 
-    n_nodes = G1.shape[0]
-    jaccard_scores = np.zeros(n_nodes)
+    Starts from a random node. At each step, considers the seed set,
+    examines all its unselected neighbors, and adds the neighbor with the highest
+    Jaccard neighborhood similarity to the seed it is adjacent to.
 
-    # Convert adjacency matrix to neighbor sets for faster computation
-    neighbors = [
-        set(np.where(G1[i] > 0)[0])
-        for i in range(n_nodes)
-    ]
-
-    # Calculate average neighbor-neighbor Jaccard score for each node
-    for node in range(n_nodes):
-        node_neighbors = neighbors[node]
-
-        # Nodes with no neighbors cannot have a Jaccard score
-        if len(node_neighbors) == 0:
-            jaccard_scores[node] = 0
-            continue
-
-        total_similarity = 0
-
-        for neighbor in node_neighbors:
-            neighbor_neighbors = neighbors[neighbor]
-
-            intersection = len(node_neighbors.intersection(neighbor_neighbors))
-            union = len(node_neighbors.union(neighbor_neighbors))
-
-            if union > 0:
-                total_similarity += intersection / union
-
-        jaccard_scores[node] = total_similarity / len(node_neighbors)
-
-    # Select nodes with highest Jaccard neighborhood scores
-    highest_jaccard_nodes = np.argsort(jaccard_scores)[-n_seeds:][::-1]
-
-    # Map G1 seeds to their true G2 matches
-    seeds_G1 = highest_jaccard_nodes
-    seeds_G2 = optimal_permutation[seeds_G1]
-
-    return seeds_G1, seeds_G2
-
-def jaccard_neighborhood_seeds(G1, G2, n_seeds, optimal_permutation):
-    """
-    Selects the 'n_seeds' vertices from G1 with the highest average
-    Jaccard neighborhood similarity among their neighbors and returns
-    them along with their true pairs in G2.
+    If the current seed cluster has no unselected neighbors, a new random
+    node is chosen to start another cluster.
     """
     if n_seeds == 0:
         return np.array([]), np.array([])
 
-    n_nodes = G1.shape[0]
-    jaccard_scores = np.zeros(n_nodes)
+    n = G1.shape[0]
 
-    # Convert adjacency matrix to neighbor sets for faster computation
+    # Precompute neighbor sets
     neighbors = [
         set(np.where(G1[i] > 0)[0])
-        for i in range(n_nodes)
+        for i in range(n)
     ]
 
-    # Calculate average neighbor-neighbor Jaccard score for each node
-    for node in range(n_nodes):
-        node_neighbors = neighbors[node]
+    # Pick the first seed randomly
+    first_seed = np.random.randint(n)
 
-        # Nodes with no neighbors cannot have a Jaccard score
-        if len(node_neighbors) == 0:
-            jaccard_scores[node] = 0
-            continue
+    seeds = [first_seed]
+    seed_set = {first_seed}
 
-        total_similarity = 0
+    while len(seeds) < n_seeds:
 
-        for neighbor in node_neighbors:
-            neighbor_neighbors = neighbors[neighbor]
+        best_candidate = None
+        best_score = -1
 
-            intersection = len(node_neighbors.intersection(neighbor_neighbors))
-            union = len(node_neighbors.union(neighbor_neighbors))
+        # Look at every current seed
+        for seed in seeds:
 
-            if union > 0:
-                total_similarity += intersection / union
+            for candidate in neighbors[seed]:
 
-        jaccard_scores[node] = total_similarity / len(node_neighbors)
+                if candidate in seed_set:
+                    continue
 
-    # Select nodes with highest Jaccard neighborhood scores
-    highest_jaccard_nodes = np.argsort(jaccard_scores)[-n_seeds:][::-1]
+                intersection = len(neighbors[seed] & neighbors[candidate])
+                union = len(neighbors[seed] | neighbors[candidate])
 
-    # Map G1 seeds to their true G2 matches
-    seeds_G1 = highest_jaccard_nodes
+                score = intersection / union if union > 0 else 0
+
+                if score > best_score:
+                    best_score = score
+                    best_candidate = candidate
+
+        # If no neighboring candidates remain, restart from a random node
+        if best_candidate is None:
+
+            remaining = list(set(range(n)) - seed_set)
+
+            if not remaining:
+                break
+
+            best_candidate = np.random.choice(remaining)
+
+        seeds.append(best_candidate)
+        seed_set.add(best_candidate)
+
+    seeds_G1 = np.array(seeds)
     seeds_G2 = optimal_permutation[seeds_G1]
 
     return seeds_G1, seeds_G2
+
+
 
 def triangle_degree_ratio_seeds(G1, G2, n_seeds, optimal_permutation):
     """
@@ -304,3 +278,245 @@ def triangle_degree_ratio_seeds(G1, G2, n_seeds, optimal_permutation):
     seeds_g2 = optimal_permutation[seeds_g1]
     
     return seeds_g1, seeds_g2
+
+class RFHillClimber:
+    __name__ = "rf_hill_climb_seeds"
+    def __init__(self, model):
+        """
+        Stores the trained Random Forest model.
+        """
+        self.model = model
+
+    def __call__(
+        self,
+        G1,
+        G2,
+        n_seeds,
+        optimal_permutation
+    ):
+        """
+        Uses the trained Random Forest to hill climb toward
+        a better seed set.
+        """
+
+        if n_seeds == 0:
+            return np.array([]), np.array([])
+
+        G1_nx = nx.from_numpy_array(G1)
+        G2_nx = nx.from_numpy_array(G2)
+
+        # Start from highest-degree seeds
+        seeds_G1, seeds_G2 = highest_degree_seeds(
+            G1,
+            G2,
+            n_seeds,
+            optimal_permutation,
+        )
+
+        current_score = predict_seed_score(
+            self.model,
+            G1_nx,
+            G2_nx,
+            seeds_G1,
+            seeds_G2
+        )
+
+        n_nodes = G1.shape[0]
+
+        for _ in range(100):
+
+            candidate = seeds_G1.copy()
+
+            # Pick one seed to replace
+            replace_index = np.random.randint(n_seeds)
+
+            # Pick a node that isn't already a seed
+            non_seeds = np.setdiff1d(
+                np.arange(n_nodes),
+                candidate
+            )
+
+            new_node = np.random.choice(non_seeds)
+
+            candidate[replace_index] = new_node
+
+            candidate_score = predict_seed_score(
+                self.model,
+                G1_nx,
+                G2_nx,
+                candidate,
+                optimal_permutation[candidate],
+            )
+
+            if candidate_score > current_score:
+                seeds_G1 = candidate
+                current_score = candidate_score
+
+        seeds_G2 = optimal_permutation[seeds_G1]
+
+        return seeds_G1, seeds_G2
+
+def get_rf_model():
+    """
+    Lazily loads the trained Random Forest model.
+    Each worker process loads it only once.
+    """
+    global RF_MODEL
+
+    if RF_MODEL is None:
+        RF_MODEL = joblib.load("rf_seed_model.pkl")
+
+    return RF_MODEL
+
+def rf_random_seeds(
+    G1,
+    G2,
+    n_seeds,
+    optimal_permutation,
+    attempts=10,
+):
+    """
+    Generates several random seed sets and uses the trained
+    Random Forest model to choose the one predicted to
+    produce the best graph matching accuracy.
+    """
+
+    if n_seeds == 0:
+        return np.array([]), np.array([])
+
+    model = get_rf_model()
+
+    G1_nx = nx.from_numpy_array(G1)
+    G2_nx = nx.from_numpy_array(G2)
+
+    best_score = -np.inf
+    best_seeds_G1 = None
+    best_seeds_G2 = None
+
+    for _ in range(attempts):
+
+        # Generate a random seed set
+        seeds_G1, seeds_G2 = random_seeds(
+            G1,
+            G2,
+            n_seeds,
+            optimal_permutation,
+        )
+
+        # Predict matching performance
+        score = predict_seed_score(
+            model,
+            G1_nx,
+            G2_nx,
+            seeds_G1,
+            seeds_G2,
+        )
+
+        # Keep the best predicted seed set
+        if score > best_score:
+            best_score = score
+            best_seeds_G1 = seeds_G1
+            best_seeds_G2 = seeds_G2
+
+    return best_seeds_G1, best_seeds_G2
+
+def rf_greedy_seeds(
+    G1,
+    G2,
+    n_seeds,
+    optimal_permutation,
+    candidates_per_step=50,
+):
+    """
+    Iteratively builds a seed set by using the Random Forest
+    model to select the most promising next seed.
+
+    At each step:
+        1. Generate candidate seed pairs.
+        2. Temporarily add each candidate.
+        3. Predict final matching performance with RF.
+        4. Keep the candidate with the highest predicted score.
+
+    Parameters
+    ----------
+    candidates_per_step : int
+        Number of random candidate seed pairs to evaluate
+        at each greedy step.
+    """
+
+    if n_seeds == 0:
+        return np.array([]), np.array([])
+
+    model = get_rf_model()
+
+    G1_nx = nx.from_numpy_array(G1)
+    G2_nx = nx.from_numpy_array(G2)
+
+    # Store chosen seeds
+    selected_G1 = []
+    selected_G2 = []
+
+    # Track vertices already selected
+    available_G1 = set(range(len(G1)))
+    available_G2 = set(range(len(G2)))
+
+    for _ in range(n_seeds):
+
+        best_score = -np.inf
+        best_seed_G1 = None
+        best_seed_G2 = None
+
+        # Generate candidate seed pairs
+        candidate_pairs = []
+
+        for _ in range(candidates_per_step):
+
+            node_G1 = np.random.choice(
+                list(available_G1)
+            )
+
+            # Use optimal permutation to get the true match
+            node_G2 = optimal_permutation[node_G1]
+
+            if node_G2 in available_G2:
+                candidate_pairs.append(
+                    (node_G1, node_G2)
+                )
+
+        # Evaluate candidates
+        for candidate_G1, candidate_G2 in candidate_pairs:
+
+            test_seeds_G1 = np.append(
+                selected_G1,
+                candidate_G1
+            )
+
+            test_seeds_G2 = np.append(
+                selected_G2,
+                candidate_G2
+            )
+
+            score = predict_seed_score(
+                model,
+                G1_nx,
+                G2_nx,
+                test_seeds_G1,
+                test_seeds_G2,
+            )
+
+            if score > best_score:
+                best_score = score
+                best_seed_G1 = candidate_G1
+                best_seed_G2 = candidate_G2
+
+        # Add the best candidate
+        selected_G1.append(best_seed_G1)
+        selected_G2.append(best_seed_G2)
+
+        available_G1.remove(best_seed_G1)
+        available_G2.remove(best_seed_G2)
+
+    return (
+        np.array(selected_G1),
+        np.array(selected_G2),
+    )

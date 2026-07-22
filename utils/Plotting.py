@@ -1,9 +1,10 @@
 import numpy as np
+from config import *
 import matplotlib.pyplot as plt
 import scipy.stats as st
 
 
-def plot_results(results, seed_nums_list, y_label="Match Ratio", show_plot=True, out_file=None):
+def plot_results(results, seed_nums_list=SEED_COUNTS):
     """
     Plots mean accuracy and 95% confidence intervals.
 
@@ -60,19 +61,14 @@ def plot_results(results, seed_nums_list, y_label="Match Ratio", show_plot=True,
 
 
     plt.xlabel("Number of Seeds")
-    plt.ylabel(y_label)
+    plt.ylabel("Match Ratio")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    
-    if out_file:
-        plt.savefig(out_file)
-    
-    if show_plot:
-        plt.show()
+    plt.show()
 
     
-def format_for_plotting(grouped_results : list, label_key):
+def format_for_plotting(grouped_results, label_key):
     """
     Converts grouped experiment results into the format expected by plot_results.
 
@@ -102,3 +98,118 @@ def format_for_plotting(grouped_results : list, label_key):
         results[label][seed_count] = experiment["scores"]
 
     return results
+
+def plot_seed_quality(
+    metric_values,
+    accuracy_values,
+    metric_name,
+    xlabel,
+    n_trials,
+    n_seeds
+):
+    """
+    Plots a seed metric against graph matching accuracy.
+    """
+
+    correlation = np.corrcoef(metric_values, accuracy_values)[0, 1]
+    print(f"\nPearson correlation: {correlation:.4f}")
+
+    plt.figure(figsize=(8, 6))
+    plt.scatter(metric_values, accuracy_values)
+
+    plt.xlabel(xlabel)
+    plt.ylabel("Match Ratio")
+    plt.title(
+        f"{metric_name} ({n_trials} Trials, {n_seeds} Seeds)"
+    )
+
+    plt.grid(True)
+    plt.show()
+
+
+    import numpy as np
+import matplotlib.pyplot as plt
+
+
+def plot_match_ratio_histogram(results, 
+                               graph_gen_func=None,
+                               seeding_func=None,
+                               algorithm=None,
+                               seed_count=None,
+                               bins=10):
+    """
+    Creates a histogram of match ratios from run_experiments() output.
+
+    Parameters
+    ----------
+    results : list[dict]
+        Output from run_experiments()
+
+    graph_gen_func, seeding_func, algorithm, seed_count : optional
+        Filters for selecting specific experiments.
+        Leave None to include all.
+
+    bins : int
+        Number of match ratio categories.
+
+    """
+
+    # Collect all scores that match filters
+    scores = []
+
+    for experiment in results:
+
+        if graph_gen_func is not None:
+            if experiment["graph_gen_func"] != graph_gen_func:
+                continue
+
+        if seeding_func is not None:
+            if experiment["seeding_func"] != seeding_func:
+                continue
+
+        if algorithm is not None:
+            if experiment["algorithm"] != algorithm:
+                continue
+
+        if seed_count is not None:
+            if experiment["seed_count"] != seed_count:
+                continue
+
+        scores.extend(experiment["scores"])
+
+
+    if len(scores) == 0:
+        raise ValueError("No scores matched the given filters.")
+
+    
+    # Create histogram bins
+    bin_edges = np.linspace(0, 1, bins + 1)
+
+    counts, edges = np.histogram(
+        scores,
+        bins=bin_edges
+    )
+
+    # Make labels like "0.0-0.1"
+    labels = [
+        f"{edges[i]:.1f}-{edges[i+1]:.1f}"
+        for i in range(len(edges)-1)
+    ]
+
+
+    # Plot
+    plt.figure(figsize=(10, 5))
+
+    plt.bar(
+        labels,
+        counts
+    )
+
+    plt.xlabel("Match Ratio Range")
+    plt.ylabel("Number of Trials")
+    plt.title("Distribution of Graph Matching Performance")
+
+    plt.xticks(rotation=45)
+
+    plt.tight_layout()
+    plt.show()
