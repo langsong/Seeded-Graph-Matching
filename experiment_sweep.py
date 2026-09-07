@@ -51,7 +51,7 @@ def run_experiment_sweep(tests):
             json.dump(accuracies, f)
 
         with open(f"results/{test_name}/runtime_data.json", "w") as f:
-            json.dump(accuracies, f)
+            json.dump(runtimes, f)
 
 
 if __name__ == "__main__":

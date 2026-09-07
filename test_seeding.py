@@ -13,7 +13,8 @@ def graspologic_algorithm(G1, G2, partial_match):
     _, perm_inds, _, _ = graph_match(
         G1,
         G2,
-        partial_match=partial_match
+        partial_match=partial_match,
+        rng=int(np.random.randint(0, 2**32)),
     )
 
     return perm_inds

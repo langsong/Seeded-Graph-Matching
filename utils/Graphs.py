@@ -63,7 +63,7 @@ def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, direct
     
     # Check to ensure the max probability won't exceed 1.0
     if (max_deg ** 2) / sum_deg > 1.0:
-        expected_degrees = expected_degrees * (np.sqrt(sum_deg) / max_deg) * 0.95
+        expected_degrees = expected_degrees * (sum_deg / max_deg ** 2) * 0.95
     
     # Extract the probability matrix from the expected degree layout
     # For a given node pair, probability = (d_i * d_j) / sum(d)
@@ -85,7 +85,7 @@ def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, direct
     
     return G1, G2_shuffled, optimal_permutation
 
-def gen_PAPER_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PL_RHO, directed=False, loops=False):
+def gen_PAPER_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
     """
     Generates a pair of correlated power-law graphs with a specified correlation rho.
     """
@@ -100,7 +100,7 @@ def gen_PAPER_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho
     
     # Check to ensure the max probability won't exceed 1.0
     if (max_deg ** 2) / sum_deg > 1.0:
-        expected_degrees = expected_degrees * (np.sqrt(sum_deg) / max_deg) * 0.95
+        expected_degrees = expected_degrees * (sum_deg / max_deg ** 2) * 0.95
     
     # Extract the probability matrix from the expected degree layout
     # For a given node pair, probability = (d_i * d_j) / sum(d)

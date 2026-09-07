@@ -41,6 +41,10 @@ def build_jobs(graph_gen_funcs, seeding_funcs, seed_nums, algorithms, n_trials):
                                     "algorithm": algorithm,
                                 }
                             )
+    # Give each trial its own reproducible stream, regardless of worker scheduling.
+    seed_sequences = np.random.SeedSequence(np.random.randint(0, 2**32)).spawn(len(jobs))
+    for job, seed_sequence in zip(jobs, seed_sequences):
+        job["random_seed"] = seed_sequence.generate_state(4)
     return jobs
 
 def run_trial_wrapper(job):
@@ -48,6 +52,7 @@ def run_trial_wrapper(job):
     Allows multiprocessing to call run_trial
     using a single argument.
     """
+    np.random.seed(job["random_seed"])
     return job, run_trial(
         job["graph_gen_func"],
         job["seeding_func"],

@@ -63,9 +63,11 @@ def blocked_random_seeds(G1, G2, n_seeds, optimal_permutation, n_blocks=3):
     # Handle remainder if n_seeds is not perfectly divisible by n_blocks
     remainder = n_seeds - (seeds_per_block * n_blocks)
     if remainder > 0:
-        remaining_nodes = np.setdiff1d(np.arange(n_nodes), seeds_G1)
-        extra_seeds = np.random.choice(remaining_nodes, remainder, replace=False)
-        seeds_G1.extend(extra_seeds)
+        extra_blocks = np.random.choice(n_blocks, remainder, replace=False)
+        for b in extra_blocks:
+            block_nodes = np.arange(b * nodes_per_block, (b + 1) * nodes_per_block)
+            remaining_nodes = np.setdiff1d(block_nodes, seeds_G1)
+            seeds_G1.append(np.random.choice(remaining_nodes))
         
     seeds_G1 = np.array(seeds_G1)
     seeds_G2 = optimal_permutation[seeds_G1]
@@ -142,6 +144,9 @@ def betweenness_seeds(G1, G2, n_seeds, optimal_permutation):
 
 def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
+    if n_seeds == 0:
+        return np.array([], dtype=int), np.array([], dtype=int)
+
     embedding = SpectralEmbedding(
         n_components=10,
         affinity="precomputed"
@@ -164,6 +169,9 @@ def spectral_unique_seeds(G1, G2, n_seeds, optimal_permutation):
 
 # sum of degrees of all neighbors 
 def neighbor_degree_seeds(G1, G2, n_seeds, optimal_permutation):
+
+    if n_seeds == 0:
+        return np.array([], dtype=int), np.array([], dtype=int)
 
     degrees = np.sum(G1, axis=1)
 

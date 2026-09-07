@@ -36,7 +36,9 @@ def graph_match_percolation(
     Z = seeds.copy()
 
     # Mark matrix
-    M = np.zeros((n,n), dtype=np.int16)
+    M = np.zeros((n,n), dtype=np.int64)
+    used = np.zeros((n,n), dtype=bool)
+    matched_neighbors = np.zeros((n,n), dtype=bool)
 
 
     # Precompute adjacency lists
@@ -57,6 +59,7 @@ def graph_match_percolation(
 
     # Remove seed vertices from consideration
     for a,b in seeds:
+        matched_neighbors[np.ix_(neighbors_A[a], neighbors_B[b])] = True
         M[a,:] = -n*n
         M[:,b] = -n*n
 
@@ -67,6 +70,9 @@ def graph_match_percolation(
     while len(current_seeds) > 0:
         # Mark neighbors of seeds
         for a_seed, b_seed in current_seeds:
+            if used[a_seed, b_seed]:
+                continue
+            used[a_seed, b_seed] = True
 
             A_adj = neighbors_A[a_seed]
             B_adj = neighbors_B[b_seed]
@@ -113,8 +119,10 @@ def graph_match_percolation(
             A_adj = neighbors_A[a_match]
             B_adj = neighbors_B[b_match]
 
-            if len(A_adj) > 0 and len(B_adj) > 0:
+            matched_neighbors[np.ix_(A_adj, B_adj)] = True
+            if not used[a_match, b_match] and len(A_adj) > 0 and len(B_adj) > 0:
                 M[np.ix_(A_adj,B_adj)] += 1
+            used[a_match, b_match] = True
 
 
             # Remove matched vertices
@@ -135,22 +143,12 @@ def graph_match_percolation(
             break
 
 
-        old_seeds = current_seeds.copy()
-
         current_seeds = np.argwhere(
+            matched_neighbors &
+            ~used &
             (M > 0) &
             (M < r)
         )
-
-        # stop if expansion did nothing
-        if (
-            len(current_seeds) == len(old_seeds)
-            and np.array_equal(
-                current_seeds,
-                old_seeds
-            )
-        ):
-            break
 
 
 
