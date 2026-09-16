@@ -48,6 +48,83 @@ def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_block
     
     return G1, G2_shuffled, optimal_permutation
 
+
+def gen_IER_graphs(
+    n=N_ER_NODES,
+    rho=ER_RHO,
+    p_min=0.0,
+    p_max=1.0,
+    directed=False,
+    loops=False,
+):
+    """Generate and shuffle a correlated inhomogeneous Erdős-Rényi pair.
+
+    Each edge probability is sampled independently from
+    ``Uniform(p_min, p_max)``. For an undirected graph, one probability is
+    sampled for each unordered vertex pair and mirrored across the diagonal.
+
+    Conditional on the resulting probability matrix ``P``, graph A has
+    independent Bernoulli(P[i, j]) edges. Graph B is sampled so that it has
+    the same marginal probabilities and edge-wise correlation ``rho`` with A.
+    Graph B is then randomly relabelled, and the returned permutation maps
+    vertices in graph A to their observed labels in the shuffled graph B.
+
+    The default interval gives the dense Uniform(0, 1) model. For a sparse
+    model with desired mean edge probability ``p_bar <= 0.5``, use
+    ``p_min=0`` and ``p_max=2 * p_bar``.
+    """
+
+    if not isinstance(n, (int, np.integer)) or n <= 0:
+        raise ValueError("n must be a positive integer.")
+    if not isinstance(rho, (int, float, np.integer, np.floating)):
+        raise TypeError("rho must be numeric.")
+    if not 0.0 <= float(rho) <= 1.0:
+        raise ValueError("rho must be between 0 and 1.")
+    for name, value in (("p_min", p_min), ("p_max", p_max)):
+        if not isinstance(value, (int, float, np.integer, np.floating)):
+            raise TypeError(f"{name} must be numeric.")
+        if not 0.0 <= float(value) <= 1.0:
+            raise ValueError(f"{name} must be between 0 and 1.")
+    if p_min > p_max:
+        raise ValueError("p_min must be less than or equal to p_max.")
+    if not isinstance(directed, (bool, np.bool_)):
+        raise TypeError("directed must be boolean.")
+    if not isinstance(loops, (bool, np.bool_)):
+        raise TypeError("loops must be boolean.")
+
+    probability_matrix = np.zeros((n, n), dtype=float)
+    if directed:
+        probability_matrix = np.random.uniform(p_min, p_max, size=(n, n))
+        if not loops:
+            np.fill_diagonal(probability_matrix, 0.0)
+    else:
+        upper_rows, upper_columns = np.triu_indices(n, k=1)
+        upper_probabilities = np.random.uniform(
+            p_min, p_max, size=len(upper_rows)
+        )
+        probability_matrix[upper_rows, upper_columns] = upper_probabilities
+        probability_matrix[upper_columns, upper_rows] = upper_probabilities
+        if loops:
+            diagonal = np.arange(n)
+            probability_matrix[diagonal, diagonal] = np.random.uniform(
+                p_min, p_max, size=n
+            )
+
+    correlation_matrix = np.full((n, n), float(rho), dtype=float)
+    graph_1, graph_2 = sample_edges_corr(
+        probability_matrix,
+        correlation_matrix,
+        directed=directed,
+        loops=loops,
+    )
+
+    shuffle_permutation = np.random.permutation(n)
+    graph_2_shuffled = graph_2[shuffle_permutation][:, shuffle_permutation]
+    optimal_permutation = np.argsort(shuffle_permutation)
+
+    return graph_1, graph_2_shuffled, optimal_permutation
+
+
 def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, directed=False, loops=False):
     """
     Generates a pair of correlated power-law graphs with a specified correlation rho.

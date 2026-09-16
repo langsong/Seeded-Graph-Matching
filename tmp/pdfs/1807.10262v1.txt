@@ -1,0 +1,2759 @@
+
+
+===== PAGE 1 =====
+
+arXiv:1807.10262v1  [cs.LG]  26 Jul 2018
+Seeded Graph Matching via Large Neighborhood Statistics
+Elchanan Mossel
+MIT
+elmos@mit.edu
+Jiaming Xu
+Duke University
+jiaming.xu868@duke.edu
+July 27, 2018
+Abstract
+We study a well known noisy model of the graph isomorphism problem. In this model, the
+goal is to perfectly recover the vertex correspondence betwee n two edge-correlated graphs, with
+an initial seed set of correctly matched vertex pairs revealed as sid e information. Speciﬁcally,
+the model ﬁrst generates a parent graph G0 from Erd˝ os-R´ enyi random graphG(n, p ) and then
+obtains two children graphs G1 and G2 by subsampling the edge set of G0 twice independently
+with probability s = Θ(1). The vertex correspondence between G1 and G2 is obscured by
+randomly permuting the vertex labels of G1 according to a latent permutation π ∗ . Finally, for
+each i, π ∗ (i) is revealed independently with probability α as seeds.
+In the sparse graph regime where np ≤ nǫ for any ǫ < 1/ 6, we give a polynomial-time
+algorithm which perfectly recovers π ∗ , provided that nps2 − log n → +∞ and α ≥ n− 1+3ǫ. This
+further leads to a sub-exponential-time, exp
+(
+nO(ǫ))
+, matching algorithm even without seeds. On
+the contrary, if nps2 − log n = O(1), then perfect recovery is information-theoretically impossible
+as long as α is bounded away from 1.
+In the dense graph regime, where np = bna, for ﬁxed constants a, b ∈ (0, 1], we give a
+polynomial-time algorithm which succeeds when b = O(s) and α = Ω
+(
+(np)−⌊ 1/a ⌋ log n
+)
+. In
+particular, when a = 1 /k for an integer k ≥ 1, α = Ω(log n/n ) suﬃces, yielding a quasi-
+polynomial-time nO(log n) algorithm matching the best known algorithm by Barak et al. for
+the problem of graph matching without seeds when k ≥ 153 and extending their result to new
+values of p for k = 2, . . . , 152.
+Unlike previous work on graph matching, which used small neighborho ods or small subgraphs
+with a logarithmic number of vertices in order to match vertices, our algorithms match vertices
+if their large neighborhoods have a signiﬁcant overlap in the number o f seeds.
+1
+
+===== PAGE 2 =====
+
+1 Introduction
+In this paper, we study a well-known model of noisy graph isom orphism. Our main interest is
+in polynomial time algorithms for seeded problems where the matching between a small subset
+of the nodes is revealed. For seeded problems, our result pro vides a dramatic improvement over
+previously known results. Our results also shed light on the unseeded problem. In particular, we
+give (the ﬁrst) sub-exponential time algorithms for sparse models and an nO(log n) algorithm for
+dense models for some parameters, including some that are no t covered by recent results of Barak
+et al. [
+BCL+18].
+We recall that two graphs are isomorphic if there exists an ed ge-preserving bijection between
+their vertex sets. The Graph Isomorphism problem is not know n to be solvable in polynomial
+time, except in special cases such as graphs of bounded degre e [ Luk80] and bounded eigenvalue
+multiplicity [ BGM82]. However, a recent breakthrough of Babai [ Bab16] gave a quasi-polynomial
+time algorithm.
+In a number of applications including network security [ NS09, NS08], systems biology [ SXB08],
+computer vision [ CFSV04, SS05], and natural language processing [ HNM05], we are given two
+graphs as input which we believe have an underlying isomorph ism between them. However, they
+are not exactly isomorphic because they have each been pertu rbed in some way, adding or delet-
+ing edges randomly. This suggests a noisy version of Graph Is omorphism also known as graph
+matching [LR13], where we seek a bijection that minimizes the number of edge disagreements.
+Given two graphs with adjacency matrices G1 and G2, if our goal is to minimize the ℓ2 distance
+between G1 and some permuted version of G2, then graph matching can be viewed as a special
+case of the quadratic assignment problem (QAP) [ BCPP98]: namely,
+min
+Π
+∥G1 − ΠG2Π⊤ ∥2
+F , (1)
+where Π ranges over all n × n permutation matrices, and ∥A∥2
+F = ∑
+ij A2
+ij denotes the Frobenius
+norm. QAP is NP-hard in the worst case. There are exact search methods for QAP based on branch-
+and-bound and cutting planes, as well as various approximat ion algorithms based on linearization
+schemes, and convex/semideﬁnite programming relaxations (see [
+FQRM+16] and the references
+therein). However, approximating QAP within a factor 2 log1− ǫ(n) for ǫ > 0 is NP-hard [ MMS10].
+These hardness results only apply in the worst case, where th e two graphs are designed by
+an adversary. However, in many aforementioned application s, we are not interested in worst-case
+instances, but rather in instances for which there is enough information in the data to recover
+the underlying isomorphism, i.e., when the amount of data or signal-to-noise ratio is above the
+information-theoretic limit. The key question is whether t here exists an eﬃcient algorithm that
+is successful all the way down to this limit. In this vein, we c onsider the following random graph
+model denoted by G(n, p ; s) [ PG11].
+Deﬁnition 1 (The Correlated Erd˝ os-R´ enyi modelG(n, p ; s)). Suppose we generate a parent graph
+G0 from the Erd˝ os-R´ enyi random graph modelG(n, p ). For a ﬁxed realization of G0, we generate
+two subgraphs G1 and G2 by subsampling the edges of G0 twice. More speciﬁcally,
+• We let G∗
+1 be a random subgraph of G0 obtained by including every edge of G0 with probability
+s independently.
+• We repeat the above subsampling procedure, but independent ly to obtain another random sub-
+graph of G0, denoted by G2.
+2
+
+===== PAGE 3 =====
+
+To further model the scenario that we do not know the vertex co rrespondence between G1 and G2
+a prior, we sample a random permutation π ∗ over [n] and let G1 denote the graph obtained by
+relabeling every vertex i in G∗
+1 as π ∗(i).
+The goal is to exactly recover π ∗ from the observation of G1 and G2 with high probability, i.e.,
+to design an estimator ˆπ based on G1 and G2 such that
+P {ˆπ (G1, G 2) = π ∗} → 1, as n → ∞ .
+As a motivating example, we can model G0 as some true underlying friendship network of n
+persons, G1 is an anonymized Facebook network of the same set of persons, and G2 is a Twitter
+network with known person identities. If we can recover the v ertex correspondence between G1 and
+G2, then we can de-anonymize the Facebook network G1 (this example ignores many important
+facts such as additional graph structures in real life netwo rks).
+Note that s is equal to the probability of e ∈ E(G2) conditional on e ∈ E(G1), and hence can be
+viewed as a measure of the edge correlations. Throughout thi s paper, without further speciﬁcations,
+we shall assume s = Θ(1).
+In the fully sampling case s = 1, graph matching under G(n, p ; 1) reduces to the Graph Auto-
+morphism problem for Erd˝ os-R´ enyi graphs. In this case, a c elebrated result [
+Wri71] shows that if
+log n + ω (1) ≤ np ≤ n − log n − ω (1), then with probability 1 − o(1), the size of the automorphism
+group of G0 is 1 and hence the underlying permutation π ∗ can be exactly recovered; otherwise,
+with probability 1 − o(1), the size of the automorphism group of G0 is strictly bigger than 1 and
+hence exact recovery of the underlying permutation is infor mation-theoretically impossible. Recent
+work [CK16, CK17]1 has extended this result to the partially sampling case s = Θ(1) and p ≤ 1/ 2,
+showing that the Maximum Likelihood Estimator, or equivale ntly the optimum of QAP ( 1), coin-
+cides with the ground truth π ∗ with high probability, provided that nps2 ≥ log n + ω (1); on the
+contrary, any estimator is correct with probability o(1), if nps2 ≤ log n − ω (1).
+From a computational perspective, in the fully sampling cas e s = 1, there exist linear-time
+algorithms which attain the recovery threshold, in the sens e that they exactly recover the under-
+lying permutation with high probability whenever np = log n + ω (1) [ Bol82, CP08]. However, in
+the partially sampling case, it is still open whether any eﬃc ient algorithm can succeed close to
+the threshold. A recent breakthrough result [ BCL+18] obtains a quasi-polynomial-time ( nO(log n))
+algorithm which succeeds when np ≥ no(1) and s ≥ (log n)− o(1). However, this is still far away from
+the information-theoretic limit nps2 ≥ log n + ω (1).
+Another line of work [ PG11, YG13, KL14, LFP13, F AP18, SGE17] in this area considers a
+relaxed version of the graph matching problem, where an init ial seed set of correctly matched vertex
+pairs is revealed as side information. This is motivated by t he fact that in many real applications,
+some side information on the vertex identities are availabl e and have been successfully utilized to
+match many real-world networks [ NS09, NS08]. Formally, in this paper, we assume the seed set is
+randomly generated as follows.
+Deﬁnition 2 (Seeded graph matching under G(n, p ; s, α )). In addition to G1, G 2 that are generated
+under G(n, p ; s) with a latent permutation π ∗, we have access to π0 such that π0(i) = π ∗(i) with
+probability α and π0(i) =? with probability 1 − α independently across diﬀerent i. The goal is to
+recover π ∗ based on G1, G 2, and π0.
+The vertex i such that π0(i) = π ∗(i) is called seeded vertices and the set of seed vertices
+is denoted by I0. Note that according to our model, the number of seeds |I0| is distributed as
+1 In fact, a more general correlated Erd˝ os-R´ enyi random gra ph model is considered in [ CK16, CK17], where
+P {G1(i, j) = a, G2(i, j) = b} = pa,b for a, b ∈ {0, 1}.
+3
+
+===== PAGE 4 =====
+
+Binom(n, α ). For a given size K, we could also consider a deterministic size model where I0 is
+chosen uniformly at random from all possible subsets of [ n] with size K. The main results of this
+paper readily extend to this deterministic size model with K = ⌊nα ⌋.
+The results of the seeded graph matching turn out to be useful for designing graph matching
+without seeds. On the one hand, when a seed set of size K is not given, we could obtain it
+in nO(K) steps by randomly choosing a set of K vertices and then enumerating all the possible
+mapping. This is known as the beacon set approach to graph iso morphism [ Lip78]. On the other
+hand, we could ﬁrst apply a seedless graph matching algorith m and then apply a seeded graph
+matching algorithm to boost its accuracy. This two-step alg orithms have been successful both
+theoretically [ BES80] [ Bol01, Section 3.5] and empirically [ LFP13].
+In the sparse graph regime np = Θ(log n), it is shown in [ YG13] that if α = Ω(1 / log2 n),
+or equivalently, the size of the seed set is Ω( n/ log2 n), then a percolation-based graph matching
+algorithm correctly matches n− o(n) vertices in polynomial-time with high probability. In the dense
+graph regime np = nδ for some constant δ ∈ (0, 1), a seed set of size Θ( n1− δ) suﬃces as shown
+in [ YG13]. Another work [ KL14] shows that if nps2α ≥ 24 log n, then one can match all vertices
+correctly in polynomial-time with high probability based o n counting the number of “common”
+seeded vertices. Note that this exact recovery result requi res the seed set size to be linear in n in
+the sparse graph regime np = Θ(log n).
+In summary, despite a signiﬁcant amount of previous work on s eedless and seeded graph match-
+ing, the following two fundamental questions remain elusiv e:
+Question 1. In terms of graph sparsity, can we achieve the information-th eoretic limit nps2 −
+log n → +∞ in sub-exponential, or polynomial time?
+Question 2. In terms of seed set, what is the minimum number of seeds requir ed for exact recovery
+in sub-exponential, or polynomial time?
+Our main results shed light on this two questions by improvin g the state-of-the-art of seeded
+graph matching. First, we show that it is possible to achieve the information theoretic limit
+nps2 ≥ log n + ω (1) of graph sparsity in polynomial-time. Then, we show the n umber of seeds
+needed for exact recovery in polynomial-time can be as low as nǫ in the sparse graph regime
+(np ≤ nǫ) and Ω(log n) in the dense graph regime.
+1.1 Main Results
+We ﬁrst consider the sparse graph regime.
+Theorem 1. Suppose np ≤ n1/ 2− ǫ for a ﬁxed constant ǫ > 0 and s = Θ(1). Assume
+nps2 − log n → +∞ (2)
+α ≥ n− 1/ 2+3ǫ. (3)
+Then there exists a polynomial-time algorithm, namely Algor ithm
+1, which outputs ˆπ = π ∗ with
+probability at least 1 − o(1) under the seeded G(n, p ; s, α ) model.
+Notice that ( 4) is the information-theoretic limit for graph matching und er the seedless G(n, p ; s)
+model. In fact, Theorem 2 shows that ( 4) is necessary for seeded graph matching as long as α is
+bounded away from 1 . Its proof is standard and can be found in Appendix A.
+4
+
+===== PAGE 5 =====
+
+Theorem 2. If
+nps2 − log n = O(1),
+then any algorithm outputs ˆπ ̸= π ∗ with at least a probability of Ω
+(
+(1 − α )2)
+under the seeded
+G(n, p ; s, α ) model.
+Also, the condition ( 5) requires that the size of the seed set is n1/ 2+3ǫ compared to the best
+previously known results that required the seed set to be alm ost linear in n.
+It is natural to ask if n1/ 2 seeded nodes are required for polynomial time algorithm. Wh ile from
+the proof of Theorem 1, it might look that n1/ 2 is optimal due to the birthday paradox eﬀect, it
+turns out we can do better!
+The following result relaxes the size of seed set needed to n3ǫ.
+Theorem 3. Suppose np ≤ nǫ for a ﬁxed constant ǫ < 1/ 6 and s = Θ(1). Assume
+nps2 − log n → +∞ (4)
+α ≥ n− 1+3ǫ. (5)
+Then there exists a polynomial-time algorithm, namely Algor ithm 3, which outputs ˆπ = π ∗ with
+probability at least 1 − o(1) under the seeded G(n, p ; s, α ) model.
+We next consider the dense graph regime, where we assume the a verage degree np is parame-
+terized as:
+np = bna (6)
+for some ﬁxed constants a, b ∈ (0, 1]. Let
+d =
+⌊ 1
+a
+⌋
++ 1, (7)
+Theorem 4. Consider the dense graph regime ( 6). Assume
+b ≤ s
+16(2 − s)2 , (8)
+and
+α ≥ 300 log n
+(nps2)d− 1 , (9)
+where d is given in ( 7). Then there exists an polynomial-time algorithm, namely Al gorithm 2, which
+outputs ˆπ = π ∗ with probability 1 − 4n− 1 under the seeded G(n, p ; s, α ) model.
+Our results for seeded graph matching also imply the results for graph matching without seeds.
+Theorem 5. Suppose a Seeded Graph Matching algorithm outputs ˆπ = π ∗ with high probability
+under the seeded graph matching model G(n, p ; s, α ). Assume nps2 − log n → +∞ and αn →
++∞ . Then there exists an algorithm, namely Algorithm 4, which calls the Seeded Graph Matching
+algorithm nO(αn ) times and outputs ˆπ = π ∗ under the seedless model G(n, p ; s) with high probability.
+5
+
+===== PAGE 6 =====
+
+Remark 1. Consider the dense regime ( 6) with a = 1/k for an integer k ≥ 1. Then d = k + 1 and
+(np)d− 1 = bkn. Hence, as shown by Theorem 4, αn ≥ 300 log n(bs2)− k, or equivalently Ω(log n)
+number of seeds, suﬃce for exact recovery in polynomial-tim e. Since we can enumerate over all
+possible matchings for log n seeds in quasi-polynomial nO(log n) time, this implies a quasi-polynomial
+time matching algorithm even without seeds, as shown by Theor em 5. The previous work [ BCL+18]
+gives a quasi-polynomial time matching algorithm in the ran ge
+np ∈
+[
+no(1), n 1/ 153] ∪ [n2/ 3, n 1− ǫ
+]
+.
+Our results complement their results by ﬁlling in gaps in the above range with points np ∈ { bn1/k :
+1 ≤ k ≤ 152}.
+1.2 Key Algorithmic Ideas and Analysis Techniques
+Most previous work [
+PG11, YG13, KL14, LFP13, F AP18, SGE17] on seeded graph matching ex-
+ploits the seeded information by looking at the number of see ded vertices that are direct neighbors
+of a given vertex. Since the average degree of a vertex is np, npα ≫ 1 is needed so that there are
+suﬃciently many seeded vertices that are direct neighbors o f a given vertex.
+Our idea is to explore much bigger (“global”) neighborhoods of a given vertex up to radius ℓ
+for a suitably chosen ℓ, and match two vertices by comparing the set of seeded vertic es in their ℓ-th
+local neighborhoods. This idea was used before in the noisel ess and seedless case, in [ Bol82, CP08]
+but to the best of our knowledge was not used in the noisy and se eded case. Since we are looking at
+global neighborhoods, we can only perform very simple tests . Indeed, the test we perform to check
+if two vertices are matched is just to count how many seeded ve rtices do the two neighborhoods
+have in common. Thus, our algorithms are very simple.
+The main challenge in the analysis is to control the size of ne ighborhoods of the coupled graphs
+G0, G 1 and G2. In this regard, we draw on a number of tools from the literatu re on studying
+subgraph counts [ JLR11] and the diameter in random graphs [ Bol01]. See Appendix D for details.
+2 Our Algorithms
+Before presenting our algorithms, we ﬁrst explain why (
+4) is needed for graph matching under
+G(n, p, s ). Denote the intersection graph and the union graph by G∗
+1 ∧ G2 and G∗
+1 ∨ G2. Then
+G∗
+1 ∧ G2 ∼ G (n, ps 2) and G∗
+1 ∨ G2 ∼ G (n, ps (2 − s)).
+Notice that G∗
+1 ∧ G2 contains the statistical signature for matching vertices, as a subgraph in
+G∗
+1 ∧ G2 will appear in both G1 and G2. If nps2 − log n = O(1), then classical random graph theory
+implies that with high probability, G∗
+1 ∧ G2 contains isolated vertices. The underlying true vertex
+correspondence of these isolated vertices cannot be correc tly matched; hence the impossibility of
+exact recovery. See Appendix
+A for a precise argument.
+In contrast, if nps2 − log n → +∞ , then G∗
+1 ∧ G2 is connected with high probability. Moreover,
+for a high-degree vertex i in G∗
+1 ∧ G2, its local neighbhorhood grows like a branching process. In
+particular, the number of vertices at distance ℓ from i is approximately ( nps2)ℓ. Furthermore, for a
+pair of two vertices i, j chosen at random in G∗
+1 ∨ G2, the intersection of the local neighborhoods of
+i and j is typically of size O
+(
+(nps)2ℓn− 1)
+. Therefore, if ( nps2)ℓ ≫ (nps)2ℓn− 1 and α (nps2)ℓ ≫ 1,
+a large number of vertices can be distinguished with high pro bability based on the set of seeded
+vertices in their ℓ-th local neighborhoods. This is the key idea underlying our algorithms.
+6
+
+===== PAGE 7 =====
+
+We shall use the following notations of local neighborhoods . For a given graph G, we denote
+by Γ G
+k (u) the set of vertices at distance k from v in G:
+ΓG
+k (u) = {v ∈ V (G) : d(u, v ) = k} (10)
+and write N G
+k (u) for the set of vertices within distance k from u:
+N G
+k (u) = ∪ k
+i=0Γi(u). (11)
+When the context is clear, we abbreviate Γ G
+k (u) and N G
+k (u) as Γ k(u) and Nk(u) for simplicity.
+2.1 A Simple Algorithm in Sparse Graph Regime
+We ﬁrst present a simple seeded graph matching algorithm whi ch succeeds up to the information-
+theoretic limit in terms of graph sparsity when the initial s eed set is of size n1/ 2+3ǫ.
+The idea of the algorithm is based on matching ℓ-th local neighborhoods of two vertices by
+ﬁnding independent paths (vertex-disjoint except for the s tarting vertex) to seeded vertices. The ℓ
+is chosen such that ( np)ℓ ≈ n1/ 2− ǫ. In this setting, we expect that if i in G1 and j in G2 are true
+matches, then their local neighborhoods intersect a lot; if i and j are wrong matches, then their
+local neighborhoods barely intersect. Hence, if α (nps2)ℓ ≫ 1, then we can ﬁnd a suﬃciently large
+number of, say m, independent (vertex-disjoint except for i) paths of length ℓ from i to m seeded
+vertices in Γ G∗
+1∧ G2
+ℓ (i). Such m paths of length ℓ form a starlike tree T in G∗
+1 ∧ G2 with root vertex
+i and a set of m seeded leaves, denoted by L (See Fig.
+1 for an example of m = 3 and ℓ = 2). Note
+that T will appear in G2 with root vertex i and the set of seeded leaves L; it will also appear in
+G1 with root vertex π ∗(i) and the corresponding set of seeded leaves π ∗(L). However, since the
+ℓ-th local neighborhoods of two distinct vertices barely int ersect, T will not appear in G∗
+1 ∨ G2
+with a root vertex other than i. Therefore, we can correctly match the vertex π ∗(i) in G1 with the
+high-degree vertex i in G2 by ﬁnding such a starlike tree T , or equivalently m independent ℓ-paths
+to a set of m common seeded vertices.
+Algorithm 1 Graph matching based on counting independent ℓ-paths to seeded vertices
+1: Input: G1, G2, π0, m, ℓ ∈ Z
+2: Output: ˆπ .
+3: Match high-degree vertices: For each pair of unseeded vertices i1 ∈ V (G1) and i2 ∈ V (G2),
+if there are m independent ℓ-paths in G2 from i2 to a set of m seeded vertices L ⊂ ΓG2
+ℓ (i2), and
+there are m independent ℓ-paths in G1 from i1 to the corresponding set of m seeded vertices
+π0(L) ⊂ ΓG1
+ℓ (i1), then set ˆπ (i2) = i1. Declare failure if there is any conﬂict.
+4: Match low-degree vertices: For every i2 ∈ I0, set ˆπ (i2) = π0(i2). For all the pairs of
+unmatched vertices ( i1, i 2), if i1 is adjacent to a matched vertex j1 in G1 and i2 is adjacent to
+vertex ˆπ (j1) in G2, set ˆπ (i2) = i1. Declare failure if there is any conﬂict.
+5: Output ˆπ to be a random permutation when failure is declared or there i s any vertex unmatched.
+There are two tuning parameters ℓ and m in Algorithm 1. Later in our analysis, we will
+optimally choose
+ℓ =
+⌊(1
+2 − ǫ
+) log n
+log(nps2)
+⌋
+≥ 1 (12)
+and
+m =
+⌈ 2
+ǫ
+⌉
+. (13)
+7
+
+===== PAGE 8 =====
+
+Note that when nps2 − log n → +∞ , there may exist vertices with small degrees. In fact,
+classical random graph results say that the minimum degree o f G(n, p ) is k with high probability
+for a ﬁxed integer k, provided that
+(k − 1) log log n + ω (1) ≤ nps2 − log n ≤ k log log n − ω (1),
+see, e.g., [ FK15, Section 4.2]. Hence, due to the existence of low-degree ver tices, we may not be
+able to match all vertices correctly at one time based on the n umber of independent paths to seeded
+vertices. Our idea is to ﬁrst match high-degree vertices and then match the remaining low-degree
+vertices with the aid of high-degree vertices matched in the ﬁrst step. In particular, we let
+τ = nps2
+log(nps2) . (14)
+We say a vertex i high-degree, if its degree di ≥ τ in G∗
+1 ∧ G2; otherwise, we say it is a low-degree
+vertex. As we will see in Section
+3, conditioning on that G∗
+1 ∧ G2 and G∗
+1 ∨ G2 satisfy some typical
+graph properties, all low-degree vertices can be easily mat ched correctly given a correct matching
+of high-degree vertices.
+In passing, we remark on the time complexity of Algorithm
+1. Note that for ease of presentation,
+in Algorithm 1, we do not specify how to eﬃciently ﬁnd out whether there exis t m independent
+ℓ-paths in G2 from i2 to seed set L ⊂ ΓG2
+ℓ (i2), and m independent ℓ-paths in G1 from i1 to the
+corresponding seed set π0(L) ⊂ ΓG1
+ℓ (i1). It turns out for a given pair of vertices i1, i 2, this task can
+be reduced to a maximum ﬂow problem in a directed graph, which can be solved via Ford–Fulkerson
+algorithm [FF56] in O(nα ) time steps (see Appendix E for details). Since there are at most n2 pairs
+of vertices i1, i 2 to consider, Step 3 of Algorithm 1 taks at most O(n3α ). The Step 4 of matching
+low-degree vertices in Algorithm 1 takes at most O(n3p) time steps. Hence, in total Algorithm 1
+takes at most O
+(
+n3(α + p)
+)
+time steps.
+2.2 A Simple Algorithm in Dense Graph Regime
+In this subsection, we consider the dense graph regime given in (
+6), where np = bna and d =
+⌊1/a ⌋ + 1. In this setting, since pdnd− 1 − 2 log n → +∞ and pd− 1nd− 2 − 2 log n ≤ −∞ , it follows
+from [ Bol01, Corollary 10.12] that G(n, p ) has diameter d with high probability. Thus, when
+s = Θ(1), both G∗
+1 ∧ G2 and G∗
+1 ∨ G2 have diameter d with high probability. Therefore, we present
+an algorithm based on matching the d − 1-th local neighborhood of two vertices. More speciﬁcally,
+our algorithm matches i1 ∈ V (G1) and vertex i2 ∈ V (G2) based on the number of seeded vertices
+within distance d − 1 from i1 in G1 and within distance d − 1 from i2 in G2.
+Algorithm 2 Graph matching based on ( d − 1)-hop witness in dense regime
+1: Input: G1, G2, π0, d ∈ Z.
+2: Output: ˆπ .
+3: Match all vertices: For each pair of unseeded vertices i1 ∈ V (G1) and i2 ∈ V (G2), compute
+wi1,i 2 =
+⏐
+⏐
+⏐
+{
+j ∈ I0 : π0(j) ∈ N G1
+d− 1(i1), j ∈ N G2
+d− 1(i2)
+}⏐
+⏐
+⏐ . (15)
+Set ˆπ (i2) ∈ arg maxi1 wi1,i 2. Set ˆπ (i2) = π0(i2) for each seeded vertex i2 ∈ I0. Declare failure if
+there is any conﬂict.
+Algorithm 2 runs in polynomial-time. The precise running time depends o n the data structures
+for storing and processing graphs. To be speciﬁc, let us assu me it takes one time step to fetch the
+8
+
+===== PAGE 9 =====
+
+set of direct neighbors of a given vertex. Then fetching the s et N G
+ℓ (i) of all vertices within distance
+ℓ from a given vertex i takes a total of O(|N G
+ℓ (i)|) = O(n) time steps. Thus computing wi1,i 2 in
+(15) for a given pair of vertices i1, i 2 takes at most O(n) time steps. Hence, in total Algorithm 2
+takes O(n3) time steps. One could possibly obtain a better running time via a more careful analysis
+or a better data structure.
+The diﬀerence in the analysis compared to the ﬁrst algorithm i s that the ( d − 1)-th local
+neighborhoods are not tree-like anymore. Instead, we have t o analyze the exposure process of the
+two neighborhoods, for which we use a previous result of [ Bol01, Lemma 10.9] in studying the
+diameter of random graphs.
+2.3 An Improved Algorithm in Sparse Graph Regime
+In the sparse regime where np is poly-logarithmic, Algorithm
+2 does not perform well. This is
+because for two distinct vertices u, v that are close by, their ℓ-th local neighborhoods have a large
+overlap, i.e., |N G
+ℓ (u) ∩ N G
+ℓ (v)| is not much smaller than |N G
+ℓ (u)| or |N G
+ℓ (v)|, rendering wi1,i 2 given
+in ( 15) ineﬀective to distinguish u from v.
+However, in the sparse regime, distinct vertices u, v only have very few common neighbors.
+Moreover, if we remove vertices u, v , the non-common neighbors become far apart, and for distinc t
+vertices far apart, their local neighborhoods only have a sm all overlap. Therefore, we expect
+most of u, v ’s neighbor’s ℓ-th local neighborhoods (after removing vertices u, v ) do not have large
+intersections for a suitably chosen ℓ. This gives rise to Algorithm 3.
+Algorithm 3 Graph matching based on ( d − 1)-hop witness in sparse regime
+1: Input: G1, G2, π0, ℓ ∈ Z, η ∈ R+.
+2: Output: ˆπ .
+3: Match high-degree vertices: For all the pairs of unseeded vertices ( u, v ) and for each pair
+of their neighbors ( i, j ) with i ∈ ΓG1
+1 (u) and j ∈ ΓG2
+1 (v), compute
+wu,v
+i,j = min
+x∈ V (G1),y ∈ V (G2)
+{⏐
+⏐
+⏐
+{
+k ∈ I0 : π0(k) ∈ N G1\{u,x }
+ℓ (i), k ∈ N G2\{v,y }
+ℓ (j)
+}⏐
+⏐
+⏐
+}
+, (16)
+where G\S denotes G with set of vertices S removed. Let
+Zu,v =
+∑
+i∈ ΓG1
+1 (u)
+∑
+j∈ ΓG2
+1 (v)
+1{wu,v
+i,j ≥ η}. (17)
+If Zu,v ≥ log n/ log log n − 1, set ˆπ (v) = u. Declare failure if there is any conﬂict.
+4: The remaining two steps are the same as Algorithm
+1.
+Note that in computing the number of seeded vertices within d istance ℓ from both vertex i in
+G1 and vertex j in G2 in ( 16), we remove vertices u, x in G1 and vertices v, y in G2, and take the
+minimum over all possible choices of x and y. As a result,
+wu,v
+i,j ≤
+⏐
+⏐
+⏐
+{
+k ∈ I0 : π0(k) ∈ N G1\{u,v }
+ℓ (i), k ∈ N G2\{u,v }
+ℓ (j)
+}⏐
+⏐
+⏐ , (18)
+where the right hand side becomes independent from the edges incident to u and v in G∗
+1 ∨ G2. This
+independence is crucial in our analysis to ensure that Zu,v is small for u ̸= π ∗(v) via concentration
+inequalities of multivariate polynomials [
+Vu02].
+9
+
+===== PAGE 10 =====
+
+There are two tuning parameters ℓ and η in Algorithm 3. In our analysis later, we will optimally
+choose
+ℓ =
+⌊ (1 − ǫ) log n
+log(np)
+⌋
+, (19)
+and
+η = 4 2ℓ+2n1− 2ǫα. (20)
+As for time complexity, Algorithm 3 takes at most O(n5+2ǫ) time steps. To see this, similar to
+Algorithm 2, if we assume one unit time to fetch a set of direct neighbors o f a given vertex, then it
+takes at most O(n3) time steps to compute ( 18) for given pairs of vertices ( u, v ) and ( i, j ). There
+are at most n2+2ǫ such pairs. The step of matching low-degree vertices as spec iﬁed in Algorithm 1
+takes O(n3p) time steps in total. Thus in total Algorithm 3 takes at most O(n5+2ǫ) time steps.
+2.4 Graph Matching without Seeds
+Even without an initial seed set revealed as side informatio n, we can select a random subset of
+vertices I0 in G1 and enumerate all the possible mappings f : I0 → [n] from I0 to vertices in G2 in
+at most n|I0| steps. Each of the possible mappings can be viewed as seeds; t hus we can apply our
+seeded graph matching algorithm. Among all possible n|I0| mappings, we ﬁnally output the best
+matching which minimizes the edge disagreements. See Algor ithm
+4 for details.
+Algorithm 4 Seedless Graph matching via Seeded Graph Matching
+1: Input: G1, G2
+2: Output: ˆπ .
+3: Select a random subset I0 of V (G1) by including each vertex with probability α .
+4: For every possible mapping f : I0 → [n], run Seeded Graph Matching Algorithm with a seed
+set I0, and output πf .
+5: Output
+ˆπ ∈ arg min
+π f
+∥G1 − Πf G2Π⊤ ∥2
+F ,
+where Π f is the permutation matrix corresponding to πf .
+Since one of the possible mapping f will correspond to the underlying true matches of vertices
+in I0, it follows that if our seeded graph matching succeeds with h igh probability and we are above
+the information-theoretic limit (so that the true matching minimizes the edge disagreements with
+high probability), the ﬁnal output will coincide with the tr ue matching with high probability, as
+stated in Theorem 5. More speciﬁcally, the proof is sketched below.
+Proof of Theorem 5. If f : I0 → [n] is such that f (i) = π ∗(i) for all i ∈ I0, then since our seeded
+graph matching succeeds with high probability, it follows t hat πf = π ∗ with high probability.
+Moreover, since we are above the information-theoretic lim it, it follows from [ CK17, Theorem
+1] that with high probability,
+π ∗ ∈ arg min
+π
+∥G1 − ΠG2Π⊤ ∥2
+F ,
+where Π is the permutation matrix corresponding to π .
+Therefore, ˆπ = π ∗ with high probability. Finally, since αn → ∞ , it follows that |I0| is at most
+2αn with high probability. Hence, Algorithm
+4 calls the Seeded Graph Matching algorithm at most
+nO(αn ) times with high probability.
+10
+
+===== PAGE 11 =====
+
+3 Analysis of Algorithm 1 in Sparse Graph Regime
+In this and next two sections, we give the analysis of our algo rithms and prove our main theorems.
+For the sake of analysis, we assume π ∗ = id, i.e., π ∗(i) = i for all i ∈ [n], without loss of generality.
+Our analysis of Algorithm 1 uses the technique for analyzing small subgraph containment [JLR11].
+Let T denote a starlike tree formed by m independent (vertex-disjoint expect the root vertex) path s
+of length ℓ from root vertex to m distinct leaves for ℓ, m ≥ 1. Note that T consists of mℓ+1 vertices
+and mℓ edges (See Fig. 1 for an example of m = 3 and ℓ = 2). Let r(T ) denote the root vertex
+of T and L(T ) denote the set of leaves of T. We say T is a subgraph of G, denoted by T ⊂ G, if
+V (T ) ⊂ V (G) and E(T ) ⊂ E(G). The key of our proof is to show that under certain conditions
+with high probability:
+1. For every vertex i, there exists a copy of T rooted at i with all leaves seeded in the intersection
+graph G∗
+1 ∧ G2;
+2. There is no copy of T1 ∪ T2 in the union graph G∗
+1 ∨ G2.
+65 7
+32 4
+1
+T
+65 7
+32 4
+1
+98 10
+11
+T1 ∪ T2
+65 7
+32 4
+1
+9 10
+11
+T1 ∪ T2
+Figure 1: Left: T is a starlike tree with m = 3, ℓ = 2, r(T ) = 1 and L(T ) = {5, 6, 7}. Middle
+and Right: Two examples of T1 ∪ T2 such that T1, T 2 are isomorphic to T , r(T1) ̸= r(T2), and
+L(T1) = L(T2) = {5, 6, 7}. For the middle, V (T1)∩ V (T2) = {5, 6, 7}; for the right, V (T1)∩ V (T2) =
+{2, 5, 6, 7}.
+3.1 Success of Algorithm 1 on the Intersection of Good Events
+We ﬁrst introduce a sequence of “good” events on whose inters ection, Algorithm 1 correctly matches
+all vertices. We need the following graph properties:
+(i) there is no isolated vertex;
+(ii) for any two adjacent vertices, there are at least τ vertices adjacent to at least one of them;
+(iii) For all vertices i with di ≥ τ, there are at least 2 m independent ℓ-paths from i to 2m distinct
+vertices in I0;
+(iv) There is no pairs of subgraphs T1, T 2 ⊂ G that are isomorphic to T such that r(T1) ̸= r(T2),
+and L(T1) = L(T2) (See Fig. 1 for an illustration).
+11
+
+===== PAGE 12 =====
+
+(v) For every vertex i, there exist at most m − 1 independent ℓ-paths from i to m − 1 distinct
+vertices in N G
+ℓ− 1(i).
+Let
+• E 1 denote the event such that G∗
+1 ∧ G2 satisfy properties (i)–(iii);
+• E 2 denote the event such that G∗
+1 ∨ G2 satisfy properties (iv) and (v);
+• E 3 denote the event such that for any two vertices i, j that are connected by a 2-path in
+G∗
+1 ∨ G2, at least one of the two vertices i, j must be a high-degree vertex in G∗
+1 ∧ G2.
+We claim that on event E1 ∩ E 2 ∩ E 3, Algorithm
+1 correctly matches all vertices. Recall that we
+can assume π ∗ = id and thus G1 = G∗
+1 without loss of generality.
+First, since G∗
+1 ∧ G2 satisfy graph property (iii), it follows that in G∗
+1 ∧ G2, for all high-degree
+vertices i, there exist 2 m independent ℓ-paths to a set S ⊂ ΓG∗
+1∧ G2
+ℓ (i) of 2 m seeded vertices. Let
+˜S = S\N G∗
+1∨ G2
+ℓ− 1 (i). Since G∗
+1 ∨ G2 satisfy graph property (v), and G∗
+1 ∧ G2 ⊂ G∗
+1 ∨ G2, it follows
+that ⏐
+⏐
+⏐S ∩ N G∗
+1∨ G2
+ℓ− 1 (i)
+⏐
+⏐
+⏐ ≤ m − 1
+and thus |˜S| ≥ m + 1. Moreover, since G∗
+1 ∧ G2 ⊂ G1, G 2, it follows that
+˜S ⊂ ΓG∗
+1∧ G2
+ℓ (i)\N G∗
+1 ∨ G2
+ℓ− 1 ⊂ ΓG∗
+1
+ℓ (i) ∩ ΓG2
+ℓ (i).
+Therefore, in both G1 and G2, there are at least m+1 independent ℓ-paths from i to ΓG∗
+1
+ℓ (i)∩ ΓG2
+ℓ (i).
+Second, note that on event E2, G∗
+1 ∨ G2 satisfy graph property (iv). For the sake of contradiction,
+suppose there exist a pair of distinct vertices i, j and a set L of m seeded vertices such that there
+exist m independent ℓ-paths from i to set L in G1 and m independent ℓ-paths from j to set L in
+G2. Let Tk denote the starlike tree formed by the m independent ℓ-paths in Gk for k = 1, 2. Then
+T1, T 2 ⊂ G∗
+1 ∨ G2 are isomorphic to T such that r(T1) = i, r (T2) = j and L(T1) = L(T2) = L. This
+is in contradiction with the fact that G∗
+1 ∨ G2 satisfy graph property (iv).
+It follows from the above two points that Algorithm
+1 correctly matches all high-degree vertices
+i in G∗
+1 ∧ G2, i.e., ˆπ (i) = i.
+Next, we show that all low-degree vertices are matched corre ctly. Fix a low-degree vertex i.
+Since G∗
+1 ∧ G2 satisfy graph properties (i) and (ii), it must have a high-de gree neighbor j in G∗
+1 ∧ G2.
+Since the high-degree vertex j has been matched correctly, i is adjacent to j in G1 and i is also
+adjacent to ˆπ (j) = j in G2. Moreover, for the sake of contradiction, suppose there exis ts a pair of
+two distinct low-degree vertices i1 and i2 such that i1 is adjacent to a matched vertex j1 in G1 and
+i2 is adjacent to vertex ˆπ (j1) in G2. Since ˆπ (j1) = j1, it follows that ( i1, j 1, i 2) form a 2-path in
+G∗
+1 ∨ G2. However, on event E3, i1 and i2 cannot be low-degree vertices simultaneously in G∗
+1 ∧ G2,
+which leads to a contradiction. As a consequence, ˆπ (i) = i for every low-degree vertex i.
+Finally, to prove Theorem
+1, it remains to show that under the theorem assumptions, P {Ei} → 1
+for all i = 1, 2, 3, which is done in the next subsection.
+3.2 Bound the Probability of Good Events
+It is standard to prove that G∗
+1 ∧ G2 satisﬁes properties (i)–(ii) with high probability and P {E3} → 1
+using union bounds. For completeness, we state the lemmas an d leave the proofs to appendices.
+Lemma 1. Suppose G ∼ G (n, p ) with np − log n → +∞ .
+12
+
+===== PAGE 13 =====
+
+(i) There is no isolated vertex in G with probability at least 1 − o(1);
+(ii) Assume τ = o(np). With probability at least 1 − n− 1+o(1), for any two adjacent vertices, there
+are at least τ vertices adjacent to at least one of them in G.
+Lemma 2. Assume
+nps2 ≥ log n and τ = o(nps2) and log(np) = o(nps2).
+With probability at least 1 − n− 1+o(1), for any two vertices i, j that are connected by a 2-path in
+G∗
+1 ∨ G2, at least one of the two vertices i, j must have degree at least τ in G∗
+1 ∧ G2.
+It remains to show with high probability, G∗
+1 ∧ G2 satisfy graph property (iii) and G∗
+1 ∨ G2 satisfy
+graph properties (iv) and (v).
+We will apply the following lemma to show that with high proba bility, for every high-degree
+vertex i in G∗
+1 ∧ G2, we can always ﬁnd at least 2 m independent paths of length ℓ from i to 2 m
+distinct seeded vertices in I0.
+Lemma 3. Suppose G ∼ G (n, p ) and each vertex in G is included in I0 independently with proba-
+bility α . Assume
+α (np/ 2)ℓ− 2τ(τ − 2m) − 2m log τ ≥ 2 log n.
+and
+p(4np)ℓ = o(1)
+and τ → +∞ . Then with high probability, for all vertices i with di ≥ τ, there are at least 2m
+independent ℓ-paths from i to I0.
+Proof. In view of Proposition
+1, we have P {H} ≥ 1 − 3n− 1+o(1), where on event H, for every vertex
+i, there exists a tree Tℓ(i) ⊂ G of depth ℓ rooted at i such that:
+1. Root i has at most one children j who has fewer than τ children in T (i), i.e., |Π1(j)| ≤ τ.
+2. For each children j of i with |Π1(j)| ≥ τ, the subtree Tℓ− 1(j) of depth ℓ − 1 rooted at j has
+at least τ(np/ 2)ℓ− 2 leaves, i.e., |Πℓ− 1(j)| ≥ τ (np/ 2)ℓ− 2.
+Fix a vertex i in G. Then i has at least di − 1 children j such that |Π1(j)| ≤ τ. For each such
+j, deﬁne Yij = 1 if there is a path of length ℓ − 1 from j to some vertex in I0 in Tℓ(i). Then the
+number of independent paths from i to I0 is at least ∑di− 1
+j=1 Yij.
+Since each leaf vertex of Tℓ− 1(j) is included in I0 with probability α independently across
+diﬀerent vertices and from graph G, it follows that
+P {Yij = 1 |di ≥ τ, H} = 1 − (1 − α )|Πℓ− 1(j)| ≥ 1 − exp
+(
+− ατ (np/ 2)ℓ− 2
+)
+,
+13
+
+===== PAGE 14 =====
+
+where we used 1 − x ≤ e− x and |Πℓ− 1(j)| ≥ τ (np/ 2)ℓ− 2 on event H. Therefore,
+P
+
+
+
+di− 1∑
+j=1
+Yij ≤ 2m − 1|di ≥ τ, H
+
+
+ ≤ P
+
+
+
+τ− 1∑
+j=1
+Yij ≤ 2m − 1
+
+
+
+≤ P
+{
+Binom
+(
+τ − 1, 1 − e− ατ (np/ 2)ℓ− 2)
+≤ 2m − 1
+}
+=
+2m− 1∑
+k=0
+(τ − 1
+k
+)
+e− ατ (np/ 2)ℓ− 2(τ− 1− k)
+≤ e− ατ (np/ 2)ℓ− 2(τ− 2m)
+m− 1∑
+k=0
+τk
+≤ 2e− ατ (np/ 2)ℓ− 2(τ− 2m)τ2m ≤ 2n− 2,
+where the last equality holds due to the assumption α (τ − 2m) (np/ 2)ℓ− 2 − 2m log τ ≥ 2 log n.
+Deﬁne event
+Fi = {di ≥ τ} ∩
+
+
+
+di− 1∑
+j=1
+Yij ≤ 2m − 1
+
+
+ .
+Then we have that
+P {Fi ∩ H} ≤ P
+
+
+
+di− 1∑
+j=1
+Yij ≤ 2m − 1|di ≥ τ, H
+
+
+ ≤ 2n− 2.
+Let F = ∪ iFi. By the union bound,
+P {F } = P {F ∩ H} + P {Hc} ≤
+∑
+i
+P {Fi ∩ H} + P {Hc} ≤ 2n− 1 + 3n− 1+o(1) ≤ 5n− 1+o(1).
+Therefore, with high probability, for all vertices i with di ≥ τ, ∑di− 1
+j=1 Yij ≥ 2m.
+The following lemma will be useful to conclude that in G∗
+1 ∨ G2, with high probability, there
+is no pair of subgraphs T1, T 2 ⊂ G∗
+1 ∨ G2 that are isomorphic to T , such that r(T1) ̸= r(T2) and
+L(T1) = L(T2). See Fig.
+1 for an illustration of T1 and T2 isomorphic to T such that r(T1) ̸= r(T2)
+and L(T1) = L(T2).
+Lemma 4. Suppose G ∼ G (n, p ) and ℓ, m ≥ 1. Then it holds that
+P {∃ T1, T 2 ⊂ G that are isomorphic to T : r(T1) ̸= r(T2), L (T1) = L(T2)}
+≤
+(
+2 + 8
+np
+)m(ℓ− 1)
+n2mℓ+2− mp2mℓ.
+Proof. Let T denote the set of all possible subgraphs that are isomorphic to T in the complete
+graph Kn. By the union bound, we have
+P {∃ T1, T 2 ⊂ G that are isomorphic to T : r(T1) ̸= r(T2), L (T1) = L(T2)}
+≤
+∑
+T1,T 2∈T : r(T1)̸=r(T2),L (T1)=L(T2)
+P {T1, T 2 ⊂ G}
+14
+
+===== PAGE 15 =====
+
+For each such pair of T1, T 2,
+P {T1, T 2 ⊂ G} = p|E(T1)|+|E(T2)|−|E(T1∩ T2)| = p2mℓ−| E(T1∩ T2)|,
+where the last equality holds because T1 and T2 are isomorphic to T and |E(T )|= 2mℓ.
+Next for any given unlabelled graph S, we enumerate all the possible distinct pairs of T1, T 2 ∈ T
+such that T1 ∩ T2 is isomorphic to S, r(T1) ̸= r(T2), and L(T1) = L(T2). Let κS denote the
+number of subgraphs S′ in T such that S′ is isomorphic to S, L(T ) ⊂ V (S′), and r(T ) /∈ V (S′).
+Then there are at most κ2
+S ways of intersecting T1 and T2 such that T1 ∩ T2 is isomorphic to S,
+r(T1) ̸= r(T2), and L(T1) = L(T2). For each such type of intersection, there are at most n|V (S)|
+diﬀerent choices for vertex labelings of T1 ∩ T2, and n2(|V (T )|−|V (S)|) diﬀerent choices for vertex
+labelings of ( T1\T2) ∪ (T2\T1). Hence, the total number of distinct pairs of T1, T 2 ∈ T such that
+T1 ∩ T2 is isomorphic to S, r (T1) ̸= r(T2), and L(T1) = L(T2) is at most
+κ2
+Sn|V (S)|n2(|V (T )|−|V (S)|) = κ2
+Sn2mℓ+2−| V (S)|,
+where the last equality holds due to |V (T )|= mℓ + 1.
+Combining the last two displayed equations yields that
+∑
+T1,T 2∈T : r(T1)̸=r(T2),L (T1)=L(T2)
+P {T1, T 2 ⊂ G} ≤
+∑
+S
+κ2
+Sn2mℓ+2−| V (S)|p2mℓ−| E(S)|.
+Note that if κS ≥ 1, then by the deﬁnition of κS, S is isomorphic to some S′ ⊂ T such that
+L(T ) ⊂ V (S′) and r(T ) /∈ V (S′). By the starlike tree property of T , S′ is a forest with at least m
+disjoint trees; hence so is S. See Fig.
+1 for two illustrating examples. Therefore,
+E(S) ≤ V (S) − m.
+Hence,
+∑
+S
+κ2
+Sn2mℓ+2−| V (S)|p2mℓ−| E(S)| ≤
+∑
+S
+κ2
+Sn2mℓ+2−| V (S)|p2mℓ+m−| V (S)|.
+Finally, we break the summation in the right hand side of the l ast displayed equation according to
+|V (S)|. In particular, let |V (S)| = m + k for 0 ≤ k ≤ m(ℓ − 1). Note that ∑
+S κS is at most the
+number of distinct subgraphs S′ of T such that L(T ) ⊂ V (S′), r (T ) /∈ V (S′) and |V (S′)|= m + k,
+which is further upper bounded by
+(m(ℓ− 1)
+k
+)
+2k, because there are at most
+(m(ℓ− 1)
+k
+)
+diﬀerent choices
+for V (S′)\L(T ) and at most 2 |V (S′)|− m choices for determining whether to include the edges induce d
+by V (S′) in T into S′. Hence,
+∑
+S
+κ2
+Sn2mℓ+2−| V (S)|p2mℓ+m−| V (S)|
+=
+m(ℓ− 1)∑
+k=0
+n2mℓ+2− m− kp2mℓ− k ∑
+S:|V (S)|=m+k
+κ2
+S
+(a)
+≤
+m(ℓ− 1)∑
+k=0
+n2mℓ+2− m− kp2mℓ− k
+((m(ℓ − 1)
+k
+)
+2k
+)2
+(b)
+≤ n2mℓ+2− mp2mℓ2m(ℓ− 1)
+m(ℓ− 1)∑
+k=0
+n− kp− k
+(m(ℓ − 1)
+k
+)
+4k
+= n2mℓ+2− mp2mℓ2m(ℓ− 1)
+(
+1 + 4
+np
+)m(ℓ− 1)
+,
+15
+
+===== PAGE 16 =====
+
+where ( a) follows from ∑
+S κS ≤
+(m(ℓ− 1)
+k
+)
+2k, and ( b) holds due to
+(m(ℓ− 1)
+k
+)
+≤ 2m(ℓ− 1).
+Finally, we need a result to conclude that with high probabil ity, for every vertex i, there exist
+at most m − 1 independent ℓ-paths from i to m − 1 distinct vertices in N G∗
+1∨ G2
+ℓ− 1 (i).
+Fix m, ℓ ≥ 1. We start with any vertex i and m independent (vertex-disjoint except for i) paths
+of length ℓ from i to m distinct vertices j1, . . . , j m, denoted by P1, . . . , P m. Let ˜Pk denote any path
+of length at most ℓ − 1 from i to jk for k = 1, . . . , m . Let H = ∪ m
+k=1(Pk ∪ ˜Pk) and Hm,ℓ denote the
+family of all possible graphs H with V (H) ⊂ [n] obtained by the above procedure.
+Note that if there is no subgraph isomorphic to some H ∈ H m,ℓ in G∗
+1 ∨ G2, then for every vertex
+i, there exist at most m − 1 independent ℓ-paths from i to m − 1 distinct vertices in N G∗
+1∨ G2
+ℓ− 1 (i).
+Hence, our task reduces to proving that with high probabilit y, G∗
+1 ∨ G2 does not contain some
+H ∈ H m,ℓ as a subgraph.
+We ﬁrst need a lemma showing that any H ∈ H m,ℓ is so “dense” that it appears as a subgraph
+in G(n, p ) with a vanishing small probability.
+Lemma 5. Fix m, ℓ ≥ 1. For any H ∈ H m,ℓ ,
+|E(H)| ≥ |V (H)|+ m − 1.
+Proof. Recall that H = ∪ m
+k=1(Pk ∪ ˜Pk), where P1, . . . , P m is a set of m (vertex-disjoint except for i)
+paths of length ℓ from i to m distinct vertices j1, . . . , j m, and ˜Pk is a path of length at most ℓ − 1
+from i to jk for k = 1, . . . , m .
+Note that we order the vertices and edges in paths starting fr om i. For each k = 1 , . . . , m ,
+let vk denote the ﬁrst vertex after which Pk and ˜Pk completely conincide, and ek denote the edge
+incident to vk in ˜Pk. Then by deﬁnition, vk ̸= i and ek ∈ ˜Pk\Pk. Let dist( u, v ) denote the longest
+distance between u and v in H, and σ denote any permutation on [ m] such that
+dist
+(
+i, v σ (1)
+)
+≥ dist
+(
+i, v σ (2)
+)
+· · · ≥dist
+(
+i, v σ (m)
+)
+.
+Without loss of generality, we assume σ = id, i.e., σ (k) = k. We claim that ej /∈ Pk ∪ ˜Pk for any
+1 ≤ j < k ≤ m. In fact, ej /∈ Pk, because otherwise Pj and Pk share a common vertex vj ̸= i, which
+violates the assumption that Pj and Pk are vertex-disjoint except for i. Also, ej /∈ ˜Pk\Pk, because
+otherwise, ej is ordered before ek in path ˜Pk starting from i, which implies dist( i, v k) > dist(i, v j )
+and leads to a contradiction.
+Finally, we recursively deﬁne H0 = H and Hk such that V (Hk) = V (Hk− 1) and E(Hk) =
+E(Hk− 1)\{ek} for k = 1 , . . . , m . We prove that Hm is connected by induction. For the base case
+k = 0 , clearly H0 = H is connected. Suppose Hk− 1 is connected. Since we have shown that
+ej /∈ Pk ∪ ˜Pk for any 1 ≤ j < k ≤ m, it follows that Pk ∪ ˜Pk ⊂ Hk− 1. Note that there is a path
+through i between the two endpoints of ek in Pk ∪ ˜Pk. Hence, the two endpoints of ek are still
+connected in Hk. Moreover, by the induction hypothesis, Hk− 1 is connected. Therefore, Hk is
+connected. and it follows from induction that Hm is connected. Thus, |E(Hm)| − |V (Hm)| ≥ − 1.
+Since |E(H)|= |E(Hm)|+ m and |V (H)|= |V (Hm)|, it follows that |E(H)| − |V (H)| ≥ m − 1.
+Next we state a lemma which upper bounds the number of isomorp hism classes in Hm,ℓ . This
+upper bound is by no means tight, but suﬃces for our purpose.
+Lemma 6. Fix m, ℓ ≥ 1. Denote by Um,ℓ the set of unlabelled graphs (isomorphism classes) in
+Hm,ℓ . Then
+|Um,ℓ | ≤ (3ℓ)m32m2ℓ.
+16
+
+===== PAGE 17 =====
+
+Proof. Recall that H = ∪ m
+k=1(Pk ∪ ˜Pk), where P1, . . . , P m is a set of m (vertex-disjoint except for
+i) paths of length ℓ from i to m distinct vertices j1, . . . , j m, and ˜Pk is a path of length at most
+ℓ − 1 from i to jk for k = 1, . . . , m . Let T = ∪ m
+k=1Pk. Then T is a starlike tree rooted at i with m
+branches as depicted in Fig.
+1.
+We ﬁx a sequence of {ℓ1, . . . , ℓ m} with 1 ≤ ℓk ≤ ℓ − 1. Let Uℓ1,...,ℓ m denote all the possible
+unlabelled graphs formed by the union of T and ˜Pk of length ℓk for k ∈ [m]. For ease of notation, let
+˜P0 = T . We enumerate Pℓ1,...,ℓ m according to the pairwise intersections ˜Pj ∩ ˜Pk for 0 ≤ j < k ≤ m.
+Speciﬁcally, for any given sequence {Sjk : 0 ≤ j < k ≤ m} of unlabelled graphs, we enumerate all
+the possible sequences of ( ˜P1, . . . , ˜Pk) such that ˜Pj ∩ ˜Pk is isomorphic to Sjk for 0 ≤ j < k ≤ m.
+Let κℓ(S) denote the number of possible diﬀerent subgraphs that are is omorphic to S in an ℓ-path.
+Recall β (S) denote the number of possible diﬀerent subgraphs that are is omorphic to S in ˜P0 = T .
+Then across all 1 ≤ j < k ∈ [m], there are at most κℓj (S)κℓk (S) ways of intersecting ˜Pj and ˜Pk
+such that ˜Pj ∩ ˜Pk is isomorphic to S. Also, for all k ∈ [m], there are at most β (S)κℓk (S) ways of
+intersecting ˜P0 and ˜Pk such that ˜P0 ∩ ˜Pk is isomorphic to S. Hence, the total number of distinct
+sequences of ( ˜P1, . . . , ˜Pk) such that ˜Pj ∩ ˜Pk isat most the the number nℓ of distinct subgraphs in
+an ℓ-path isomorphic to Sjk for 0 ≤ j < k ≤ m is at most
+∏
+1≤ j<k ∈ [m]
+κℓj (Sjk )κℓk (Sjk )
+∏
+k∈ [m]
+β (S0k)κℓk (S0k).
+Therefore,
+|Uℓ1,...,ℓ m| ≤
+∑
+{Sjk :0≤ j<k ≤ m}
+∏
+j<k ∈ [m]
+κℓj (Sjk )κℓk (Sjk )
+∏
+k∈ [m]
+β (S0k)κℓk (S0k)
+≤
+∏
+1≤ j<k ∈ [m]
+
+ ∑
+Sjk
+κℓj (Sjk )
+
+
+
+ ∑
+Sjk
+κℓk (Sjk )
+
+ ∏
+k∈ [m]
+
+ ∑
+S0k
+β (S0k)
+
+
+
+ ∑
+S0k
+κℓk (S0k)
+
+
+≤
+∏
+j<k ∈ [m]
+nℓj nℓk
+∏
+k∈ [m]
+n(T )nℓk = (n(T ))m ∏
+k∈ [m]
+(nℓk )m ,
+where the last inequality holds because ∑
+S κℓ(S) is at most the the number nℓ of distinct subgraphs
+S′ in an ℓ-path, and ∑
+S β (S) is at most the the number n(T ) of distinct subgraphs S′ in T. Note
+that
+nℓ ≤
+ℓ∑
+k=0
+(ℓ
+k
+)
+2k = 3 ℓ,
+because if |V (S′)|= k, then there are at most
+(ℓ
+k
+)
+diﬀerent choices for V (S′) and at most 2 k choices
+for determining whether to include the edges induced by V (S′) in an ℓ-path into S′. Also,
+n(T ) ≤
+mℓ+1∑
+k=0
+(mℓ + 1
+k
+)
+2k = 3 mℓ+1.
+Combinining the last three displayed equations yields that
+|Uℓ1,...,ℓ m| ≤ 32m2ℓ+m.
+Therefore,
+|U |=
+∑
+(ℓ1,...,ℓ m):1≤ ℓk≤ ℓ− 1
+|Uℓ1,...,ℓ m| ≤ (3ℓ)m32m2ℓ.
+17
+
+===== PAGE 18 =====
+
+With Lemma 5 and Lemma 6, we are ready to bound the probability that G(n, p ) contains some
+H ∈ H m,ℓ as a subgraph.
+Lemma 7. Suppose G ∼ G (n, p ) with np ≥ 1 and m, ℓ ≥ 1. Then it holds that
+P {∃H ∈ H m,ℓ : H ⊂ G} ≤ n2mℓ− 2m+1p2mℓ− m(3ℓ)m32m2ℓ. (21)
+Proof. Note that for any H ∈ H m,ℓ ,
+mℓ + 1 ≤ | V (H)| ≤ mℓ + 1 + (ℓ − 2)m = 2mℓ − 2m + 1,
+where the lower bound holds because H contains a starlike tree with mℓ + 1 distinct vertices, and
+the upper bound holds when Pk and ˜Pk are all vertex-disjoint except for the source vertex and sin k
+vertices.
+For any given integer mℓ + 1 ≤ t ≤ 2mℓ − 2m + 1, deﬁne
+Hm,ℓ,t = {H ∈ H m,ℓ : V (H) ⊂ [n], |V (H)|= t} .
+and let Um,ℓ t denote the number of unlabelled graphs (isomorphism class) in Hm,ℓ . Since V (H) ⊂
+[n] and |V (H)| = t, there are at most nt diﬀerent vertex labelings for a given unlabelled graph
+U ∈ U m,ℓ,t . Hence,
+|Hm,ℓ,t | ≤ |Um,ℓ,t |nt. (22)
+By the union bound, we have
+P {∃H ∈ H m,ℓ : H ⊂ G} ≤
+2mℓ− 2m+1∑
+t=mℓ+1
+∑
+H∈H m,ℓ,t
+P {H ⊂ G}
+=
+2mℓ− 2m+1∑
+t=mℓ+1
+∑
+H∈H m,ℓ,t
+p|E(H)|
+(a)
+≤
+2mℓ− 2m+1∑
+t=mℓ+1
+∑
+H∈H m,ℓ,t
+pt+m− 1
+(b)
+≤
+2mℓ− 2m+1∑
+t=mℓ+1
+ntpt+m− 1 |Um,ℓ,t |
+(c)
+≤ n2mℓ− 2m+1p2mℓ− m |Um,ℓ |
+≤ n2mℓ− 2m+1p2mℓ− m(3ℓ)m32m2ℓ,
+where ( a) holds in view of Lemma 5; ( b) holds in view of ( 22) ( c) holds because np ≥ 1 and
+t ≤ 2mℓ − 2m + 1; the last inequality holds due to Lemma 6.
+3.3 Completing the Proof of Theorem 1
+Recall that the choices of ℓ in ( 12), m in ( 13), and τ in ( 14). In particular,
+(
+nps2)ℓ
+≤ n1/ 2− ǫ.
+18
+
+===== PAGE 19 =====
+
+Recall that G∗
+1 ∧ G2 ∼ G (n, ps 2). Under the assumption that α ≥ n− 1/ 2+3ǫ, we get that
+α (nps2/ 2)ℓ− 2τ(τ − m) − m log τ ≥ 2 log n.
+Hence, applying Lemma
+3, we conclude that G∗
+1 ∧ G2 satisfy graph property (iii). Combing this
+result with Lemma
+1, we get that P {E1} ≥ 1 − o(1).
+Note that G∗
+1 ∨ G2 ∼ G (n, ps (2− s)). We ﬁrst apply Lemma
+4 to G∗
+1 ∨ G2. In view of nps2 ≥ log n
+and n ≥ e, we get that nps(2 − s) ≥ log n ≥ 1 and thus
+(
+2 + 8
+nps(2 − s)
+)m(ℓ− 1)
+n2mℓ+2− m (ps(2 − s))2mℓ
+≤ 10mℓn2− 2ǫm
+(2 − s
+s
+)2ml
+= n− 2+o(1),
+where the ﬁrst inequality holds due to ( nps2)ℓ ≤ n1/ 2− ǫ; the last equality holds by our choice of ℓ
+and m and s = Θ(1). Hence, applying Lemma 4 to G∗
+1 ∨ G2, we conclude that with high probability,
+there is no pair of subgraphs T1, T 2 ⊂ G∗
+1 ∨ G2 that are isomorphic to T such that r(T1) ̸= r(T2)
+and L(T1) = L(T2).
+Then we apply Lemma
+7 to G∗
+1 ∨ G2. Note that
+n2mℓ− 2m+1 (ps(2 − s))2mℓ− m (3ℓ)m32m2ℓ
+≤ nm(1− 2ǫ)− m+1(np)− m
+(2 − s
+s
+)2mℓ− m
+(3ℓ)m32m2ℓ ≤ n− 3+o(1),
+where the ﬁrst inequality holds due to ( nps2)ℓ ≤ n1/ 2− ǫ; the last equality holds by our choice of ℓ
+and m and s = Θ(1). Hence, applying Lemma 7 to G∗
+1 ∨ G2, we conclude that with high probability,
+G∗
+1 ∨ G2 does not contain any graph H ∈ H m,ℓ as a subgraph. By the construction of Hm,ℓ , it
+further implies that with high probability, for every verte x i, there exist at most m − 1 independent
+paths from i to m − 1 distinct vertices in N G∗
+1∨ G2
+ℓ− 1 .
+Combining the above two points, we get that P {E2} → 1. Finally, in view of Lemma
+2, we get
+that P {E3} ≥ 1 − o(1), completing the proof of Theorem 1.
+4 Analysis of Algorithm 2 in Dense Graph Regime
+Recall that Γ k
+G(u) and N G
+k (u) denotes the set of vertices at and within distance k from u in graph
+G, respectively, as deﬁned in (
+10) and ( 11). The key is to show that |N G∗
+1∧ G2
+d− 1 (u)| is larger than
+|N G∗
+1∨ G2
+d− 1 (u) ∩ N G∗
+1∨ G2
+d− 1 (v)| for u ̸= v by a constant factor, so that we can matches two vertices
+correctly based on the number of common seeded vertices in th eir two large neighborhoods.
+Proof of Theorem
+4. Deﬁne event
+A =
+{⏐
+⏐
+⏐N G∗
+1∧ G2
+d− 1 (u)
+⏐
+⏐
+⏐ ≥ 3
+4 (nps2)d− 1, ∀u
+}
+.
+In view of claim (i) in Lemma 11 with G = G∗
+1 ∧ G2 and the fact that Γ G
+k (u) ⊂ N G
+k (u), we get that
+P {A} ≥ 1 − n− 10.
+Deﬁne event
+B =
+{⏐
+⏐
+⏐N G∗
+1∨ G2
+d− 1 (u) ∩ N G∗
+1∨ G2
+d− 1 (v)
+⏐
+⏐
+⏐ ≤ 1
+2 (nps2)d− 1, ∀u ̸= v
+}
+.
+19
+
+===== PAGE 20 =====
+
+Note that due to assumption ( 8),
+1
+2 (nps2)d− 1 ≥ 8n2d− 3 (ps(2 − s))2d− 2 .
+Hence, applying claim (ii) in Lemma 11 with G = G∗
+1 ∨ G2, we get that P {B} ≥ 1 − n− 10.
+Recall that I0 is the initial set of seeded vertices. Deﬁne event
+C =
+{⏐
+⏐
+⏐N G∗
+1∧ G2
+d− 1 (u) ∩ I0
+⏐
+⏐
+⏐ > 3
+5 (nps2)d− 1α, ∀u
+}
+.
+Since each vertex is seeded independently with probability α , it follows that
+P {Cc} ≤ P {Ac} + P {Cc | A}
+≤ n− 10 +
+∑
+u
+P
+{⏐
+⏐
+⏐N G∗
+1∧ G2
+d− 1 (u) ∩ I0
+⏐
+⏐
+⏐ ≤ 3
+5 (nps2)d− 1α | A
+}
+≤ n− 10 + nP
+{
+Bin
+(⌈3
+4 (nps2)d− 1
+⌉
+, α
+)
+≤ 3
+5 (nps2)d− 1α
+}
+≤ n− 10 + n exp
+(
+− 3
+200 (nps2)d− 1α
+)
+≤ 2n− 1,
+where the last inequality holds due to assumption ( 9).
+Similarly, deﬁne event
+D =
+{⏐
+⏐
+⏐N G∗
+1∨ G2
+d− 1 (u) ∩ N G∗
+1∨ G2
+d− 1 (v) ∩ I0
+⏐
+⏐
+⏐ < 3
+5 (nps2)d− 1α, ∀u ̸= v
+}
+.
+It follows that
+P {Dc} ≤ P {Bc} + P {Dc | B}
+≤ n− 10 +
+∑
+u
+P
+{⏐
+⏐
+⏐N G∗
+1∨ G2
+d− 1 (u) ∩ N G∗
+1∨ G2
+d− 1 (v) ∩ I0
+⏐
+⏐
+⏐ ≥ 3
+5 (nps2)d− 1α | B
+}
+≤ n− 10 + nP
+{
+Bin
+(⌈1
+2 (nps2)d− 1
+⌉
+, α
+)
+≤ 3
+5 (nps2)d− 1α
+}
+≤ n− 10 + n exp
+(
+− 1
+150 (nps2)d− 1α
+)
+≤ 2n− 1,
+where the last inequality holds again due to assumption ( 9). Hence, P {C ∩ D} ≥ 1 − 4n− 1.
+Finally, since G∗
+1 ∧ G2 is a subgraph of both G∗
+1 and G2, it follows that
+N G∗
+1∧ G2
+d− 1 (i2) ⊂
+{
+j ∈ I0 : π0(j) ∈ N G1
+d− 1 (π ∗(i2)) , j ∈ N G2
+d− 1(i2)
+}
+.
+Similarly, both G∗
+1 and G2 are subgraphs of G∗
+1 ∨ G2, it follows that
+{
+j ∈ I0 : π0(j) ∈ N G1
+d− 1 (i1) , j ∈ N G2
+d− 1(i2)
+}
+⊂ N G∗
+1∨ G2
+d− 1
+(
+(π ∗)− 1(i1)
+)
+∩ N G∗
+1∨ G2
+d− 1 (i2).
+Thus, on event C ∩ D , for every vertex i2 ∈ V (G2) \I0,
+wi1,i 2
+{
+> 3
+5 (nps2)d− 1α if i1 = π ∗(i2)
+< 3
+5 (nps2)d− 1α o.w. .
+Hence, Algorithm 2 outputs ˆπ = π ∗ on event C ∩ D .
+20
+
+===== PAGE 21 =====
+
+5 Analysis of Algorithm 3 in Sparse Graph Regime
+Recall that we assume π ∗ = id without loss of generality in the analysis. Before proving T heorem 3,
+we present two key lemmas.
+The ﬁrst lemma will be used later to conclude that the test sta tistic Zu,u given in ( 17) is large
+for all high degree vertices u.
+Lemma 8. Suppose G ∼ G (n, p ) with log n ≤ np ≤ nǫ, and each vertex is included in I0 with
+probability α . Recall that ℓ and η are given in ( 19) and ( 20), respectively. Assume η ≥ 4 log n. Let
+G\S denote the graph G with set of vertices S removed. Then with probability at least 1 − n− 1+o(1),
+∑
+j∈ ΓG
+1 (i)
+1{
+|ΓG\ S
+ℓ (j)∩ I0|≥ η
+} ≥ di − 1, ∀S s.t. i ∈ S, |S| ≤ 3.
+Proof. For every vertex i and its neighbor j ∈ ΓG
+1 (i), deﬁne
+aij = 1{
+|ΓG\ S
+ℓ (j)|≥ 4η/α
+}.
+and
+bij = 1{
+|ΓG\ S
+ℓ (j)∩ I0|≥ η
+}.
+Deﬁne event
+A =
+{
+|ΓG\S
+ℓ (j)| ≥ (np)ℓ
+2ℓ− 1 log(np) , ∀S s.t. |S| ≤ 3, ∀j s.t. np
+log(np) ≤ | ΓG\S
+1 (j)| ≤ 4np
+}
+.
+Note that G\S ∼ G (n − | S|, p ) and (4 np)ℓ = o(n). Applying Corollary 1 together with union
+bounds, we get that
+P {A} ≥ 1 − n|S|exp
+{
+− Ω
+(
+(np)2/ log(np)
+)}
+≥ 1 − nω (1).
+Deﬁne event B such that for every vertex i, there is at most 1 neighbor j in G such that |ΓG\S
+1 (j)| ≤
+(np)/ log(np). Recall E is the event that the maximum degree in G is at most 4 np. In view of
+Lemma 16, we have that P {B ∩ E|} ≥ 1 − n− 1+o(1).
+Recall that ℓ = ⌊(1− ǫ) log n
+log(np) ⌋ and η = 4 2ℓ+2n1− 2ǫα . Then for suﬃciently large n,
+(np)ℓ
+2ℓ− 1 log(np) ≥ 4η
+α .
+Hence, on event A ∩ B ∩ E , ∑
+j∈ ΓG
+1 (i)
+aij ≥ di − 1, ∀i.
+Let
+X = ∪ i,j ({aij = 1} ∩ { bij = 0})
+Then on event X c, for all i, j such that aij = 1, bij = 1; thus aij ≤ bij for all i, j . Hence, on event
+A ∩ B ∩ E ∩ X c, we have ∑
+j∈ ΓG
+1 (i)
+bij ≥ di − 1, ∀i.
+21
+
+===== PAGE 22 =====
+
+It remains to show P {A ∩ B ∩ E ∩ X c} ≥ 1− n− 1+o(1), which further reduces to proving P {X } ≤
+n− 1+o(1) by the union bound. Note that
+P {aij = 1, b ij = 0} ≤ P {bij = 0 |aij = 1}
+≤ P {Bin (⌊4η/α ⌋, α ) ≤ η}
+≤ e− η,
+where the last inequality follows from the Binomial tail bou nd ( 32). By the union bound, we have
+P {X } ≤
+∑
+i,j
+P {aij = 1, b ij = 0} ≤ n2e− η ≤ n− 2,
+where the last inequality holds due to the assumption that η ≥ 4 log n.
+The second lemma is useful to conclude that the test statisti c Zu,v given in ( 17) is small for all
+distinct vertices u, v .
+Lemma 9. Assume the same setup as Lemma 8. With probability at least 1 − 4/n , for all distinct
+u, v , there exists a constant C depending only on ǫ such that
+∑
+i∈ ΓG
+1 (u)
+∑
+j∈ ΓG
+1 (v)
+1{
+|N G\{ u,v }
+ℓ (i)∩ N G\{ u,v }
+ℓ (j)∩ I0|≥ η
+} ≤ C.
+Proof. For two vertices i, j , deﬁne
+cij = 1{|N G
+ℓ (i)∩ N G
+ℓ (j)|≥ η/ (4α )}
+and an event
+C =
+
+
+ max
+i
+∑
+j
+cij ≤ 2n4ǫ
+
+
+ ∩
+{
+max
+j
+∑
+i
+cij ≤ 2n4ǫ
+}
+In view of Lemma
+14, P {C} ≥ 1 − 2/n .
+Deﬁne
+aij = 1{|N G
+ℓ (i)∩ N G
+ℓ (j)∩ I0|≥ η}.
+and an event
+A =
+
+
+ max
+i
+∑
+j
+aij ≤ 2n4ǫ
+
+
+ ∩
+{
+max
+j
+∑
+i
+aij ≤ 2n4ǫ
+}
+Moreover, let
+Y = ∪ i,j [{cij = 0} ∩ { aij = 1}]
+Then on Y c, for all i, j such that cij = 0, aij = 0; thus aij ≤ cij for all i, j . Hence, C ∩ Y c ⊂ A and
+thus
+P {A} ≥ P {C ∩ Y c} ≥ P {C} − P {Y} .
+Note that
+P {cij = 0, a ij = 1} ≤ P {aij = 1 |cij = 0}
+≤ P {Bin (⌊η/ 4α ⌋, α ) ≥ η}
+≤ e− 2η
+22
+
+===== PAGE 23 =====
+
+By the union bound, we have
+P {Y} ≤
+∑
+i,j
+P {cij = 0, a ij = 1} ≤ n2e− 2η ≤ n− 6,
+where the last inequality follows from the assumption that η ≥ 4 log n. Thus P {A} ≥ 1 − 3/n .
+Fix a pair of vertices u ̸= v in the sequel, and let
+bij = 1{
+|N G\{ u,v }
+ℓ (i)∩ N G\{ u,v }
+ℓ (j)∩ I0|≥ η
+}
+and
+Bu,v =
+
+
+ max
+i
+∑
+j
+bij ≤ 2n4ǫ
+
+
+ ∩
+{
+max
+j
+∑
+i
+bij ≤ 2n4ǫ
+}
+Then by construction, bij ≤ aij and thus A ⊂ B u,v .
+Let Xi = G(u, i ) for i ∈ [n] and Xn+j = G(v, j ) for j ∈ [n]. Deﬁne
+Ru,v =
+∑
+i,j ∈ [n]\{u,v }
+bijXiXn+j,
+which is a degree-2 polynomial of Xi’s. Note that {bij; i, j ∈ [n]\{u, v }} only depends on G\{u, v }
+and hence is independent from Xi’s. Moreover, Xi’s are i.i.d. Bern( p).
+We condition on {bij} such that event Bu,v holds. Let
+µ 0 = E [Ru,v |b] = p2 ∑
+ij
+bij ≤ 2p2n1+4ǫ ≤ 2n− 1+6ǫ.
+and
+µ 1 = max
+
+
+ max
+i
+E
+
+ ∑
+j
+bijXj |b
+
+ , max
+j
+E
+[∑
+i
+bijXi |b
+] 
+
+ ≤ 2pn4ǫ ≤ 2n− 1+5ǫ.
+By a concentration inequality for multivariate polynomial s [
+Vu02, Corollary 4.9], there exists a
+constant C > 0 depending only on ǫ such that
+P {Ru,v ≥ C |b} ≤ n− 3.
+Thus P {Ru,v ≥ C | Bu,v } ≤ n− 3. Deﬁne event Ru,v = {Ru,v ≤ C} and R = ∩ u̸=vRu,v . It follows
+that
+P {Ru,v ∩ B u,v } ≤ P {Ru,v | Bu,v } ≤ n− 3.
+Since A ⊂ B u,v , it further follows that P {Ru,v ∩ A} ≤ n− 3. By a union bound over u, v , we have
+P {R ∩ A} ≤ n− 1. Hence, P {R} ≤ P {R ∩ A} + P {Ac} ≤ 4/n.
+With Lemma 8 and Lemma 9, we are ready to ﬁnish the proof of Theorem 3.
+Proof of Theorem 3. Recall that τ is given in (14) and the deﬁnition of high-degree vertices. We ﬁrst
+prove that Algorithm 2 correctly matches the high-degree vertices in G∗
+1 ∧ G2 with high probability.
+Recall the deﬁnition of Z give in (
+17). Applying Lemma 8 with G = G∗
+1 ∧ G2, we get that with
+high probability, for all high-degree vertices u,
+Zu,u ≥ τ − 1 = nps2
+log(nps2) − 1.
+23
+
+===== PAGE 24 =====
+
+Moreover, by deﬁnition,
+wu,v
+i,j ≤
+⏐
+⏐
+⏐
+{
+k ∈ I0 : π0(k) ∈ N G1\{u,v }
+ℓ (i), k ∈ N G2\{u,v }
+ℓ (j)
+}⏐
+⏐
+⏐
+≤
+⏐
+⏐
+⏐N G∗
+1∨ G2\{u,v }
+ℓ (i) ∩ N G∗
+1∨ G2\{u,v }
+ℓ (j) ∩ I0
+⏐
+⏐
+⏐ .
+Applying Lemma
+9 with G = G∗
+1 ∨ G2, we get that with high probability,
+Zu,v ≤ C, ∀u ̸= v
+for a constant C > 0 only depending on ǫ. Since for suﬃciently large n, τ ≥ C + 1, it follows that
+Algorithm
+2 correctly matches all high-degree vertices with high proba bility.
+The proof of correctness for matching low-degree vertices i s the same as Algorithm 1 and thus
+omitted.
+Appendix A Proof of Theorem 2
+Proof of Theorem 2. Suppose nps2 − log n = c for c < +∞ . Since G∗
+1 ∧ G2 ∼ G (n, ps 2), classical
+random graph theory shows that the distribution of the numbe r of isolated vertices in G∗
+1 ∧ G2
+converges to Pois( e− c), see, e.g., [
+Bol01, Theorem 3.1]. Let F1 denote the event that there are at
+least two isolated vertices in G∗
+1 ∧ G2. Then P {F1} = Ω(1).
+Let F2 denote the event that there are at least two isolated vertice s that are unseeded in G∗
+1 ∧ G2.
+Since each vertex is seeded with probability α independently across diﬀerent vertices and from the
+graphs G1 and G2, it follows that P {F2} ≥ P {F1} (1 − α )2 = Ω
+(
+(1 − α )2)
+.
+Since the prior distribution of π ∗ is uniform, the maximum likelihood estimator ˆπML minimizes
+the error probability P {ˆπ ̸= π ∗} among all possible estimators and thus we only need to ﬁnd whe n
+MLE fails.
+Recall that I0 is the seed set. Let S denote the set of all possible permutations π such that
+π (i) = π ∗(i) for i ∈ I0. Under the seeded model G(n, p ; s, α ), the maximum likelihood estimator
+ˆπML is given by the minimizer of the (restricted) quadratic assi gnment problem, namely,
+ˆπML ∈ arg min min
+π ∈S
+∥G1 − ΠG2Π⊤ ∥2
+F ,
+where Π is the permutation matrix corresponding to permutat ion π ; or equivalently,
+ˆπML ∈ arg max
+π ∈S
+⣨
+G1, ΠG2Π⊤
+⟩
+.
+Let I denote the union of the initial seed set and the set of all non- isolated vertices in G∗
+1 ∧ G2.
+Then I c is the set of isolated vertices that are unseeded in G∗
+1 ∧ G2. Let ˜S denote the set of all
+possible permutations π such that π (i) = π ∗(i) for i ∈ I. Then π ∗ ∈ ˜S ⊂ S . Note that for any
+π ∈ ˜S, we have
+⣨
+G1, ΠG2Π⊤
+⟩
+≥
+∑
+(i,j )∈ I× I
+G1(π (i), π (j))G2(i, j )
+(a)
+=
+∑
+(i,j )∈ I× I
+G1(π ∗(i), π ∗(j))G2(i, j )
+=
+∑
+(i,j )
+G1(π ∗(i), π ∗(j))G2(i, j ),
+24
+
+===== PAGE 25 =====
+
+where (a) follows from π (i) = π ∗(i) for i ∈ I; the last equality holds due to G1(π ∗(i), π ∗(j))G2(i, j ) =
+0 for all ( i, j ) /∈ I × I. Hence, there at at least |I c|! − 1 diﬀerent permutations in ˜S whose likelihood
+is at least as large as the ground truth π ∗, and hence the MLE is correct with probability at most
+1/ (|I c|! − 1). Note that on event F2, |I c| ≥ 2; hence, MLE is correct with probability at most 1 / 2.
+In conclusion, MLE is correct with probability at most (1 / 2)P {F2} = Ω((1 − α )2).
+Appendix B Proof of Lemma 1
+Proof. Claim (i): For each vertex i, its degree di ∼ Binom(n − 1, p ). By the union bound, the
+probability that G has an isolated vertex is
+n(1 − p)n− 1 ≤ ne− (n− 1)p = o(1),
+where the last equality holds due to the assumption that np − log n → +∞ .
+Claim (ii): Fix any pair of two distinct vertices i, j , deﬁne
+Eij = {G(i, j ) = 1 } ∩ { di ≤ τ} ∩ { dj ≤ τ} .
+It suﬃces to show
+P {∪ i̸=jEij} ≤ n− 1+o(1).
+Note that
+P {d(i) ≤ τ, d (j) ≤ τ|G(i, j ) = 1 } = (P {Bin(n − 2, p ) ≤ τ − 1})2
+≤ (P {Bin(n − 2, p ) ≤ τ})2
+In view of Binomial tail bounds given in Theorem 6 and τ = o(np), we have that
+P {Bin(n − 2, p ) ≤ τ} ≤ exp
+(
+− (n − 2)p
+(
+1 −
+√ τ
+(n − 2)p
+)2)
+= exp (− (1 − o(1))np) .
+Combining the last two displayed equations yields that
+P {Eij} = P {G(i, j ) = 1 } P {d(i) ≤ τ, d (j) ≤ τ|G(i, j ) = 1 }
+≤ p exp (− 2(1 − o(1))np)
+By the union bound,
+P {∪ i̸=jEij} ≤ n2P {Eij}
+≤ n2p exp (− 2(1 − o(1))np) = n− 1+o(1),
+where the last equality holds due to np − log n → +∞ .
+25
+
+===== PAGE 26 =====
+
+Appendix C Proof of Lemma 2
+Proof. Let di denote the degree of vertex i in G∗
+1 ∧ G2 and A denote the adjacency matrix of G∗
+1 ∨ G2.
+For every pair of three distinct vertices i, j, k , deﬁne
+Fijk = {Aik = 1, A jk = 1} ∩ { di ≤ τ} ∩ { dj ≤ τ} .
+It suﬃces to show that P {∪ i,j,k Fij} ≤ n− 1+o(1). Since G∗
+1 ∨ G2 ∼ G (n, ps (2 − s)), it follows that
+P {Aik = 1, A jk = 1} = P {Aik = 1} P {Ajk = 1} = (ps(2 − s))2 ≤ p2.
+Moreover, since G∗
+1 ∧ G2 ∼ G (n, ps 2), it follows that
+P {{di ≤ τ} ∩ { dj ≤ τ} | Aik = 1, A jk = 1} ≤
+(
+P
+{
+Binom(n − 3, ps 2) ≤ τ
+})2
+.
+In view of Binomial tail bound (
+32) and τ = o(nps2), we have that
+P
+{
+Binom(n − 3, ps 2) ≤ τ
+}
+≤ exp
+(
+− (n − 3)ps2
+(
+1 −
+√ τ
+(n − 3)ps2
+)2)
+= exp
+(
+− nps2 (1 − o(1))
+)
+It follows that
+P {Fijk } ≤ p2 exp
+(
+− 2nps2 (1 − o(1))
+)
+By the union bound, we have that
+P {∪ i,j,k Fij} ≤ n3p2 exp
+(
+− 2nps2 (1 − o(1))
+)
+= n− 1+o(1).
+where the last equality holds due to nps2 ≥ log n and log( np) = o(nps2).
+Appendix D Neighborhood Exploration in G(n, p)
+Throughout this section, we assume graph G ∼ G (n, p ) with np ≥ log n. We ﬁrst claim that the
+max degree in G is at most 4 np with probability at least 1 − 1/n .
+Lemma 10. Assume graph G ∼ G (n, p ) with np ≥ log n. Let
+E =
+{
+max
+v∈ V (G)
+dv ≤ 4np
+}
+. (23)
+Then
+P {E} ≥ 1 − n− 1.
+Proof. By the Binomial tail bound ( 33),
+P {di ≥ 4np} = P {Binom(n − 1, p ) ≥ 4np} ≤ exp(− 2np).
+The proof follows by the union bound and the assumption that np ≥ log n.
+We ﬁx a vertex u throughout this section, and abbreviate Γ G
+k (u) as Γ k(u) and N G
+k (u) as Nk(u)
+for simplicity. We are interested in studying the growth of |Γk(u)|as k increases. Note that |Γ1(u)|
+is the degree du of vertex u in G. Since the average degree is ( n − 1)p, we expect typically |Γk(u)|
+grows as ( np)k. This is indeed true in the dense regime with np ≥ nǫ.
+26
+
+===== PAGE 27 =====
+
+D.1 Dense Regime
+The following lemma is adapted from [
+Bol01, Lemma 10.9].
+Lemma 11. Suppose np ≥ nǫ for an arbitrarily small constant ǫ > 0 and d is chosen such that
+(np)d− 1 ≤ n
+8 and (np)d ≥ n log n
+If n is suﬃciently large, then with probability at least 1 − n− 10, the following claims hold:
+(i) For every vertex u, ⏐
+⏐
+⏐Γk(u) − (np)k
+⏐
+⏐
+⏐ ≤ 1
+4 (np)k. ∀0 ≤ k ≤ d − 1.
+(ii) For every two distinct vertices u and v,
+|Nd− 1(u) ∩ Nd− 1(v)| ≤ 8n2d− 3p2d− 2.
+Lemma 11 also upper bounds |Γd− 1(u) ∩ Γd− 1(v)| for two distinct vertices u, v by 8p2d− 2n2d− 3.
+To see this intuitively, note that in the dense regime, Γ d− 2(u)∩ Γd− 2(v) is typically of a much smaller
+size comparing to either Γ d− 2(u) or Γ d− 2(v). Hence, the majority of vertices w in Γ d− 1(u) ∩ Γd− 1(v)
+are connected to some vertex in Γ d− 2(u) \Γd− 2(v) and to some vertex in Γ d− 2(v) \Γd− 2(u). For
+a given vertex w / ∈ Nd− 2(u) ∪ Nd− 2(v), since |Γd− 2(u) \ Γd− 2(v)| ≤ | Γd− 2(u)| ≤ 2(np)d− 2 and
+similarly for |Γd− 2(v) \Γd− 2(u)|, w connects to some vertex in Γ d− 2(u) \Γd− 2(v) with probability at
+most 2 p(np)d− 2, and connects to some vertex in Γ d− 2(v) \Γd− 2(u) independently with probability
+2p(np)d− 2. Moreover, there are at most n such potential vertices w to consider. Hence, we expect
+|Γd− 1(u) ∩ Γd− 1(v)| to be smaller than 2 n[2p(np)d− 2]2 = 8p2d− 2n2d− 3.
+D.2 Sparse Regime
+In contrast, in the sparse regime where
+np − log n → +∞ .
+there exist vertices with small degrees, i.e., |Γ1(u)| is much smaller than np. Hence, we cannot
+expect |Γk(u)| grows like ( np)k for all vertices u. Nevertheless, the following lemma shows that
+conditional on |Γ1(u)| is large, then |Γk(u)| ≍ (np)|Γk− 1(u)| for all 2 ≤ k ≤ d for some d with high
+probability.
+Lemma 12. Suppose
+np ≥ log n and p(4np)d− 1 = o(1). (24)
+Let u be a ﬁxed vertex. For each 1 ≤ k ≤ d, deﬁne
+Qk =
+{
+|Γk(u)| ∈ Ik =
+[
+τ
+(np
+2
+)k− 1
+, (4np)k
+]}
+for 1 ≤ τ ≤ np. Then for 2 ≤ k ≤ d,
+P {Qk | Q1, . . . , Qk− 1} ≥ 1 − exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+.
+It readily follows that
+P {Qd ∩ Q d− 1 ∩ · · · ∩ Q2 | Q1} ≥ 1 − exp (− Ω (τ np)) .
+27
+
+===== PAGE 28 =====
+
+Proof. Fix 2 ≤ k ≤ d. Conditional on Γ k− 1(u) and Nk− 1(u), the probability of a given vertex
+v / ∈ Nk− 1(u) being connected to some vertices in Γ k− 1(u) is
+pk ≜ 1 − (1 − p)|Γk− 1(u)|.
+Therefore, conditional on |Γk− 1(u)| and |Nk− 1(u)|,
+|Γk(u)| ∼ Bin (n − |Nk− 1(u)|, p k)
+Note that conditional on Q1, . . . , Qk− 1,
+|Nk− 1(u)|=
+k− 1∑
+i=0
+|Γi(u)| ≤
+k− 1∑
+i=0
+(4np)i = (4np)k − 1
+4np − 1 = o(n),
+where the last equality holds due to the assumption ( 24) and k ≤ d. Moreover, in view of the
+assumption ( 24), conditional on Q1, . . . , Qk− 1,
+(1 − o(1)) pτ
+(np
+2
+)k− 2
+≤ pk ≤ p(4np)k− 1.
+Hence, for 2 ≤ k ≤ d,
+P {|Γk(u)| /∈ Ik | Q1, . . . , Qk} ≤ P
+{
+Bin
+(
+n − o(n), (1 − o(1)) pτ
+(np
+2
+)k− 2)
+≤ τ
+(np
+2
+)k− 1}
++ P
+{
+Bin
+(
+n, p (4np)k− 1
+)
+≥ (4np)k
+}
+≤ exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
++ exp
+(
+− 4k− 1(np)k
+)
+≤ exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+.
+Finally, we note that
+P {Qd ∩ Q d− 1 ∩ · · · ∩ Q2 | Q1} = P {Q2 | Q1} P {Q3 | Q1, Q2} · · ·P {Qd | Q1, . . . , Qd− 1}
+≥
+d− 1∏
+i=0
+(
+1 − exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1)))
+≥ 1 −
+d− 1∑
+i=0
+exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+≥ 1 − exp (− Ω (τ np)) .
+With Lemma 12, we have the following immediate corollary.
+Corollary 1. Suppose ( 24) holds. Deﬁne event
+Q = {|Γk(u)| ∈ Ik, ∀1 ≤ k ≤ d, ∀u s.t. τ ≤ | Γ1(u)| ≤ 4np}
+Then
+P {Q} ≥ 1 − n exp (− Ω (τ np)) .
+28
+
+===== PAGE 29 =====
+
+Proof. Note that
+Qc = ∪ u ({τ ≤ | Γ1(u)| ≤ 4np} ∩ {|Γk(u)| /∈ Ik, ∀1 ≤ k ≤ d}) .
+Hence, it follows from the union bound that
+P {Qc} ≤
+∑
+u
+P {{τ ≤ | Γ1(u)| ≤ 4np} ∩ {|Γk(u)| /∈ Ik, ∀1 ≤ k ≤ d}}
+≤
+∑
+u
+P {|Γk(u)| /∈ Ik, ∀1 ≤ k ≤ d |τ ≤ | Γ1(u)| ≤ 4np}
+≤ n exp (− Ω (τ np)) ,
+where the last inequality follows from Lemma 12.
+Next, we upper bounds |Nd(u) ∩ Nd(v)| for two distinct vertices u, v in the sparse regime. We
+need to introduce
+Γ∗
+k,ℓ (u, v ) = {w ∈ Γk(u) ∩ Γℓ(v) : Γ 1(w) ∩ (Γk− 1(u) \Γℓ− 1(v)) ̸= ∅, Γ1(w) ∩ (Γℓ− 1(v) \Γk− 1(u)) ̸= ∅}
+and we abbreviate Γ ∗
+k,k (u, v ) as Γ ∗
+k(u, v ) for simplicity. By deﬁnition, for any d ≥ 1,
+Γd(u) ∩ Γd(v) ⊂ ∪ d
+k=1Γd− k (Γ∗
+k(u, v )) .
+and
+Nd(u) ∩ Nd(v) ⊂ ∪ d
+ℓ=− d ∪ d
+k=0 Nd− k− max{ℓ, 0}
+(
+Γ∗
+k+ℓ,k (u, v )
+)
+.
+The following lemma gives an upper bound to
+⏐
+⏐
+⏐Γ∗
+k,ℓ (u, v )
+⏐
+⏐
+⏐ in high probability.
+Lemma 13. For two distinct vertices u, v , deﬁne
+∆k,ℓ =
+{
+|Γk− 1(u)| ≤ (4np)k− 1, |Γℓ− 1(v)| ≤ (4np)ℓ− 1
+}
+.
+For all k ≥ 1,
+P
+{⏐
+⏐Γ∗
+k,ℓ (u, v )
+⏐
+⏐ ≥ γk+ℓ |∆k,ℓ
+}
+≤ 1
+n8 , (25)
+where
+γk =
+{
+24 log n if np2(4np)k− 2 ≤ 4 log n
+4np2(4np)k− 2 o.w. (26)
+Proof. Conditional on Nk− 1(u), Γk− 1(u) and Nℓ− 1(v), Γℓ− 1(v), the probability that a vertex w / ∈
+Nk− 1(u) ∪ N ℓ− 1(v) being connected to some vertex in Γ k− 1(u) \Γℓ− 1(v) is
+1 − (1 − p)|Γk− 1(u)\Γℓ− 1(v)| ≤ p|Γk− 1(u) \Γℓ− 1(v)| ≤ p|Γk− 1(u)|.
+Similarly, the probability that w is connected to some vertex in Γ ℓ− 1(v) \Γk− 1(u) is
+1 − (1 − p)|Γℓ− 1(v)\Γk− 1(u)| ≤ p|Γℓ− 1(v) \Γk− 1(u)| ≤ p|Γℓ− 1(v)|.
+29
+
+===== PAGE 30 =====
+
+Since Γ k− 1(u) \Γℓ− 1(v) is disjoint from Γ ℓ− 1(v) \Γk− 1(u), the probability that w ∈ Γ∗
+u,v is at most
+p2|Γk− 1(u)||Γℓ− 1(v)|. Moreover, there are at most n vertices w / ∈ N k− 1(u) ∪ N ℓ− 1(v). Hence,
+P
+{⏐
+⏐Γ∗
+k,ℓ (u, v )
+⏐
+⏐ ≥ γk+ℓ |∆k,ℓ
+}
+≤ P
+{
+Bin
+(
+n, p 2(4np)k+ℓ− 2
+)
+≥ γk+ℓ
+}
+.
+If np2(4np)k+ℓ− 2 ≤ 4 log n, then by the choice of γk+ℓ = 24 log n, we have γk+ℓ ≥ 6np2(4np)k+ℓ− 2.
+It follows from (
+34) that
+P
+{
+Bin
+(
+n, p 2(4np)k+ℓ− 2
+)
+≥ γk+ℓ
+}
+≤ 2− γk+ℓ = 2 − 24 log n ≤ 1
+n8 .
+If np2(4np)k+ℓ− 2 ≥ 4 log n, then by the choice of γk+ℓ = 4np2(4np)k+ℓ− 2, it follows from ( 33) that
+P
+{
+Bin
+(
+n, p 2(4np)k+ℓ− 2
+)
+≥ γk+ℓ
+}
+≤ exp
+(
+− 2np2(4np)k+ℓ− 2
+)
+≤ 1
+n8 .
+With Lemma 13, we are ready to upper bound |Nd(u) ∩ Nd(v)| for d large enough.
+Lemma 14. For a given small constant ǫ > 0, choose an integer 1 ≤ d ≤ n such that
+(4np)d ≥ n1− ǫ
+For each vertex u, deﬁne event
+Ru =
+{ ∑
+v
+1{|Nd(u)∩ Nd(v)|>42d+1p2dn2d− 1} ≤ 2n4ǫ
+}
+and R = ∩ uRu. Then
+P {R} ≥ 1 − 2n− 1. (27)
+Proof. Deﬁne an event
+A = ∩ u̸=v ∩ 1≤ k≤ d ∩ 1≤ k≤ ℓ
+{
+|Γ∗
+k,ℓ (u, v )| ≤ γk+ℓ
+}
+Recall E deﬁned in (
+23). Note that
+(A ∩ E )c = (Ac ∩ E ) ∪ E c.
+Therefore,
+P {(A ∩ E )c} ≤ P {Ac ∩ E} + P {E c} .
+Note that P {E c} ≤ 1/n . Moreover,
+P {Ac ∩ E} ≤
+∑
+u̸=v
+∑
+1≤ k≤ d
+∑
+1≤ ℓ≤ d
+P
+{{
+|Γ∗
+k,ℓ (u, v )| ≥ γk+ℓ
+}
+∩ E
+}
+(a)
+≤
+∑
+u̸=v
+∑
+1≤ k≤ d
+∑
+1≤ ℓ≤ d
+P
+{{
+|Γ∗
+k,ℓ (u, v )| ≥ γk+ℓ
+}
+∩ ∆k,ℓ
+}
+≤
+∑
+u̸=v
+∑
+1≤ k≤ d
+∑
+1≤ ℓ≤ d
+P
+{
+|Γ∗
+k,ℓ (u, v )| ≥ γk+ℓ |∆k,ℓ
+}
+≤ n− 4,
+30
+
+===== PAGE 31 =====
+
+where ( a) follows from E ⊂ ∆k and the last inequality holds in view of Lemma 13 and d ≤ n.
+Therefore, P {(A ∩ E )c} ≤ 2/n .
+To prove the lemma, it suﬃces to argue that A ∩ E ⊂ R . To see this, let us assume that A ∩ E
+holds in the sequel. Note that
+Nd(u) ∩ Nd(v) ⊂ ∪ d
+ℓ=− d ∪ d
+k=0 Nd− k− max{ℓ, 0}
+(
+Γ∗
+k+ℓ,k (u, v )
+)
+.
+It follows that
+|Nd(u) ∩ Nd(v)| ≤
+d∑
+ℓ=− d
+d∑
+k=0
+⏐
+⏐Γ∗
+k+ℓ,k (u, v )
+⏐
+⏐ (4np)d− k− max{ℓ, 0}
+Set k0
+k0 =
+⌊ 2ǫlog n
+log(4np)
+⌋
+Then
+|N2k0(u)| ≤
+2k0∑
+k=0
+(4np)k = (4np)2k0+1 − 1
+4np − 1 ≤ 2(4np)2k0 ≤ 2n4ǫ,
+where the second-to-the-last inequality holds due to 2 np ≥ 1. Note that for all v / ∈ N2k0(u), we
+have
+|Γ∗
+k,ℓ (u, v )|= 0, ∀0 ≤ k + ℓ ≤ 2k0
+and thus
+|Nd(u) ∩ Nd(v)| ≤
+d∑
+ℓ=− d
+d∑
+k=0
+1{0≤ k+ℓ≤ d}1{2k+ℓ≥ 2k0+1}γ2k+ℓ(4np)d− k− max{ℓ, 0}
+≤
+d∑
+ℓ=− d
+d∑
+k=0
+1{0≤ k+ℓ≤ d}1{2k+ℓ≥ 2k0+1}
+(
+24 log n + 4np2(4np)2k+ℓ− 2
+)
+(4np)d− k− max{ℓ, 0}
+≤ 192 log n(4np)d− k0− 1/ 2 + 32np2(4np)2d− 2
+≤ 64np2(4np)2d− 2 = 4 2d+1p2dn2d− 1,
+where the last inequality holds due to (4 np)d+k0+1/ 2 ≥ 6n log n for n suﬃciently large. Hence, for
+every u, ∑
+v
+1{|Nd(u)∩ Nd(v)|>(4)2d+1 p2dn2d− 1} ≤ | N2k0(u)| ≤ 2n4ǫ.
+As a consequence, A ∩ E ⊂ R .
+D.3 Graph Branching in Sparse Regime
+In this subsection, we describe a branching process to explo re the vertices in Nk(u). See, e.g.,
+[
+AS08, Section 11.5] for a reference.
+Deﬁnition 3 (Graph Branching Process) . We begin with u and apply breadth-ﬁrst-search to explore
+the vertices in Nk(u). In this process, all vertices will be “live”, “dead”, or “neu tral”. The live
+vertices will be contained in a queue. Initially, at time 0, u is live and the queue consists of only
+u, and all the other vertices are neutral. At each time step t, a live vertex v is popped from the
+head of the queue, and we check all pairs {v, w } for all neutral vertices w for adjacency. The poped
+vertex v is now dead and those neutral vertices w adjacent to v are added to the end of the queue
+(in an arbitrary order) and now are live. The process ends when the queue is empty.
+31
+
+===== PAGE 32 =====
+
+Note that such a branching process constructs a tree T (u) rooted at u. In particular, at each
+time step, those neutral vertices w adjacent to the poped vertex v can be viewed as children of v.
+For each vertex v in T (u), abusing notation slightly, we let Tk(v) denote the subtree rooted at v of
+depth k in T (u) and Π k(v) denote the set of vertices at distance k from root v in subtree Tk(v).
+Note that by construction, Π k(u) = Γ k(u) for root u.
+We are interested in bounding |Πk(v)|for each children v of root u. The following lemma shows
+that with high probability, for all childen v of root u such that |Π1(v)| ≥ τ, |Πk(v)| grows at least
+as τ (np/ 2)k− 1.
+Lemma 15. Let u be the root vertex and 1 ≤ τ ≤ np. Deﬁne
+F1 = {|Π1(u)| ≤ 4np} ∩ {|Π1(v)| ≤ 4np, ∀v ∈ Π1(u)} ,
+and for each 2 ≤ k ≤ d deﬁne
+Fk =
+{
+|Πk(v)| ≤ (4np)k, ∀v ∈ Π1(u)
+}
+∩
+{
+|Πk(v)| ≥ τ (np/ 2)k− 1 , ∀v ∈ Π1(u) s.t. |Π1(v)| ≥ τ
+}
+Suppose
+np ≥ log n and (4np)d+1 = o(n). (28)
+Then for 2 ≤ k ≤ d,
+P {Fk | F1, . . . , Fk− 1} ≥ 1 − 8np exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+.
+It readily follows that
+P {Fd ∩ F d− 1 ∩ · · · ∩ F2 | F1} ≥ 1 − 8np exp (− Ω (τ np)) .
+Moreover, by letting
+Au = (Fd ∩ F d− 1 ∩ · · · F2) ∪ F c
+1,
+we have
+P {Ac
+u} ≤ 8np exp (− Ω (τ np)) .
+Proof. Fix 2 ≤ k ≤ d. Suppose the neighbors of root vertex u are added to the queue in the
+order of v1, v 2, . . . , v du , where du = |Π1(u)|. Then by the branching process aforementioned,
+Πk(v1), . . . , Πk(vi− 1) are revealed before Π k(vi).
+Fix 1 ≤ i ≤ du and deﬁne
+Fk,i =
+{
+|Πk(vj)| ≤ (3np)k, ∀j ∈ [i]
+}
+∩
+{
+|Πk(vj)| ≥ τ
+(np
+2
+)k− 1
+, ∀j ∈ [i] s.t. |Π1(vj)| ≥ τ
+}
+.
+Then Fk = Fk,d u.
+Conditional on Π k− 1(vi), the probability of a given neutral vertex w being connected to some
+vertices in Π k− 1(vi) is
+pk ≜ 1 − (1 − p)|Πk− 1(vi)| ≤ p|Πk− 1(vi)|.
+On the one hand, there are at most n neutral vertices. Therefore, conditional on |Πk− 1(vi)|,
+|Πk(vi)| is stochastically dominated by Bin ( n, p |Πk− 1(vi)|) and hence
+P
+{
+|Πk(vi)| ≥ (4np)k | F1, . . . , Fk− 1, Fk,i − 1
+}
+≤ P
+{
+Bin
+(
+n, p (4np)k− 1
+)
+≥ (4np)k
+}
+≤ exp
+(
+− 4k− 1(np)k
+)
+, (29)
+32
+
+===== PAGE 33 =====
+
+where the last inequality follows from the Binomial tail bou nd ( 33).
+On the other hand, in view of assumption ( 28), conditional on F1, . . . , Fk− 1, Fk,i − 1 there are at
+least
+n − 1 −
+du∑
+i=1
+k− 1∑
+ℓ=0
+|Πℓ(vi)| −
+i− 1∑
+j=1
+|Πk(vj)| ≥ n − 1 − 4np
+k∑
+ℓ=0
+(4np)ℓ = n − (4np)k+2 − 1
+4np − 1 = n − o(n)
+neutral vertices to be connected to some vertices in Π k− 1(vi), and for each vi such that |Π1(vi)| ≥ τ,
+pk = 1 − (1 − p)|Πk− 1(vi)| ≥ (1 − o(1)) pτ
+(np
+2
+)k− 2
+.
+Therefore, conditional on F1, . . . , Fk− 1, Fk,i − 1, |Πk(vi)| is stochastically lower bounded by
+Bin
+(
+n − o(n), (1 − o(1)) pτ
+(np
+2
+)k− 2)
+and hence for 2 ≤ k ≤ d,
+P
+{
+|Πk(vi)| ≥ τ
+(np
+2
+)k− 1
+| F1, . . . , Fk− 1, Fk,i − 1
+}
+≤ P
+{
+Bin
+(
+n − o(n), (1 − o(1)) pτ
+(np
+2
+)k− 2)
+≤ τ
+(np
+2
+)k− 1}
+≤ exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+. (30)
+Combining ( 29) and ( 30) yields that
+P {Fk,i | F1, . . . , Fk− 1} ≥ P {Fk,i − 1 | F1, . . . , Fk− 1}
+(
+1 − 2 exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1)))
+.
+Therefore,
+P {Fk | F1, . . . , Fk− 1} ≥ 1 − 8np exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+.
+Finally, we note that
+P {Fd ∩ F d− 1 ∩ · · · ∩ F2 | F1}
+= P {F2 | F1} P {F3 | F1, F2} · · ·P {Fd | F1, . . . , Fd− 1}
+≥
+d∏
+k=2
+(
+1 − 8np exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1)))
+≥ 1 − 8np
+d∑
+k=2
+exp
+(
+− Ω
+(
+τ
+(np
+2
+)k− 1))
+≥ 1 − 8np exp (− Ω(τ np)) .
+Moreover, by the deﬁnition of Au, we have
+Ac
+u = (Fd ∩ F d− 1 ∩ · · · ∩ F2)c ∩ F 1.
+33
+
+===== PAGE 34 =====
+
+Hence,
+P {Ac
+u} = P {F1} P {(Fd ∩ F d− 1 ∩ · · · ∩ F2)c | F1}
+≤ P {(Fd ∩ F d− 1 ∩ · · · ∩ F2)c | F1}
+≤ 8np exp (− Ω(τ np)) ,
+completing the proof.
+The following lemma shows that with high probability, for al l possible root vertex u, it has at
+most one children v with |Π1(v)| ≤ τ for τ = o(np). Let A denote the adjacency matrix of G. For
+three distinct vertices u, v, w , deﬁne
+Bu,v,w = {Au,v = 1, A u,w = 1} ∩ {|Π1(v)| ≤ τ} ∩ { Π1(w) ≤ τ}.
+and B = ∪ u,v,w Bu,v,w .
+Lemma 16. Assume
+np ≥ log n, and np = o(n1/ 2), and τ = o(np). (31)
+Then
+P {B ∩ E} ≤ n− 1+o(1).
+Proof. By the union bound,
+P {B ∩ E} ≤
+∑
+u,v,w
+P {Bu,v,w ∩ E}
+it reduces to bounding P {Bu,v,w ∩ E} .
+Let Nv and Nw denote the number of neutral vertices in the branching proce ss when v and w
+are popped from the head of the queue, respectively. Then con ditional on Nv and Nw, |Π1(v)| and
+|Π1(w)| are independent and |Π1(v)| ∼ Binom(Nv, p ) and |Π1(w)| ∼ Binom(Nw, p ). On event E,
+both Nv and Nw is at least n − 1 − 4np − (4np)2 = n − o(n) in view of the assumption np = o(n1/ 2).
+Therefore,
+P {{|Π1(v)| ≤ τ, Π1(w) ≤ τ} ∩ E | Au,v = 1, A u,w = 1}
+=
+n− o(n)∑
+i,j =1
+P {{|Π1(v)| ≤ τ, Π1(w) ≤ τ, N v = i, N w = j} ∩ E | Au,v = 1, A u,w = 1}
+≤
+n∑
+i,j =n− o(n)
+P {|Π1(v)| ≤ τ, Π1(w) ≤ τ, N v = i, N w = j |Au,v = 1, A u,w = 1}
+=
+n∑
+i,j =n− o(n)
+P {Nv = i, N w = j |Au,v = 1, A u,w = 1} P {|Π1(v)| ≤ τ, Π1(w) ≤ τ |Nv = i, N w = j}
+=
+n∑
+i,j =n− o(n)
+P {Nv = i, N w = j |Au,v = 1, A u,w = 1} (P {Binom (n − o(n), p ) ≤ τ})2
+≤ exp (− 2(1 − o(1))np) ,
+where the last inequality holds due to the Binomial tail boun d ( 32) and the assumption that
+τ = o(np). It follows that
+P {Bu,v,w ∩ E} ≤ p2 exp (− 2(1 − o(1))np) = o(1/n 3),
+where the last equality holds due to np ≥ log n.
+34
+
+===== PAGE 35 =====
+
+Now we are ready to prove our main proposition. Let Hu denote the event that tree T (u)
+satisﬁes
+1. u has at most one children v such that |Π1(v)| ≤ τ.
+2. For each children v of u with |Π1(v)| ≥ τ, |Πk(v)| ≥ τ
+(np
+2
+)k− 1 for all 1 ≤ k ≤ d.
+Deﬁne H = ∩ uHu.
+Proposition 1. Suppose ( 28) and ( 31) hold and τ → ∞ . Then
+P {H} ≥ 1 − 3n− 1+o(1).
+Proof. Note that
+(∩ uAu) ∩ (Bc ∪ E c) ∩ E ⊂ H .
+Hence,
+P {H} ≥ 1 −
+∑
+u
+P {Ac
+u} − P {B ∩ E} − P {E c} .
+In view of Lemma
+15, we have
+P {Ac
+u} ≤ n− ω (1).
+By Lemma
+16, we have
+P {B ∩ E} ≤ n− 1+o(1).
+By Lemma 1, we have P {E} ≥ 1 − 1/n . Then the conclusion readily follows.
+Appendix E Time Complexity of Algorithm 1
+Recall that in Algorithm 1, we need to eﬃciently check whether there exist m independent ℓ-paths
+from a given vertex i2 to a set of m seeded vertices L ⊂ ΓG2
+ℓ (i2) in G2 and m independent ℓ-paths
+from a given vertex i1 to the corresponding seed set π0(L) ⊂ ΓG1
+ℓ (i1) in G1. Below we give the
+speciﬁc procedure to reduce this task to a maximum ﬂow proble m in a directed graph with source
+i1 and sink i2.
+First, we explore the local neighborhood N G1
+ℓ (i1) of i1 in G1 up to radius ℓ. We delete all the
+edges ( u, v ) found if ( u, v ) are at the same distance from i1. Also, we direct all the edges ( u, v )
+from u to v if u is closer to i1 than v by distance 1. Afterwards, we get a local neighborhood of
+i1, denoted by ˜N G1
+ℓ (i1), with edges pointing away from i1. Note that ˜N G1
+ℓ (i1) is not exactly a tree
+because a vertex may have multiple parents.
+Next, we repeat the above procedure for vertex i2 in G2 in exactly the same manner except
+that the edges are directed towards i2. Let ˜N G2
+ℓ (i2) denote the resulting local neighborhood of i2.
+Finally, we take the graph union of ˜N G1
+ℓ (i1) and ˜N G2
+ℓ (i2), by treating seeded vertex u ∈ ΓG2
+ℓ (i2)
+with its correspondence π0(u) ∈ ΓG1
+ℓ (i1) as the same vertex. All the other vertices, seeded or non-
+seeded, from the two diﬀerent local neighborhoods are treate d as distinct vertices. We denote the
+resulting graph union as Nℓ(i1, i 2).
+Recall that we aim to ﬁnd independent (vertex-disjoint exce pt for i1) ℓ-paths from i1 to seeded
+vertices in Γ G1
+ℓ (i1). Thus, we need to enforce the constraint that every vertex o ther than i1 can
+appear at most once. Similarly for i2. To this end, we apply the following procedure.
+1. Split each vertex u in Nℓ(i1, i 2) into to two vertices: uin and uout;
+35
+
+===== PAGE 36 =====
+
+2. Add an edge of capacity 1 from uin to uout;
+3. Replace each other edge ( u, v ) in Nℓ(i1, i 2) with an edge from uout to vin of capacity 1;
+4. Find a max-ﬂow from i1out to i2in.
+The idea behind this construction is as follows. Any ﬂow path from the source vertex i1out to
+the sink vertex i2in must have capacity 1, since all edges have capacity 1. Since a ll capacities are
+integral, there exists an integral max-ﬂow in which all ﬂows are integers [ FF56]. No two ﬂow paths
+can pass through the same intermediary vertex, because in pa ssing through a vertex u in the graph
+the ﬂow path must cross the edge from uin to uout, and the capacity here has been restricted to
+one. Also, the ﬂow path must pass exactly 2 ℓ distinct uout vertices (including the source vertex
+i1out, because all the edges are pointing away from i1out and towards i2in. Thus each ﬂow path
+from i1out to i2in represents a vertex-disjoint 2 ℓ-path from the source vertex i1 to sink vertex i2 in
+Nℓ(i1, i 2). As a consequence, the max-ﬂow from i1out to i2in corresponds to the maximum number,
+m, of independent ℓ-paths from i2 to a set of seeded vertices L ⊂ ΓG2
+ℓ (i2) in G2, and of independent
+ℓ-paths from i1 to the corresponding seed set π0(L) ⊂ ΓG1
+ℓ (i1) in G1.
+As for time complexity, we can ﬁnd a max-ﬂow from i1out to i2in via Ford–Fulkerson algo-
+rithm [FF56] in O(|E|f ) time steps, where |E|is the total number of edges of Nℓ(i1, i 2) after vertex
+splitting and edge replacement, and f is the max ﬂow. Under the choice of ℓ given in ( 12), the
+total number of vertices and edges in Nℓ(i1, i 2) are O(n1/ 2− ǫ). Hence, |E| = O(n1/ 2− ǫ). More-
+over, the max ﬂow f is upper bounded by the number of seeded vertices in Γ G1
+ℓ (i1) which is at
+most O(n1/ 2− ǫα ) with high probability. Hence, in total it takes O(nα ) time steps to compute the
+max-ﬂow from i1out to i2in via Ford–Fulkerson algorithm.
+Appendix F Tail Bounds for Binomial Distributions
+Theorem 6 ([
+Oka59, MU05]). Let X ∼ Bin(n, p ). It holds that
+P {X ≤ nt} ≤ exp
+(
+− n
+(√ p −
+√
+t
+)2)
+, ∀0 ≤ t ≤ p (32)
+P {X ≥ nt} ≤ exp
+(
+− 2n
+(√
+t − √ p
+)2)
+, ∀p ≤ t ≤ 1. (33)
+P {X ≥ nt} ≤ 2− nt, ∀6p ≤ t ≥ 1. (34)
+Acknowledgment
+J. Xu would also like to thank Cris Moore, Jian Ding, Zongming Ma, and Yihong Wu for inspiring
+discussions on graph matching and isomorphism. J. Xu was sup ported by the NSF Grant CCF-
+1755960.
+References
+[AS08] Noga Alon and Joel H. Spencer. The probabilistic meth od (the third edition), 2008.
+[Bab16] L´ aszl´ o Babai. Graph isomorphism in quasipolynom ial time [extended abstract]. In
+Proceedings of the Forty-eighth Annual ACM Symposium on Theor y of Computing ,
+STOC ’16, pages 684–697, New York, NY, USA, 2016. ACM.
+36
+
+===== PAGE 37 =====
+
+[BCL+18] Boaz Barak, Chi-Ning Chou, Zhixian Lei, Tselil Schramm, and Yueqi Sheng. (nearly)
+eﬃcient algorithms for the graph matching problem on correl ated random graphs.
+arXiv preprint arXiv:1805.02349 , 2018.
+[BCPP98] Rainer E Burkard, Eranda Cela, Panos M Pardalos, an d Leonidas S Pitsoulis. The
+quadratic assignment problem. In Handbook of combinatorial optimization , pages
+1713–1809. Springer, 1998.
+[BES80] L´ aszl´ o Babai, Paul Erdos, and Stanley M Selkow. Ra ndom graph isomorphism. SIaM
+Journal on computing , 9(3):628–635, 1980.
+[BGM82] L´ aszl´ o Babai, D Yu Grigoryev, and David M Mount. Is omorphism of graphs with
+bounded eigenvalue multiplicity. In Proceedings of the fourteenth annual ACM sym-
+posium on Theory of computing , pages 310–324. ACM, 1982.
+[Bol82] B´ ela Bollob´ as. Distinguishing vertices of rando m graphs. North-Holland Mathematics
+Studies, 62:33–49, 1982.
+[Bol01] B´ ela Bollob´ as. Random Graphs (2nd Edition) . Cambridge Studies in Advanced Math-
+ematics, 2001.
+[CFSV04] Donatello Conte, Pasquale Foggia, Carlo Sansone, and Mario Vento. Thirty years of
+graph matching in pattern recognition. International journal of pattern recognition
+and artiﬁcial intelligence , 18(03):265–298, 2004.
+[CK16] Daniel Cullina and Negar Kiyavash. Improved achieva bility and converse bounds for
+erdos-r´ enyi graph matching. InProceedings of the 2016 ACM SIGMETRICS Interna-
+tional Conference on Measurement and Modeling of Computer Sci ence, pages 63–72.
+ACM, 2016.
+[CK17] Daniel Cullina and Negar Kiyavash. Exact alignment r ecovery for correlated erdos
+renyi graphs. arXiv preprint arXiv:1711.06783 , 2017.
+[CP08] Tomek Czajka and Gopal Pandurangan. Improved random graph isomorphism. Jour-
+nal of Discrete Algorithms , 6(1):85–92, 2008.
+[F AP18] Donniell E. Fishkind, Sancar Adali, and Carey E. Pri ebe. Seeded graph matching.
+arXiv preprint arXiv:1209.0367 , 2018.
+[FF56] Lester R Ford and Delbert R Fulkerson. Maximal ﬂow thr ough a network. Canadian
+journal of Mathematics , 8(3):399–404, 1956.
+[FK15] Alan Frieze and Micha Karoski. Introduction to Random Graphs . Cambridge Univer-
+sity Press, 2015.
+[FQRM+16] Soheil Feizi, Gerald Quon, Mariana Recamonde-Mendoza, Muriel M´ edard, Mano-
+lis Kellis, and Ali Jadbabaie. Spectral alignment of networ ks. arXiv preprint
+arXiv:1602.04181, 2016.
+[HNM05] Aria D Haghighi, Andrew Y Ng, and Christopher D Manni ng. Robust textual inference
+via graph matching. In Proceedings of the conference on Human Language Technology
+and Empirical Methods in Natural Language Processing , pages 387–394. Association
+for Computational Linguistics, 2005.
+37
+
+===== PAGE 38 =====
+
+[JLR11] Svante Janson, Tomasz Luczak, and Andrzej Rucinski . Random Graphs. John Wiley&
+Sons, Inc., 2011.
+[KL14] Nitish Korula and Silvio Lattanzi. An eﬃcient reconc iliation algorithm for social
+networks. Proceedings of the VLDB Endowment , 7(5):377–388, 2014.
+[LFP13] Vince Lyzinski, Donniell E. Fishkind, and Carey E. P riebe. Seeded graph matching
+for correlated Erd˝ os-R´ enyi graphs.Journal of Machine Learning Research , 15, 2013.
+[Lip78] R. J. Lipton. The beacon set approach to graph isomor phism. Technical report, Yale
+University, 1978.
+[LR13] Lorenzo Livi and Antonello Rizzi. The graph matching problem. Pattern Analysis &
+Applications, 16(3):253–283, 2013.
+[Luk80] Eugene M Luks. Isomorphism of graphs of bounded vale nce can be tested in poly-
+nomial time. In 21st Annual Symposium on Foundations of Computer Science , pages
+42–49. IEEE, 1980.
+[MMS10] Konstantin Makarychev, Rajsekar Manokaran, and Ma xim Sviridenko. Maximum
+quadratic assignment problem: Reduction from maximum labe l cover and lp-based
+approximation algorithm. Automata, Languages and Programming , pages 594–604,
+2010.
+[MU05] Michael Mitzenmacher and Eli Upfal. Probability and Computing: Randomized Algo-
+rithms and Probabilistic Analysis . Cambridge University Press, New York, NY, USA,
+2005.
+[NS08] Arvind Narayanan and Vitaly Shmatikov. Robust de-an onymization of large sparse
+datasets. In Security and Privacy, 2008. SP 2008. IEEE Symposium on , pages 111–
+125. IEEE, 2008.
+[NS09] Arvind Narayanan and Vitaly Shmatikov. De-anonymiz ing social networks. In Security
+and Privacy, 2009 30th IEEE Symposium on , pages 173–187. IEEE, 2009.
+[Oka59] Masashi Okamoto. Some inequalities relating to the partial sum of binomial proba-
+bilities. Annals of the Institute of Statistical Mathematics , 10(1):29–35, Mar 1959.
+[PG11] Pedram Pedarsani and Matthias Grossglauser. On the p rivacy of anonymized net-
+works. In ACM SIGKDD International Conference on Knowledge Discovery and Data
+Mining, pages 1235–1243, 2011.
+[SGE17] F Shirani, S Garg, and E Erkip. Seeded graph matching : Eﬃcient algorithms and
+theoretical guarantees. arXiv preprint arXiv:1805.02349 , 2017.
+[SS05] Christian Schellewald and Christoph Schn¨ orr. Prob abilistic subgraph matching based
+on convex relaxation. In EMMCVPR, volume 5, pages 171–186. Springer, 2005.
+[SXB08] Rohit Singh, Jinbo Xu, and Bonnie Berger. Global ali gnment of multiple protein
+interaction networks with application to functional ortho logy detection. Proceedings
+of the National Academy of Sciences , 105(35):12763–12768, 2008.
+[Vu02] V. H. Vu. Concentration of non-lipschitz functions a nd applications. Random Struct.
+Algorithms, 20(3):262–316, May 2002.
+38
+
+===== PAGE 39 =====
+
+[Wri71] Edward M Wright. Graphs on unlabelled nodes with a gi ven number of edges. Acta
+Mathematica, 126(1):1–9, 1971.
+[YG13] Lyudmila Yartseva and Matthias Grossglauser. On the performance of percolation
+graph matching. In Proceedings of the ﬁrst ACM conference on Online social netwo rks,
+pages 119–130. ACM, 2013.
+39
