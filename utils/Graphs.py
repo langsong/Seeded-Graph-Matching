@@ -52,15 +52,15 @@ def gen_SBM_graphs(directed=False, loops=False, n_per_block=N_PER_BLOCK, n_block
 def gen_IER_graphs(
     n=N_ER_NODES,
     rho=ER_RHO,
-    p_min=0.0,
-    p_max=1.0,
+    alpha=1.0,
+    beta=99.0,
     directed=False,
     loops=False,
 ):
     """Generate and shuffle a correlated inhomogeneous Erdős-Rényi pair.
 
     Each edge probability is sampled independently from
-    ``Uniform(p_min, p_max)``. For an undirected graph, one probability is
+    ``Beta(alpha, beta)``. For an undirected graph, one probability is
     sampled for each unordered vertex pair and mirrored across the diagonal.
 
     Conditional on the resulting probability matrix ``P``, graph A has
@@ -69,9 +69,10 @@ def gen_IER_graphs(
     Graph B is then randomly relabelled, and the returned permutation maps
     vertices in graph A to their observed labels in the shuffled graph B.
 
-    The default interval gives the dense Uniform(0, 1) model. For a sparse
-    model with desired mean edge probability ``p_bar <= 0.5``, use
-    ``p_min=0`` and ``p_max=2 * p_bar``.
+    The mean edge probability is ``alpha / (alpha + beta)``, so the expected
+    average degree without loops is
+    ``(n - 1) * alpha / (alpha + beta)``. The defaults ``Beta(1, 99)``
+    therefore give expected average degree about 6 when ``n=600``.
     """
 
     if not isinstance(n, (int, np.integer)) or n <= 0:
@@ -80,13 +81,11 @@ def gen_IER_graphs(
         raise TypeError("rho must be numeric.")
     if not 0.0 <= float(rho) <= 1.0:
         raise ValueError("rho must be between 0 and 1.")
-    for name, value in (("p_min", p_min), ("p_max", p_max)):
+    for name, value in (("alpha", alpha), ("beta", beta)):
         if not isinstance(value, (int, float, np.integer, np.floating)):
             raise TypeError(f"{name} must be numeric.")
-        if not 0.0 <= float(value) <= 1.0:
-            raise ValueError(f"{name} must be between 0 and 1.")
-    if p_min > p_max:
-        raise ValueError("p_min must be less than or equal to p_max.")
+        if not np.isfinite(value) or float(value) <= 0.0:
+            raise ValueError(f"{name} must be positive and finite.")
     if not isinstance(directed, (bool, np.bool_)):
         raise TypeError("directed must be boolean.")
     if not isinstance(loops, (bool, np.bool_)):
@@ -94,20 +93,18 @@ def gen_IER_graphs(
 
     probability_matrix = np.zeros((n, n), dtype=float)
     if directed:
-        probability_matrix = np.random.uniform(p_min, p_max, size=(n, n))
+        probability_matrix = np.random.beta(alpha, beta, size=(n, n))
         if not loops:
             np.fill_diagonal(probability_matrix, 0.0)
     else:
         upper_rows, upper_columns = np.triu_indices(n, k=1)
-        upper_probabilities = np.random.uniform(
-            p_min, p_max, size=len(upper_rows)
-        )
+        upper_probabilities = np.random.beta(alpha, beta, size=len(upper_rows))
         probability_matrix[upper_rows, upper_columns] = upper_probabilities
         probability_matrix[upper_columns, upper_rows] = upper_probabilities
         if loops:
             diagonal = np.arange(n)
-            probability_matrix[diagonal, diagonal] = np.random.uniform(
-                p_min, p_max, size=n
+            probability_matrix[diagonal, diagonal] = np.random.beta(
+                alpha, beta, size=n
             )
 
     correlation_matrix = np.full((n, n), float(rho), dtype=float)
@@ -162,10 +159,8 @@ def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, direct
     
     return G1, G2_shuffled, optimal_permutation
 
-def gen_PAPER_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
-    """
-    Generates a pair of correlated power-law graphs with a specified correlation rho.
-    """
+def gen_pareto_chung_lu_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
+    """Generate correlated Pareto-weight Chung–Lu graphs with background edge probability p."""
     # 1. Generate a power-law sequence for expected node degrees
     # Add 2 to avoid 0-degree nodes which can mess up matching metrics
     expected_degrees = np.random.pareto(alpha, size=n) + 2
@@ -202,3 +197,31 @@ def gen_PAPER_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho
     optimal_permutation = np.argsort(shuffle_perm)
     
     return G1, G2_shuffled, optimal_permutation
+
+
+def gen_PAPER_graphs(n=N_PPR_NODES, alpha=0.0, beta=1.0, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO):
+    """Generate a PAPER pair sharing one PA tree and correlated ER noise.
+
+    ``alpha`` and ``beta`` control attachment weight alpha + beta * degree.
+    ``p`` is the ER edge probability; ``rho`` correlates only the ER edges.
+    """
+    tree = np.zeros((n, n), dtype=int)
+    degrees = np.zeros(n, dtype=int)
+
+    for vertex in range(1, n):
+        if vertex == 1:
+            parent = 0
+        else:
+            weights = alpha + beta * degrees[:vertex]
+            parent = np.random.choice(vertex, p=weights / weights.sum())
+        tree[vertex, parent] = tree[parent, vertex] = 1
+        degrees[vertex] = 1
+        degrees[parent] += 1
+
+    er_1, er_2 = er_corr(n, p, rho, directed=False, loops=False)
+    graph_1 = np.maximum(tree, er_1)
+    graph_2 = np.maximum(tree, er_2)
+
+    shuffle_perm = np.random.permutation(n)
+    graph_2_shuffled = graph_2[shuffle_perm][:, shuffle_perm]
+    return graph_1, graph_2_shuffled, np.argsort(shuffle_perm)

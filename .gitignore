@@ -23,3 +23,11 @@ sdist/
 var/
 wheels/
 *.egg-info/
+
+
+.DS_Store
+.Rhistory
+.ipynb_checkpoints/
+Literature Review/
+tmp/
+_to_delete/

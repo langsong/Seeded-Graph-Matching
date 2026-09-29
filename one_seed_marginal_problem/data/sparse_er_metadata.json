@@ -1,0 +1,95 @@
+{
+  "problem": "sparse_er",
+  "description": "Sparse homogeneous ER graph.",
+  "config": {
+    "graph_model": "sparse_er",
+    "n_graph_pairs": 20,
+    "candidates_per_pair": 50,
+    "vertex_count": 300,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.02,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.8,
+    "n_seeds": 8,
+    "max_iter": 30,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "graph_pair_seed": 3414274753,
+  "sgm_seed": 680531080,
+  "existing_seed_vertices_graph1": [
+    80,
+    125,
+    139,
+    231,
+    235,
+    284,
+    285,
+    287
+  ],
+  "existing_seed_vertices_graph2": [
+    194,
+    32,
+    183,
+    138,
+    165,
+    50,
+    289,
+    132
+  ],
+  "baseline_sgm": {
+    "h0_accuracy": 0.0684931506849315,
+    "final_unseeded_accuracy": 0.3321917808219178,
+    "final_all_accuracy": 0.35,
+    "sgm_runtime_seconds": 0.16015483415685594,
+    "sgm_n_iter": 30,
+    "sgm_converged": false,
+    "sgm_objective_score": 910.0
+  },
+  "success_threshold": 0.9,
+  "candidate_count": 292,
+  "candidate_success_rate": 0.4589041095890411,
+  "feature_columns": [
+    "candidate_degree_percentile",
+    "candidate_core_percentile",
+    "candidate_edges_to_existing_seeds",
+    "candidate_new_one_hop_coverage_fraction",
+    "candidate_new_second_witness_fraction",
+    "candidate_new_two_hop_coverage_fraction",
+    "candidate_mean_nearest_seed_distance_reduction",
+    "candidate_q90_nearest_seed_distance_reduction",
+    "candidate_signature_collision_reduction",
+    "candidate_max_seed_neighborhood_jaccard",
+    "candidate_existing_seed_community_fraction",
+    "candidate_seed_signature_best_agreement",
+    "candidate_seed_signature_agreement_gap",
+    "candidate_gradient_row_top2_gap_z",
+    "candidate_gradient_row_normalized_entropy"
+  ],
+  "predictor_scope": "Graph A structure plus correspondence-free Graph B and baseline SGM uncertainty; the candidate's true Graph B match is excluded",
+  "gradient_diagnostics_are_postquery_outcomes": true,
+  "feature_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/one_seed_marginal_problem/data/sparse_er_candidate_features.csv",
+  "outcome_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/one_seed_marginal_problem/data/sparse_er_candidate_outcomes.csv"
+}

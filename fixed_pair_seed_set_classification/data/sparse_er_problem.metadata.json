@@ -1,0 +1,44 @@
+{
+  "problem": "sparse_er",
+  "graph_pair_seed": 4192889773,
+  "sgm_seed": 2026,
+  "source_pair_id": 10,
+  "pilot_success_rate": 0.5,
+  "config": {
+    "graph_model": "sparse_er",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.8,
+    "n_seeds": 18,
+    "max_iter": 30,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "problem_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sparse_er_problem.npz"
+}

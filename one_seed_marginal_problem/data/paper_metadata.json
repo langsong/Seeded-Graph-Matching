@@ -1,0 +1,107 @@
+{
+  "problem": "paper",
+  "description": "Sparse heterogeneous PAPER graph.",
+  "config": {
+    "graph_model": "paper",
+    "n_graph_pairs": 20,
+    "candidates_per_pair": 50,
+    "vertex_count": 300,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.01,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.7,
+    "n_seeds": 14,
+    "max_iter": 30,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "graph_pair_seed": 1615603467,
+  "sgm_seed": 1471549916,
+  "existing_seed_vertices_graph1": [
+    10,
+    25,
+    35,
+    39,
+    57,
+    59,
+    85,
+    102,
+    114,
+    126,
+    232,
+    238,
+    261,
+    282
+  ],
+  "existing_seed_vertices_graph2": [
+    195,
+    239,
+    66,
+    156,
+    15,
+    162,
+    75,
+    212,
+    292,
+    20,
+    72,
+    258,
+    131,
+    137
+  ],
+  "baseline_sgm": {
+    "h0_accuracy": 0.08391608391608392,
+    "final_unseeded_accuracy": 0.4090909090909091,
+    "final_all_accuracy": 0.43666666666666665,
+    "sgm_runtime_seconds": 0.15751037490554154,
+    "sgm_n_iter": 30,
+    "sgm_converged": false,
+    "sgm_objective_score": 898.0
+  },
+  "success_threshold": 0.9,
+  "candidate_count": 286,
+  "candidate_success_rate": 0.5174825174825175,
+  "feature_columns": [
+    "candidate_degree_percentile",
+    "candidate_core_percentile",
+    "candidate_edges_to_existing_seeds",
+    "candidate_new_one_hop_coverage_fraction",
+    "candidate_new_second_witness_fraction",
+    "candidate_new_two_hop_coverage_fraction",
+    "candidate_mean_nearest_seed_distance_reduction",
+    "candidate_q90_nearest_seed_distance_reduction",
+    "candidate_signature_collision_reduction",
+    "candidate_max_seed_neighborhood_jaccard",
+    "candidate_existing_seed_community_fraction",
+    "candidate_seed_signature_best_agreement",
+    "candidate_seed_signature_agreement_gap",
+    "candidate_gradient_row_top2_gap_z",
+    "candidate_gradient_row_normalized_entropy"
+  ],
+  "predictor_scope": "Graph A structure plus correspondence-free Graph B and baseline SGM uncertainty; the candidate's true Graph B match is excluded",
+  "gradient_diagnostics_are_postquery_outcomes": true,
+  "feature_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/one_seed_marginal_problem/data/paper_candidate_features.csv",
+  "outcome_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/one_seed_marginal_problem/data/paper_candidate_outcomes.csv"
+}

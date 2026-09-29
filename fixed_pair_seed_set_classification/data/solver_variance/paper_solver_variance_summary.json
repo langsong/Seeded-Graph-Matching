@@ -1,0 +1,158 @@
+{
+  "n_seed_sets": 200,
+  "n_solver_runs": 1000,
+  "original_run_max_absolute_difference": 0.0,
+  "final_accuracy_variance": {
+    "within_set_variance": 0.039389712219144356,
+    "estimated_between_set_variance": 0.05958497687730743,
+    "between_to_within_ratio": 1.512704041750975,
+    "estimated_single_run_reliability": 0.6020223697721474,
+    "estimated_five_run_mean_reliability": 0.8832255923238606
+  },
+  "h0_accuracy_variance": {
+    "within_set_variance": 3.438288704216686e-05,
+    "estimated_between_set_variance": 0.00011003657870763489,
+    "between_to_within_ratio": 3.2003298202587533,
+    "estimated_single_run_reliability": 0.7619234577301844,
+    "estimated_five_run_mean_reliability": 0.9411821762676008
+  },
+  "mean_within_set_final_accuracy_std": 0.1556060416732282,
+  "median_within_set_final_accuracy_range": 0.32807017543859657,
+  "fraction_sets_range_over_0_25": 0.555,
+  "split_2_vs_3_spearman_mean": 0.775049279028476,
+  "split_2_vs_3_spearman_min": 0.7441665888608734,
+  "split_2_vs_3_spearman_max": 0.8144902857561257,
+  "success_count_distribution": {
+    "0": 53,
+    "1": 24,
+    "2": 23,
+    "3": 24,
+    "4": 31,
+    "5": 45
+  },
+  "fraction_sets_with_mixed_success_outcomes": 0.51,
+  "mean_pairwise_solver_label_disagreement": 0.251,
+  "original_single_run_success_rate": 0.515,
+  "five_run_mean_success_probability": 0.491,
+  "majority_success_rate": 0.5,
+  "original_vs_majority_label_disagreement": 0.195,
+  "original_vs_five_run_mean_accuracy_spearman": 0.7559973795429978,
+  "original_mean_final_accuracy": 0.6605350877192981,
+  "five_run_mean_final_accuracy": 0.6620964912280701,
+  "best_objective_of_five_mean_final_accuracy": 0.8261228070175438,
+  "best_objective_of_five_success_rate": 0.735,
+  "any_of_five_success_rate": 0.735,
+  "best_objective_captures_available_success": 1.0,
+  "mean_run_seconds": 1.0116265420061537,
+  "total_sgm_seconds": 1011.6265420061536,
+  "model_cv": [
+    {
+      "task": "classification",
+      "model": "Logistic regression",
+      "training_label": "original_single_run",
+      "auc_vs_majority": 0.6677,
+      "average_precision_vs_majority": 0.6201373014546308,
+      "mse_vs_empirical_success_probability": 0.1420520230746657
+    },
+    {
+      "task": "classification",
+      "model": "Logistic regression",
+      "training_label": "majority_of_five",
+      "auc_vs_majority": 0.6441,
+      "average_precision_vs_majority": 0.5929807944096828,
+      "mse_vs_empirical_success_probability": 0.14204454135454264
+    },
+    {
+      "task": "classification",
+      "model": "Random forest",
+      "training_label": "original_single_run",
+      "auc_vs_majority": 0.6004,
+      "average_precision_vs_majority": 0.560784270297104,
+      "mse_vs_empirical_success_probability": 0.15131118201875604
+    },
+    {
+      "task": "classification",
+      "model": "Random forest",
+      "training_label": "majority_of_five",
+      "auc_vs_majority": 0.6047999999999999,
+      "average_precision_vs_majority": 0.5687780940007094,
+      "mse_vs_empirical_success_probability": 0.14671348739687215
+    },
+    {
+      "task": "regression",
+      "model": "Ridge",
+      "training_label": "original_single_run",
+      "mae_vs_five_run_mean": 0.20586662839393935,
+      "r2_vs_five_run_mean": 0.12318232434731313,
+      "spearman_vs_five_run_mean": 0.3535007841690528
+    },
+    {
+      "task": "regression",
+      "model": "Ridge",
+      "training_label": "mean_of_five",
+      "mae_vs_five_run_mean": 0.2074834649050677,
+      "r2_vs_five_run_mean": 0.1255013734454674,
+      "spearman_vs_five_run_mean": 0.344258212989265
+    },
+    {
+      "task": "regression",
+      "model": "Random forest",
+      "training_label": "original_single_run",
+      "mae_vs_five_run_mean": 0.2188813484453905,
+      "r2_vs_five_run_mean": 0.013580954454452954,
+      "spearman_vs_five_run_mean": 0.23731349665528897
+    },
+    {
+      "task": "regression",
+      "model": "Random forest",
+      "training_label": "mean_of_five",
+      "mae_vs_five_run_mean": 0.2191560034002885,
+      "r2_vs_five_run_mean": 0.050562673922847856,
+      "spearman_vs_five_run_mean": 0.2734385020009419
+    }
+  ],
+  "top_feature_correlations_with_five_run_mean_accuracy": [
+    {
+      "feature": "nonseed_three_hop_seed_count_mean",
+      "spearman": 0.3826778025925857
+    },
+    {
+      "feature": "nonseed_within_two_hops_of_three_seeds_fraction",
+      "spearman": 0.3346378681590561
+    },
+    {
+      "feature": "seed_pair_shortest_path_mean",
+      "spearman": -0.31677568594574035
+    },
+    {
+      "feature": "nonseed_seed_signature_normalized_entropy",
+      "spearman": 0.30805895506333136
+    },
+    {
+      "feature": "seed_degree_mean",
+      "spearman": 0.28051479673044666
+    },
+    {
+      "feature": "seed_pagerank_mean",
+      "spearman": 0.2701308870611655
+    }
+  ],
+  "strategy_summary": {
+    "random": {
+      "n_sets": 100,
+      "original_success_rate": 0.55,
+      "mean_success_probability": 0.516,
+      "mean_final_accuracy": 0.6707122807017544,
+      "mean_within_set_final_accuracy_std": 0.15047566751374633,
+      "label_disagreement": 0.17
+    },
+    "feature_diverse": {
+      "n_sets": 100,
+      "original_success_rate": 0.48,
+      "mean_success_probability": 0.466,
+      "mean_final_accuracy": 0.653480701754386,
+      "mean_within_set_final_accuracy_std": 0.16073641583271006,
+      "label_disagreement": 0.22
+    }
+  }
+}

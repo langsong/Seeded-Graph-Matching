@@ -1,0 +1,39 @@
+{
+  "problem": "sparse_er",
+  "graph_pair_seed": 4192889773,
+  "sgm_seed": 2026,
+  "success_threshold": 0.9,
+  "random_seed": 1234,
+  "n_random_train": 500,
+  "n_feature_diverse_train": 400,
+  "n_random_test": 100,
+  "feature_pool_size": 10000,
+  "rows": 1000,
+  "feature_columns": [
+    "seed_degree_mean",
+    "seed_pagerank_mean",
+    "seed_betweenness_mean",
+    "nonseed_covered_fraction",
+    "nonseed_covered_by_two_fraction",
+    "nonseed_covered_by_three_fraction",
+    "nonseed_seed_neighbor_q10",
+    "nonseed_nearest_seed_distance_mean",
+    "nonseed_nearest_seed_distance_max",
+    "nonseed_nearest_seed_distance_disconnected_fraction",
+    "nonseed_within_two_hops_of_three_seeds_fraction",
+    "nonseed_three_hop_seed_count_mean",
+    "nonseed_seed_signature_normalized_entropy",
+    "nonseed_seed_signature_collision_pair_fraction",
+    "seed_nonseed_neighborhood_jaccard_mean",
+    "seed_pair_shortest_path_mean",
+    "seed_community_normalized_entropy"
+  ],
+  "target_columns": [
+    "h0_accuracy",
+    "final_unseeded_accuracy",
+    "final_all_accuracy",
+    "sgm_success"
+  ],
+  "predictor_scope": "Graph A seed-set features only",
+  "output_csv": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sparse_er_seed_sets.csv"
+}
