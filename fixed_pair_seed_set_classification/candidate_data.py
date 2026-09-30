@@ -22,7 +22,7 @@ from .seed_selection_common import (
     evaluate_seed_set,
     prepare_problem,
 )
-from cross_pair_seed_set_quality.data_collection import seed_set_features
+from experiment_common.features import seed_set_features
 
 
 PROBLEMS = {

@@ -22,10 +22,7 @@ import numpy as np
 from graspologic.match import graph_match
 import graspologic.match.wrappers as match_wrappers
 
-from cross_pair_seed_set_quality.data_collection import (
-    ExperimentConfig,
-    generate_graph_pair,
-)
+from experiment_common.graphs import ExperimentConfig, generate_graph_pair
 
 
 SUCCESS_THRESHOLD = 0.90

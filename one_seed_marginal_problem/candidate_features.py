@@ -20,7 +20,7 @@ os.environ.setdefault(
 
 import numpy as np
 
-from cross_pair_seed_set_quality.data_collection import build_graph_context
+from experiment_common.features import build_graph_context
 from .one_seed_problem import (
     PROBLEMS,
     SUCCESS_THRESHOLD,

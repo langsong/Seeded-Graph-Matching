@@ -1,8 +1,10 @@
 import os
 import json
 from pathlib import Path
-from test_seeding import *
-from tests import TESTS
+from .test_seeding import *
+from .tests import TESTS
+
+RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 def run_experiment_sweep(tests):
     """
@@ -30,7 +32,7 @@ def run_experiment_sweep(tests):
         print(f"Starting experiment: {test_name}...")
         
         # 1. Create a folder inside the 'results' directory named after the test
-        save_folder = Path(f"results/{test_name}") 
+        save_folder = RESULTS_DIR / test_name
         os.makedirs(save_folder, exist_ok=True)
         
         # 2. Call compare_seeding_sequential with the given parameters
@@ -43,14 +45,14 @@ def run_experiment_sweep(tests):
         )
         
         # 3. Call plot_results to save the visualization into the new folder
-        plot_results(accuracies, seed_numbers, y_label="Match Ratio", show_plot=False, out_file=f"results/{test_name}/accuracy_by_seed_count.png")
-        plot_results(runtimes, seed_numbers, y_label="CPU time", show_plot=False, out_file=f"results/{test_name}/runtime_by_seed_count.png")
+        plot_results(accuracies, seed_numbers, y_label="Match Ratio", show_plot=False, out_file=save_folder / "accuracy_by_seed_count.png")
+        plot_results(runtimes, seed_numbers, y_label="CPU time", show_plot=False, out_file=save_folder / "runtime_by_seed_count.png")
 
         # 4. Save results as json files
-        with open(f"results/{test_name}/accuracy_data.json", "w") as f:
+        with open(save_folder / "accuracy_data.json", "w") as f:
             json.dump(accuracies, f)
 
-        with open(f"results/{test_name}/runtime_data.json", "w") as f:
+        with open(save_folder / "runtime_data.json", "w") as f:
             json.dump(runtimes, f)
 
 

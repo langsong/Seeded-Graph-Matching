@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 from scipy.io import loadmat
 
-from cross_pair_seed_set_quality.data_collection import ExperimentConfig
+from experiment_common.graphs import ExperimentConfig
 
 from ..seed_selection_common import (
     FixedProblem,

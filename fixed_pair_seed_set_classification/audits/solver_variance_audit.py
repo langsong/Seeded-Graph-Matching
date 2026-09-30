@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from cross_pair_seed_set_quality.data_collection import run_sgm_once
+from experiment_common.sgm import run_sgm_once
 
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"

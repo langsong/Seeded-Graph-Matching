@@ -2,8 +2,8 @@
 
 from utils.Graphs import *
 from utils.SeedingMethods import *
-from test_seeding import graspologic_algorithm
-from ExpandWhenStuck import graph_match_percolation
+from .test_seeding import graspologic_algorithm
+from experiment_common.percolation import graph_match_percolation
 
 TESTS = [
     

@@ -1,8 +1,8 @@
 import numpy as np
 import time
-from Experiments import run_experiments
+from .Experiments import run_experiments
 from graspologic.match import graph_match
-from ExpandWhenStuck import graph_match_percolation
+from experiment_common.percolation import graph_match_percolation
 from config import *
 from utils.Plotting import *
 from utils.SeedingMethods import *

@@ -19,15 +19,9 @@ os.environ.setdefault(
     "MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "sgm_matplotlib_cache")
 )
 
-from cross_pair_seed_set_quality.data_collection import (
-    ExperimentConfig,
-    GraphContext,
-    build_graph_context,
-    generate_graph_pair,
-    preset_config,
-    run_sgm_once,
-    seed_set_features,
-)
+from experiment_common.features import GraphContext, build_graph_context, seed_set_features
+from experiment_common.graphs import ExperimentConfig, generate_graph_pair, preset_config
+from experiment_common.sgm import run_sgm_once
 
 
 DEFAULT_PROBLEM_DIR = Path(__file__).resolve().parent / "data"
