@@ -10,6 +10,18 @@ import networkx as nx
 import numpy as np
 
 FEATURE_SCHEMA_VERSION = 3
+FIXED_PAIR_FEATURE_SCHEMA_VERSION = 1
+FIXED_PAIR_FEATURE_COLUMNS = (
+    "seed_nonseed_degree_mean",
+    "seed_harmonic_mean",
+    "nonseed_covered_fraction",
+    "nonseed_witness_overlap_fraction",
+    "nonseed_witness_pair_mass_mean",
+    "nonseed_nearest_seed_distance_mean",
+    "nonseed_three_hop_seed_count_mean",
+    "nonseed_distance_signature_unique_fraction_r3",
+    "seed_nonseed_neighborhood_jaccard_mean",
+)
 
 
 @dataclass
@@ -213,6 +225,81 @@ def distances_from_seeds(
         context.seed_distance_cache[source] = source_distances
         distances[:, column] = source_distances
     return distances
+
+
+def distance_signature_unique_fraction(
+    context: GraphContext, seeds: np.ndarray, nonseeds: np.ndarray, radius: int = 3
+) -> float:
+    """Share of nonseeds with a unique seed-distance vector capped at radius."""
+
+    signatures = np.minimum(
+        distances_from_seeds(context, seeds)[nonseeds], radius
+    ).astype(np.uint8)
+    _, counts = np.unique(signatures, axis=0, return_counts=True)
+    return float(np.sum(counts == 1) / len(nonseeds))
+
+
+def fixed_pair_seed_set_features(
+    context: GraphContext, seeds: np.ndarray
+) -> dict[str, float]:
+    """Nine Graph-A features for the fixed-pair seed-set experiment."""
+
+    seeds = np.asarray(seeds, dtype=int)
+    n = len(context.degrees)
+    nonseed_mask = np.ones(n, dtype=bool)
+    nonseed_mask[seeds] = False
+    nonseeds = np.flatnonzero(nonseed_mask)
+    adjacency = context.adjacency[np.ix_(nonseeds, seeds)].astype(float)
+    witnesses = adjacency.sum(axis=1)
+    cut_edges = float(witnesses.sum())
+    covered = float(np.sum(witnesses > 0))
+
+    seed_degrees_to_nonseeds = adjacency.sum(axis=0)
+    overlap = adjacency.T @ adjacency
+    unions = (
+        seed_degrees_to_nonseeds[:, None]
+        + seed_degrees_to_nonseeds[None, :] - overlap
+    )
+    pairs = np.triu_indices(len(seeds), k=1)
+    jaccard = np.divide(
+        overlap[pairs], unions[pairs],
+        out=np.zeros(len(pairs[0]), dtype=float),
+        where=unions[pairs] > 0,
+    )
+
+    distances = distances_from_seeds(context, seeds)
+    nonseed_distances = distances[nonseeds]
+    nearest = np.min(nonseed_distances, axis=1)
+    finite_nearest = nearest[np.isfinite(nearest)]
+    reciprocal = np.divide(
+        1.0, distances,
+        out=np.zeros_like(distances),
+        where=(distances > 0) & np.isfinite(distances),
+    )
+
+    return {
+        "seed_nonseed_degree_mean": float(cut_edges / len(seeds)),
+        "seed_harmonic_mean": float(reciprocal.sum(axis=0).mean()),
+        "nonseed_covered_fraction": float(covered / len(nonseeds)),
+        "nonseed_witness_overlap_fraction": (
+            float(1 - covered / cut_edges) if cut_edges else 0.0
+        ),
+        "nonseed_witness_pair_mass_mean": float(
+            np.mean(witnesses * (witnesses - 1) / 2)
+        ),
+        "nonseed_nearest_seed_distance_mean": (
+            float(finite_nearest.mean()) if len(finite_nearest) else float("nan")
+        ),
+        "nonseed_three_hop_seed_count_mean": float(
+            np.mean(np.sum(nonseed_distances <= 3, axis=1))
+        ),
+        "nonseed_distance_signature_unique_fraction_r3": (
+            distance_signature_unique_fraction(context, seeds, nonseeds)
+        ),
+        "seed_nonseed_neighborhood_jaccard_mean": (
+            float(jaccard.mean()) if len(jaccard) else 0.0
+        ),
+    }
 
 
 def seed_set_features(

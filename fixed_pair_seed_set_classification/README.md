@@ -1,32 +1,40 @@
-# Fixed-pair seed-set classification
+# Fixed-pair seed-set selection
 
-This experiment holds one graph pair fixed for each graph model and samples many seed sets on that pair. It isolates seed-set variation from graph-pair difficulty.
+Each benchmark keeps one correlated graph pair fixed, varies the seed set in Graph A, and measures SGM performance. The current focus is sparse ER, true PAPER (`paper_pa`), and fixed-weight Pareto–Chung–Lu (`chung_lu`). The older `paper` name refers to the historical random-weight Chung–Lu generator.
 
-- `pairs/`: one fixed benchmark definition per graph model, including the new `paper_pa` model and the Enron pair.
-- `seed_selection_common.py`: shared preparation and SGM evaluation.
-- `candidate_data.py`: random and feature-diverse seed-set collection.
-- `audits/solver_variance_audit.py`: repeat 200 saved historical `paper` seed sets with five solver RNG seeds.
-- `audits/analyze_solver_variance.py`: quantify run-to-run variation and compare single-run and averaged labels.
-- `audits/SOLVER_VARIANCE_AUDIT.md`: findings from the completed Pareto–Chung–Lu audit.
-- `SEED_SET_SELECTION_FINDINGS.md`: short comparison of the four saved graph-model datasets.
-- `seed_set_classification.ipynb`: classification and ranking analysis.
-- `data/`: fixed graph pairs, collected seed sets, and metadata; `data/solver_variance/` holds the audit outputs.
+| Model | Pair settings | Seed count |
+| --- | --- | ---: |
+| `sparse_er` | 600 vertices, edge probability 0.010, correlation 0.70 | 30 |
+| `paper_pa` | 600 vertices, attachment alpha=0 and beta=1, ER background probability 0.005 and correlation 0.62 | 16 |
+| `chung_lu` | 600 vertices, fixed Pareto quantile weights with alpha=2, ER floor 0.005, correlation 0.70 | 22 |
 
-Run commands from the repository root:
+For each model, the default pilot draws 400 unique seed sets:
+
+| Group | Count | Purpose |
+| --- | ---: | --- |
+| Uniform random training | 80 | Typical sets for fitting |
+| Uniform random test | 40 | Held-out reference distribution |
+| Degree-weighted training | 160 | About 26–27 sets at each exponent −1, −0.5, 0.5, 1, 2, and 3 |
+| Swap-path training | 80 | Rule-based starting sets and partial replacements with random nonseeds |
+| Degree-controlled training | 40 | High and low tails of coverage, witness-pair mass, and three-hop distance-signature uniqueness within mean-degree bins |
+
+The six swap starting rules are top degree, top harmonic centrality, greedy one-hop coverage, greedy witness-pair mass, greedy one-hop adjacency-signature separation, and farthest-point spread within the largest connected component. Swap counts are 0, 2, 5, 10, and half the seed budget where distinct. Degree weights are proportional to `max(degree, 1) ** gamma`, which also defines negative exponents for isolated vertices. The degree-controlled sets are selected from a pool of 4,000 degree-weighted sets using Graph-A features only. The pool is split into ten equally sized mean-degree bins; within each bin, high and low feature sets are paired at the same total seed degree whenever possible. No SGM outcome is used to choose candidates. The CSV records each set's sampling strategy, starting rule, swap count, weighting exponent, contrast, and degree bin.
+
+The fixed-pair feature panel is frozen at version 1 with nine Graph-A predictors: mean seed-to-nonseed degree, mean seed harmonic centrality, one-hop nonseed coverage, witness overlap, witness-pair mass, mean nearest-seed distance among reachable nonseeds, mean number of seeds within three hops, the fraction of nonseeds with unique seed-distance signatures capped at three hops, and mean pairwise seed-neighborhood Jaccard overlap. These are computed for every candidate without inspecting Graph B or SGM outcomes.
+
+Every set is evaluated with the same five solver RNG seeds, **2026–2030**, at `max_iter=100`. A run succeeds when final unseeded accuracy is at least 0.90. The main CSV has one row per set with mean H0, mean final accuracy, success fraction, and best-by-objective accuracy. The companion `_runs.csv` has all five individual outcomes. The notebook uses the random test rows for its held-out evaluation.
+
+Run from the repository root in the environment containing the project dependencies, one model at a time:
 
 ```bash
-python -m fixed_pair_seed_set_classification.candidate_data --graph-model all
-python -m fixed_pair_seed_set_classification.candidate_data --graph-model paper
-python -m fixed_pair_seed_set_classification.candidate_data --graph-model paper_pa
-python -m fixed_pair_seed_set_classification.candidate_data --graph-model enron
+conda activate ds
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python -m fixed_pair_seed_set_classification.candidate_data --graph-model sparse_er
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python -m fixed_pair_seed_set_classification.candidate_data --graph-model paper_pa
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python -m fixed_pair_seed_set_classification.candidate_data --graph-model chung_lu
 ```
 
-Existing datasets are protected; add `--overwrite` only when intentionally regenerating them.
+Outputs go to `data/sgm_pilot_400/`. Its graph-pair files live in `graph_pairs/`, leaving both the historical datasets in `data/` and any earlier `data/sgm_multi_rng/` collection intact. A cached pair is checked against the graph-generating settings before reuse; to change those settings later, use a new `--output-dir`. Existing output CSVs are protected unless `--overwrite` is passed. To change the collection size, set the five group counts with `--random-train`, `--random-test`, `--degree-weighted`, `--swap-paths`, and `--decorrelated`; `--pool-size` changes the contrast-selection pool. In the notebook, use `DATA_FOLDER = "sgm_pilot_400"` and choose `GRAPH_MODEL` at the top, then run the cells in order.
 
-The completed solver-variance diagnostic is separate from the main collection workflow. Its scripts are `python -m fixed_pair_seed_set_classification.audits.solver_variance_audit` to collect runs and `python -m fixed_pair_seed_set_classification.audits.analyze_solver_variance` to summarize saved runs; its outputs are already stored in `data/solver_variance/`.
+At 400 sets and five runs each, the calibration timings imply roughly 50–80 minutes of SGM work per model, plus candidate generation and feature extraction. Keep the thread environment consistent across models because it affected ER and PAPER solver outcomes in the calibration. With only 40 random test sets, treat the notebook's AUC and top-pick estimates as preliminary.
 
-The new `paper_pa` preset uses 600 vertices, attachment weights `alpha=0, beta=1`, ER probability `p=0.005`, ER-edge correlation `rho=0.62`, and 20 seeds. It writes `data/paper_pa_problem.npz` and `data/paper_pa_seed_sets.csv`. Set `GRAPH_MODEL = "paper_pa"` in `seed_set_classification.ipynb` to analyze it. In a small pilot on this fixed pair, 7 of 12 uniformly random seed sets reached 90% final unseeded accuracy with the usual single-run SGM settings; this is a pilot, not the expected rate for the full dataset. The older `paper` option and saved results use the Pareto-weight Chung–Lu generator, now defined in `pairs/pareto_chung_lu_seed_selection.py`; they are preserved for comparison. The solver-variance audit uses this older pair, not `paper_pa`.
-
-The Enron command reads `utils/enron.mat`, makes each week undirected, removes loops, and retains the 129 vertices active in both weeks. This shared-vertex filter uses the known identities only to construct the benchmark; seed-set predictors still come from Graph A alone. Graph B is permuted with a fixed seed; the true mapping is saved in `data/enron_problem.npz`, and the original one-based vertex IDs are recorded in its metadata. The preset uses 25 matched seeds and the notebook's 90% success threshold; small random-seed-set pilots gave roughly half successes. To inspect its results, set `GRAPH_MODEL = "enron"` in `seed_set_classification.ipynb` and run the cells from the top.
-
-For a custom Enron seed set, run `python -m fixed_pair_seed_set_classification.pairs.enron_seed_selection --seeds ...` with exactly 25 internal Graph-A indices from 0 to 128; the metadata maps them to the original Enron row IDs.
+The calibration evidence is in `audits/sgm_settings_calibration_2026-09-30.md`. The other audit scripts and historical model definitions remain available. `--graph-model all` includes those models and can take considerably longer. The Enron benchmark reads `utils/enron.mat` and retains the 129 vertices active in both weekly snapshots; its vertex correspondence is used only to evaluate matching, not to construct seed-set predictors.

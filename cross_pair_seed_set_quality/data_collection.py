@@ -47,6 +47,7 @@ OUTPUT_FILENAMES = {
     "paper": "seed_quality_paper.csv",
     "ier": "seed_quality_ier.csv",
     "paper_pa": "seed_quality_paper_pa.csv",
+    "chung_lu": "seed_quality_chung_lu.csv",
 }
 
 SGM_RESULT_COLUMNS = (
@@ -101,10 +102,10 @@ def row_context(
             else None
         ),
         "paper_alpha": (
-            config.paper_alpha if config.graph_model == "paper" else None
+            config.paper_alpha if config.graph_model in ("paper", "chung_lu") else None
         ),
         "paper_probability": (
-            config.paper_probability if config.graph_model == "paper" else None
+            config.paper_probability if config.graph_model in ("paper", "chung_lu") else None
         ),
         "paper_pa_alpha": (
             config.paper_pa_alpha if config.graph_model == "paper_pa" else None

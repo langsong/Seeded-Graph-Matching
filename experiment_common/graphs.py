@@ -11,12 +11,15 @@ from utils.Graphs import (
     gen_ER_graphs,
     gen_IER_graphs,
     gen_PAPER_graphs,
+    gen_legacy_pareto_chung_lu_graphs,
     gen_pareto_chung_lu_graphs,
     gen_SBM_graphs,
 )
 
 
-GRAPH_MODELS = ("sparse_er", "sparse_sbm", "paper", "ier", "paper_pa")
+# "paper" is the historical name of the legacy Pareto–Chung–Lu generator (kept so
+# saved datasets regenerate exactly); "chung_lu" is the fixed-weight version.
+GRAPH_MODELS = ("sparse_er", "sparse_sbm", "paper", "ier", "paper_pa", "chung_lu")
 
 
 SPARSE_SBM_BLOCK_PROBABILITIES = (
@@ -91,6 +94,17 @@ def preset_config(graph_model: str) -> ExperimentConfig:
             rho=0.70,
             n_seeds=30,
         )
+    if graph_model == "chung_lu":
+        # Same starting values as "paper"; the seed budget is not yet calibrated
+        # for the fixed-weight generator.
+        return ExperimentConfig(
+            graph_model="chung_lu",
+            vertex_count=600,
+            paper_alpha=2.0,
+            paper_probability=0.005,
+            rho=0.70,
+            n_seeds=30,
+        )
     if graph_model == "paper_pa":
         return ExperimentConfig(
             graph_model="paper_pa",
@@ -135,6 +149,15 @@ def generate_graph_pair(
             loops=False,
         )
     elif config.graph_model == "paper":
+        adjacency_1, adjacency_2, true_permutation = gen_legacy_pareto_chung_lu_graphs(
+            n=config.vertex_count,
+            alpha=config.paper_alpha,
+            p=config.paper_probability,
+            rho=config.rho,
+            directed=False,
+            loops=False,
+        )
+    elif config.graph_model == "chung_lu":
         adjacency_1, adjacency_2, true_permutation = gen_pareto_chung_lu_graphs(
             n=config.vertex_count,
             alpha=config.paper_alpha,

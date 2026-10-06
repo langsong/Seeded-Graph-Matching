@@ -159,43 +159,66 @@ def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, direct
     
     return G1, G2_shuffled, optimal_permutation
 
+def pareto_quantile_weights(n, alpha):
+    """Fixed Chung–Lu weights: the n quantiles of 2 + Lomax(alpha).
+
+    Equivalent to 1 + (1 - u) ** (-1 / alpha) at u = (i + 0.5) / n, so the
+    weight sequence is the same for every pair (only its vertex order varies).
+    """
+    quantiles = (np.arange(n) + 0.5) / n
+    return 1 + (1 - quantiles) ** (-1 / alpha)
+
+
+def gen_chung_lu_graphs(weights, rho, p=0.0, directed=False, loops=False, cap=True):
+    """Generate a correlated Chung–Lu pair from a given weight sequence.
+
+    The weights are assigned to vertices in random order and, if ``cap`` is
+    True, capped at sqrt(sum of weights). Edge probabilities are
+    min(1, w_i * w_j / sum(w) + p), where ``p`` adds an Erdős–Rényi floor.
+    """
+    weights = np.array(weights, dtype=float)
+    np.random.shuffle(weights)
+    if cap:
+        np.minimum(weights, np.sqrt(weights.sum()), out=weights)
+    return _sample_chung_lu_pair(weights, p, rho, directed, loops)
+
+
 def gen_pareto_chung_lu_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
-    """Generate correlated Pareto-weight Chung–Lu graphs with background edge probability p."""
-    # 1. Generate a power-law sequence for expected node degrees
-    # Add 2 to avoid 0-degree nodes which can mess up matching metrics
-    expected_degrees = np.random.pareto(alpha, size=n) + 2
-    
-    # 2. Scale expected degrees so they form valid probabilities when multiplied
-    # P(edge i-j) = (d_i * d_j) / sum(d)
-    sum_deg = np.sum(expected_degrees)
-    max_deg = np.max(expected_degrees)
-    
-    # Check to ensure the max probability won't exceed 1.0
-    if (max_deg ** 2) / sum_deg > 1.0:
-        expected_degrees = expected_degrees * (sum_deg / max_deg ** 2) * 0.95
-    
-    # Extract the probability matrix from the expected degree layout
-    # For a given node pair, probability = (d_i * d_j) / sum(d)
-    deg_matrix = np.outer(expected_degrees, expected_degrees) / np.sum(expected_degrees)
+    """Generate a Chung–Lu pair with fixed Pareto quantile weights."""
+    return gen_chung_lu_graphs(
+        pareto_quantile_weights(n, alpha),
+        rho=rho,
+        p=p,
+        directed=directed,
+        loops=loops,
+    )
 
-    # Add in Erdős-Rényi style edge probability
-    deg_matrix = deg_matrix + p
-    
-    np.clip(deg_matrix, 0, 1, out=deg_matrix) # Clip boundaries
 
-    # Graph correlation in matrix form
+def gen_legacy_pareto_chung_lu_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
+    """Reproduce old pairs with random weights and global rescaling.
+
+    Kept only so saved ``paper`` datasets can be regenerated exactly. The
+    rescaling shrinks every weight whenever max(w)**2 > sum(w), which happens
+    in about 30% of draws at alpha = 2, n = 600.
+    """
+    weights = np.random.pareto(alpha, size=n) + 2
+    sum_weights = np.sum(weights)
+    max_weight = np.max(weights)
+    if (max_weight ** 2) / sum_weights > 1.0:
+        weights = weights * (sum_weights / max_weight ** 2) * 0.95
+    return _sample_chung_lu_pair(weights, p, rho, directed, loops)
+
+
+def _sample_chung_lu_pair(weights, p, rho, directed, loops):
+    n = len(weights)
+    probability_matrix = np.outer(weights, weights) / np.sum(weights)
+    probability_matrix = probability_matrix + p
+    np.clip(probability_matrix, 0, 1, out=probability_matrix)
     corr_mat = np.full((n, n), rho)
-
-    # 4. Use graspologic to sample a pair of correlated graphs from the probability matrix
-    G1, G2 = sample_edges_corr(deg_matrix, corr_mat, directed=directed, loops=loops)
-    
-    # 5. Shuffle G2 to simulate an actual graph matching problem
+    G1, G2 = sample_edges_corr(probability_matrix, corr_mat, directed=directed, loops=loops)
     shuffle_perm = np.random.permutation(n)
     G2_shuffled = G2[shuffle_perm][:, shuffle_perm]
-
-    # Compute unshuffling
     optimal_permutation = np.argsort(shuffle_perm)
-    
     return G1, G2_shuffled, optimal_permutation
 
 

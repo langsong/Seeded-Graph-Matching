@@ -1,0 +1,86 @@
+{
+  "problem": "paper_pa",
+  "graph_pair_seed": 424242,
+  "sgm_seed": 2026,
+  "solver_seeds": [
+    2026,
+    2027,
+    2028,
+    2029,
+    2030
+  ],
+  "max_iter": 100,
+  "solver_runs": 5,
+  "config": {
+    "graph_model": "paper_pa",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.62,
+    "n_seeds": 16,
+    "max_iter": 100,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "success_threshold": 0.9,
+  "random_seed": 1234,
+  "n_random_train": 80,
+  "n_random_test": 40,
+  "n_degree_weighted": 160,
+  "n_swap_paths": 80,
+  "n_decorrelated": 40,
+  "decorrelation_pool_size": 4000,
+  "rows": 400,
+  "run_rows": 2000,
+  "feature_columns": [
+    "seed_nonseed_degree_mean",
+    "seed_harmonic_mean",
+    "nonseed_covered_fraction",
+    "nonseed_witness_overlap_fraction",
+    "nonseed_witness_pair_mass_mean",
+    "nonseed_nearest_seed_distance_mean",
+    "nonseed_three_hop_seed_count_mean",
+    "nonseed_distance_signature_unique_fraction_r3",
+    "seed_nonseed_neighborhood_jaccard_mean"
+  ],
+  "feature_schema_version": 1,
+  "target_columns": [
+    "h0_accuracy",
+    "final_unseeded_accuracy",
+    "final_all_accuracy",
+    "sgm_success_rate",
+    "sgm_success"
+  ],
+  "predictor_scope": "Graph A seed-set features only",
+  "output_csv": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sgm_pilot_400/paper_pa_seed_sets.csv",
+  "runs_csv": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sgm_pilot_400/paper_pa_seed_sets_runs.csv",
+  "summary_outcome": "Mean accuracy and H0; success rate over runs; majority-success label."
+}
