@@ -15,10 +15,10 @@ from ..seed_selection_common import (
 PROBLEM = FixedProblem(
     name="paper_pa",
     config=replace(
-        preset_config("paper_pa"), n_graph_pairs=1, n_seeds=16, max_iter=100
+        preset_config("paper_pa"), n_graph_pairs=1, n_seeds=13, max_iter=100
     ),
     graph_pair_seed=424242,
-    pilot_success_rate=0.52,
+    pilot_success_rate=0.533,
 )
 PROBLEM_DIR = DEFAULT_PROBLEM_DIR / "sgm_multi_rng" / "graph_pairs"
 

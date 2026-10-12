@@ -1,4 +1,4 @@
-"""Fixed-quantile Pareto–Chung–Lu seed-set selection benchmark."""
+"""Calibrated floor-free Pareto-Chung-Lu seed-set selection benchmark."""
 
 from dataclasses import replace
 
@@ -15,10 +15,17 @@ from ..seed_selection_common import (
 PROBLEM = FixedProblem(
     name="chung_lu",
     config=replace(
-        preset_config("chung_lu"), n_graph_pairs=1, n_seeds=22, max_iter=100
+        preset_config("chung_lu"),
+        chung_lu_alpha=2.0,
+        # Expected mean degree 5.7 after the structural cutoff.
+        chung_lu_weight_scale=1.9260087733615983,
+        chung_lu_probability_floor=0.0,
+        n_graph_pairs=1,
+        n_seeds=17,
+        max_iter=100,
     ),
     graph_pair_seed=3165569293,
-    pilot_success_rate=0.43,
+    pilot_success_rate=0.5625,
 )
 PROBLEM_DIR = DEFAULT_PROBLEM_DIR / "sgm_multi_rng" / "graph_pairs"
 

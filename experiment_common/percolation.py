@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 def graph_match_percolation(
     A,
@@ -172,3 +174,66 @@ def graph_match_percolation(
     #     "match_order": order,
     #     "seeds": seeds_original
     # }
+
+
+def run_percolation_once(
+    adjacency_1: np.ndarray,
+    adjacency_2: np.ndarray,
+    true_permutation: np.ndarray,
+    seeds_1: np.ndarray,
+    algorithm_seed: int,
+    threshold: int = 2,
+    expand_when_stuck: bool = True,
+) -> dict[str, float | int | bool]:
+    """Run percolation once and score unmatched nonseeds as incorrect."""
+
+    seeds_1 = np.asarray(seeds_1, dtype=int)
+    seeds_2 = true_permutation[seeds_1]
+    partial_match = np.column_stack((seeds_1, seeds_2))
+
+    random_state = np.random.get_state()
+    np.random.seed(algorithm_seed)
+    started = time.perf_counter()
+    try:
+        predicted = graph_match_percolation(
+            adjacency_1,
+            adjacency_2,
+            partial_match,
+            r=threshold,
+            ExpandWhenStuck=expand_when_stuck,
+        )
+    finally:
+        runtime_seconds = time.perf_counter() - started
+        np.random.set_state(random_state)
+
+    predicted = np.asarray(predicted, dtype=int)
+    n = adjacency_1.shape[0]
+    if predicted.shape != (n,):
+        raise RuntimeError("Percolation returned an invalid permutation shape.")
+    matched_targets = predicted[predicted >= 0]
+    if np.any(matched_targets >= n) or len(np.unique(matched_targets)) != len(
+        matched_targets
+    ):
+        raise RuntimeError("Percolation returned invalid or repeated matches.")
+    if not np.array_equal(predicted[seeds_1], seeds_2):
+        raise RuntimeError("Percolation did not preserve the supplied seed matches.")
+
+    unseeded = np.setdiff1d(np.arange(n), seeds_1)
+    unseeded_prediction = predicted[unseeded]
+    matched = unseeded_prediction >= 0
+    correct = unseeded_prediction == true_permutation[unseeded]
+    incorrect = matched & ~correct
+    matched_count = int(np.sum(matched))
+
+    return {
+        "final_unseeded_accuracy": float(np.mean(correct)),
+        "final_all_accuracy": float(np.mean(predicted == true_permutation)),
+        "percolation_matched_unseeded_fraction": float(np.mean(matched)),
+        "percolation_unseeded_precision": (
+            float(np.sum(correct) / matched_count) if matched_count else 0.0
+        ),
+        "percolation_incorrect_unseeded_fraction": float(np.mean(incorrect)),
+        "percolation_matches_added": matched_count,
+        "percolation_completed": bool(matched_count == len(unseeded)),
+        "percolation_runtime_seconds": runtime_seconds,
+    }

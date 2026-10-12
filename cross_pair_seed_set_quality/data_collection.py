@@ -102,10 +102,22 @@ def row_context(
             else None
         ),
         "paper_alpha": (
-            config.paper_alpha if config.graph_model in ("paper", "chung_lu") else None
+            config.paper_alpha if config.graph_model == "paper" else None
         ),
         "paper_probability": (
-            config.paper_probability if config.graph_model in ("paper", "chung_lu") else None
+            config.paper_probability if config.graph_model == "paper" else None
+        ),
+        "chung_lu_alpha": (
+            config.effective_chung_lu_alpha
+            if config.graph_model == "chung_lu" else None
+        ),
+        "chung_lu_weight_scale": (
+            config.effective_chung_lu_weight_scale
+            if config.graph_model == "chung_lu" else None
+        ),
+        "chung_lu_probability_floor": (
+            config.effective_chung_lu_probability_floor
+            if config.graph_model == "chung_lu" else None
         ),
         "paper_pa_alpha": (
             config.paper_pa_alpha if config.graph_model == "paper_pa" else None

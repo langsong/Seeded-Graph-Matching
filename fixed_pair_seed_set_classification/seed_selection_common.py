@@ -23,6 +23,7 @@ from experiment_common.features import (
     GraphContext,
     build_graph_context,
     fixed_pair_seed_set_features,
+    signature_robustness_features,
 )
 from experiment_common.graphs import ExperimentConfig, generate_graph_pair, preset_config
 from experiment_common.sgm import run_sgm_once
@@ -67,15 +68,24 @@ def problem_paths(
     )
 
 
-def graph_pair_settings(spec: FixedProblem) -> dict[str, Any]:
-    """Fields that determine a generated pair, excluding solver and seed budget."""
+def _graph_generation_settings(config: ExperimentConfig) -> dict[str, Any]:
+    """Return the config fields that determine a generated graph pair."""
 
-    config = spec.config
+    if config.graph_model == "chung_lu":
+        return {
+            "graph_model": config.graph_model,
+            "rho": config.rho,
+            "vertex_count": config.vertex_count,
+            "chung_lu_alpha": config.effective_chung_lu_alpha,
+            "chung_lu_weight_scale": config.effective_chung_lu_weight_scale,
+            "chung_lu_probability_floor": (
+                config.effective_chung_lu_probability_floor
+            ),
+        }
     fields = {
         "sparse_er": ("vertex_count", "er_probability"),
         "sparse_sbm": ("n_blocks", "n_per_block", "sbm_block_probabilities"),
         "paper": ("vertex_count", "paper_alpha", "paper_probability"),
-        "chung_lu": ("vertex_count", "paper_alpha", "paper_probability"),
         "paper_pa": (
             "vertex_count", "paper_pa_alpha", "paper_pa_beta",
             "paper_pa_probability",
@@ -85,11 +95,19 @@ def graph_pair_settings(spec: FixedProblem) -> dict[str, Any]:
     }
     names = fields[config.graph_model]
     return {
-        "problem": spec.name,
-        "graph_pair_seed": spec.graph_pair_seed,
         "graph_model": config.graph_model,
         "rho": config.rho,
         **{name: json.loads(json.dumps(getattr(config, name))) for name in names},
+    }
+
+
+def graph_pair_settings(spec: FixedProblem) -> dict[str, Any]:
+    """Fields that determine a generated pair, excluding solver and seed budget."""
+
+    return {
+        "problem": spec.name,
+        "graph_pair_seed": spec.graph_pair_seed,
+        **_graph_generation_settings(spec.config),
     }
 
 
@@ -108,12 +126,8 @@ def prepare_problem(
         saved_settings = {
             "problem": saved.get("problem"),
             "graph_pair_seed": saved.get("graph_pair_seed"),
-            "graph_model": saved.get("config", {}).get("graph_model"),
-            "rho": saved.get("config", {}).get("rho"),
+            **_graph_generation_settings(ExperimentConfig(**saved.get("config", {}))),
         }
-        for name in graph_pair_settings(spec):
-            if name not in saved_settings:
-                saved_settings[name] = saved.get("config", {}).get(name)
         expected_settings = graph_pair_settings(spec)
         if saved_settings != expected_settings:
             raise ValueError(
@@ -199,6 +213,7 @@ def evaluate_seed_set(
         "seed_vertices_graph2": json.dumps(seeds_2.tolist()),
     }
     row.update(fixed_pair_seed_set_features(problem.context_1, seeds_1))
+    row.update(signature_robustness_features(problem.context_1, seeds_1))
     row.update(
         run_sgm_once(
             problem.adjacency_1,

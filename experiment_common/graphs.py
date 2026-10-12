@@ -45,6 +45,12 @@ class ExperimentConfig:
     er_probability: float = 0.01
     paper_alpha: float = 2.0
     paper_probability: float = 0.005
+    # None retains the historical interpretation of paper_alpha and
+    # paper_probability when loading Chung-Lu metadata written before these
+    # explicit fields existed. New presets set all three fields.
+    chung_lu_alpha: float | None = None
+    chung_lu_weight_scale: float | None = None
+    chung_lu_probability_floor: float | None = None
     paper_pa_alpha: float = 0.0
     paper_pa_beta: float = 1.0
     paper_pa_probability: float = 0.005
@@ -63,6 +69,30 @@ class ExperimentConfig:
         if self.graph_model == "sparse_sbm":
             return self.n_blocks * self.n_per_block
         return self.vertex_count
+
+    @property
+    def effective_chung_lu_alpha(self) -> float:
+        return (
+            self.paper_alpha
+            if self.chung_lu_alpha is None
+            else self.chung_lu_alpha
+        )
+
+    @property
+    def effective_chung_lu_weight_scale(self) -> float:
+        return (
+            1.0
+            if self.chung_lu_weight_scale is None
+            else self.chung_lu_weight_scale
+        )
+
+    @property
+    def effective_chung_lu_probability_floor(self) -> float:
+        return (
+            self.paper_probability
+            if self.chung_lu_probability_floor is None
+            else self.chung_lu_probability_floor
+        )
 
 
 def preset_config(graph_model: str) -> ExperimentConfig:
@@ -95,13 +125,14 @@ def preset_config(graph_model: str) -> ExperimentConfig:
             n_seeds=30,
         )
     if graph_model == "chung_lu":
-        # Same starting values as "paper"; the seed budget is not yet calibrated
-        # for the fixed-weight generator.
+        # This scale gives expected mean degree 12 at n=600 after the
+        # structural cutoff. The model has no uniform ER floor.
         return ExperimentConfig(
             graph_model="chung_lu",
             vertex_count=600,
-            paper_alpha=2.0,
-            paper_probability=0.005,
+            chung_lu_alpha=2.0,
+            chung_lu_weight_scale=4.076195,
+            chung_lu_probability_floor=0.0,
             rho=0.70,
             n_seeds=30,
         )
@@ -160,11 +191,12 @@ def generate_graph_pair(
     elif config.graph_model == "chung_lu":
         adjacency_1, adjacency_2, true_permutation = gen_pareto_chung_lu_graphs(
             n=config.vertex_count,
-            alpha=config.paper_alpha,
-            p=config.paper_probability,
+            alpha=config.effective_chung_lu_alpha,
+            p=config.effective_chung_lu_probability_floor,
             rho=config.rho,
             directed=False,
             loops=False,
+            weight_scale=config.effective_chung_lu_weight_scale,
         )
     elif config.graph_model == "paper_pa":
         adjacency_1, adjacency_2, true_permutation = gen_PAPER_graphs(
@@ -227,6 +259,18 @@ def validate_config(config: ExperimentConfig) -> None:
     ):
         if not math.isfinite(value) or value <= 0:
             raise ValueError(f"{name} must be positive and finite.")
+    for name, value in (
+        ("chung_lu_alpha", config.chung_lu_alpha),
+        ("chung_lu_weight_scale", config.chung_lu_weight_scale),
+    ):
+        if value is not None and (not math.isfinite(value) or value <= 0):
+            raise ValueError(f"{name} must be positive and finite when provided.")
+    if config.chung_lu_probability_floor is not None and not (
+        0.0 <= config.chung_lu_probability_floor <= 1.0
+    ):
+        raise ValueError(
+            "chung_lu_probability_floor must be between 0 and 1 when provided."
+        )
     if not math.isfinite(config.paper_pa_alpha) or config.paper_pa_alpha < 0:
         raise ValueError("paper_pa_alpha must be nonnegative and finite.")
     if not math.isfinite(config.paper_pa_beta) or config.paper_pa_beta <= 0:

@@ -1,0 +1,5 @@
+algorithm,weight_scale,target_mean_degree,n_seeds,seed_set_count_per_pair,pair_1_success_fraction,pair_2_success_fraction,pair_3_success_fraction,pooled_success_fraction,single_run_success_fraction,mean_final_unseeded_accuracy,selection_miss_fraction
+sgm,1.9260087733615983,5.7,16,16,0.5,0.1875,0.5,0.3958333333,0.1875,0.3538384703,0.0
+sgm,1.9260087733615983,5.7,17,16,0.4375,0.5,0.75,0.5625,0.2875,0.4554388222,0.0
+percolation,4.076194702720809,12.0,5,20,0.5,0.5,0.35,0.45,0.45,0.5440616246,
+percolation,4.076194702720809,12.0,6,20,0.65,0.6,0.45,0.5666666667,0.5666666667,0.6488776655,

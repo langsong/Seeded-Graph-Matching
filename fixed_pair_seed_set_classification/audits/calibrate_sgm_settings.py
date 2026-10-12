@@ -98,7 +98,7 @@ def main() -> None:
                 elif args.model == "paper_pa":
                     changes["paper_pa_probability"] = probability
                 else:
-                    changes["paper_probability"] = probability
+                    changes["chung_lu_probability_floor"] = probability
                 config = replace(spec.config, **changes)
                 A, B, truth = generate_graph_pair(config, spec.graph_pair_seed)
                 mean_degree = float(A.sum(axis=1).mean())

@@ -4,7 +4,8 @@ Predictors use the same compact Graph-A seed-set features and
 correspondence-free graph-pair summaries as ``data_collection.py``.  The
 percolation results include final accuracy, matched coverage, precision, and
 runtime.  Correct seed correspondences and all algorithm outputs are excluded
-from the documented pre-query predictor set.
+from the documented pre-query predictor set. By default, the collector samples
+1,000 seed sets across 20 graph pairs and runs percolation once per set.
 """
 
 from __future__ import annotations
@@ -12,14 +13,24 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
+import tempfile
 import time
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any
 
+# Keep third-party Numba and Matplotlib caches out of installed packages.
+os.environ.setdefault(
+    "NUMBA_CACHE_DIR", str(Path(tempfile.gettempdir()) / "sgm_numba_cache")
+)
+os.environ.setdefault(
+    "MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "sgm_mpl_cache")
+)
+
 import numpy as np
 
-from experiment_common.percolation import graph_match_percolation
+from experiment_common.percolation import run_percolation_once
 from experiment_common.features import (
     FEATURE_SCHEMA_VERSION,
     build_graph_context,
@@ -35,18 +46,24 @@ from experiment_common.graphs import (
 from experiment_common.sampling import UINT32_MAX, sample_unique_seed_sets
 
 EXPERIMENT_DIR = Path(__file__).resolve().parent
-DEFAULT_OUTPUT_DIR = EXPERIMENT_DIR / "data"
+DEFAULT_OUTPUT_DIR = EXPERIMENT_DIR / "data" / "percolation_balanced_2026-10-07"
+DEFAULT_N_GRAPH_PAIRS = 20
+DEFAULT_CANDIDATES_PER_PAIR = 50
+RUNS_PER_SEED_SET = 1
 
 
-COLLECTION_SCHEMA_VERSION = 1
+COLLECTION_SCHEMA_VERSION = 2
 CALIBRATION_SUCCESS_THRESHOLD = 0.90
 OUTPUT_FILENAMES = {
     "sparse_er": "percolation_seed_quality_sparse_er.csv",
+    "paper_pa": "percolation_seed_quality_paper_pa.csv",
+    "chung_lu": "percolation_seed_quality_chung_lu.csv",
     "sparse_sbm": "percolation_seed_quality_sparse_sbm.csv",
     "paper": "percolation_seed_quality_paper.csv",
     "ier": "percolation_seed_quality_ier.csv",
 }
 GRAPH_MODELS = tuple(OUTPUT_FILENAMES)
+FOCUS_GRAPH_MODELS = ("sparse_er", "paper_pa", "chung_lu")
 
 PERCOLATION_RESULT_COLUMNS = (
     "final_unseeded_accuracy",
@@ -61,8 +78,18 @@ PERCOLATION_RESULT_COLUMNS = (
 
 CALIBRATION_NOTES = {
     "sparse_er": (
-        "At rho=0.80 and 18 random seeds, 22/54 calibration runs reached "
-        "90% final unseeded accuracy."
+        "At p=0.020, rho=0.70, and 8 random seeds, the estimated 50% "
+        "single-run transition was k=8.2."
+    ),
+    "paper_pa": (
+        "For the shared PA tree plus p=0.0167 ER background at rho=0.62, "
+        "the estimated 50% single-run transition was k=6.5; the collection "
+        "uses the integer budget k=7."
+    ),
+    "chung_lu": (
+        "For floor-free fixed-quantile Chung-Lu with alpha=2, weight scale "
+        "4.076194702720809, and rho=0.70, k=5 succeeded on 27/60 random "
+        "sets across three graph pairs."
     ),
     "sparse_sbm": (
         "At rho=0.80 and 14 random seeds, 20/54 calibration runs reached "
@@ -99,7 +126,27 @@ def preset_config(graph_model: str) -> PercolationConfig:
 
     graph = graph_preset_config(graph_model)
     if graph_model == "sparse_er":
-        graph = replace(graph, n_seeds=18)
+        graph = replace(
+            graph, er_probability=0.020, rho=0.70, n_seeds=8
+        )
+    elif graph_model == "paper_pa":
+        graph = replace(
+            graph,
+            paper_pa_alpha=0.0,
+            paper_pa_beta=1.0,
+            paper_pa_probability=0.0167,
+            rho=0.62,
+            n_seeds=7,
+        )
+    elif graph_model == "chung_lu":
+        graph = replace(
+            graph,
+            chung_lu_alpha=2.0,
+            chung_lu_weight_scale=4.076194702720809,
+            chung_lu_probability_floor=0.0,
+            rho=0.70,
+            n_seeds=5,
+        )
     elif graph_model == "sparse_sbm":
         graph = replace(graph, n_seeds=14)
     elif graph_model == "paper":
@@ -125,70 +172,6 @@ def config_from_dict(values: dict[str, Any]) -> PercolationConfig:
         threshold=int(values["threshold"]),
         expand_when_stuck=bool(values["expand_when_stuck"]),
     )
-
-
-def run_percolation_once(
-    adjacency_1: np.ndarray,
-    adjacency_2: np.ndarray,
-    true_permutation: np.ndarray,
-    seeds_1: np.ndarray,
-    algorithm_seed: int,
-    threshold: int,
-    expand_when_stuck: bool,
-) -> dict[str, float | int | bool]:
-    """Run percolation once and score unmatched vertices as incorrect."""
-
-    seeds_1 = np.asarray(seeds_1, dtype=int)
-    seeds_2 = true_permutation[seeds_1]
-    partial_match = np.column_stack((seeds_1, seeds_2))
-
-    random_state = np.random.get_state()
-    np.random.seed(algorithm_seed)
-    started = time.perf_counter()
-    try:
-        predicted = graph_match_percolation(
-            adjacency_1,
-            adjacency_2,
-            partial_match,
-            r=threshold,
-            ExpandWhenStuck=expand_when_stuck,
-        )
-    finally:
-        runtime_seconds = time.perf_counter() - started
-        np.random.set_state(random_state)
-
-    predicted = np.asarray(predicted, dtype=int)
-    n = adjacency_1.shape[0]
-    if predicted.shape != (n,):
-        raise RuntimeError("Percolation returned an invalid permutation shape.")
-    matched_targets = predicted[predicted >= 0]
-    if np.any(matched_targets >= n) or len(np.unique(matched_targets)) != len(
-        matched_targets
-    ):
-        raise RuntimeError("Percolation returned invalid or repeated matches.")
-    if not np.array_equal(predicted[seeds_1], seeds_2):
-        raise RuntimeError("Percolation did not preserve the supplied seed matches.")
-
-    all_vertices = np.arange(n)
-    unseeded = np.setdiff1d(all_vertices, seeds_1)
-    unseeded_prediction = predicted[unseeded]
-    matched = unseeded_prediction >= 0
-    correct = unseeded_prediction == true_permutation[unseeded]
-    incorrect = matched & ~correct
-    matched_count = int(np.sum(matched))
-
-    return {
-        "final_unseeded_accuracy": float(np.mean(correct)),
-        "final_all_accuracy": float(np.mean(predicted == true_permutation)),
-        "percolation_matched_unseeded_fraction": float(np.mean(matched)),
-        "percolation_unseeded_precision": (
-            float(np.sum(correct) / matched_count) if matched_count else 0.0
-        ),
-        "percolation_incorrect_unseeded_fraction": float(np.mean(incorrect)),
-        "percolation_matches_added": matched_count,
-        "percolation_completed": bool(matched_count == len(unseeded)),
-        "percolation_runtime_seconds": runtime_seconds,
-    }
 
 
 def row_context(
@@ -239,6 +222,28 @@ def row_context(
         ),
         "paper_probability": (
             graph.paper_probability if graph.graph_model == "paper" else None
+        ),
+        "paper_pa_alpha": (
+            graph.paper_pa_alpha if graph.graph_model == "paper_pa" else None
+        ),
+        "paper_pa_beta": (
+            graph.paper_pa_beta if graph.graph_model == "paper_pa" else None
+        ),
+        "paper_pa_probability": (
+            graph.paper_pa_probability
+            if graph.graph_model == "paper_pa" else None
+        ),
+        "chung_lu_alpha": (
+            graph.effective_chung_lu_alpha
+            if graph.graph_model == "chung_lu" else None
+        ),
+        "chung_lu_weight_scale": (
+            graph.effective_chung_lu_weight_scale
+            if graph.graph_model == "chung_lu" else None
+        ),
+        "chung_lu_probability_floor": (
+            graph.effective_chung_lu_probability_floor
+            if graph.graph_model == "chung_lu" else None
         ),
         "ier_alpha": graph.ier_alpha if graph.graph_model == "ier" else None,
         "ier_beta": graph.ier_beta if graph.graph_model == "ier" else None,
@@ -479,6 +484,8 @@ def collect_data(
         "output_csv": str(output_path),
         "columns": fieldnames or [],
         "rows_written": rows_written,
+        "requested_seed_sets": graph.n_graph_pairs * graph.candidates_per_pair,
+        "runs_per_seed_set": RUNS_PER_SEED_SET,
         "completed_graph_pairs": completed_graph_pairs,
         "stopped_for_time_budget": stopped_for_time,
         "elapsed_seconds": elapsed_seconds,
@@ -520,9 +527,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--graph-model",
-        choices=("all",) + GRAPH_MODELS,
-        default="all",
-        help="Collect every calibrated regime or one selected graph model.",
+        choices=("focus", "all") + GRAPH_MODELS,
+        default="focus",
+        help=(
+            "Collect ER, PAPER and Chung-Lu (focus), every available legacy "
+            "and current regime (all), or one selected graph model."
+        ),
     )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument(
@@ -531,8 +541,16 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Custom CSV path; available only for one selected graph model.",
     )
-    parser.add_argument("--n-graph-pairs", type=int, default=20)
-    parser.add_argument("--candidates-per-pair", type=int, default=50)
+    parser.add_argument(
+        "--n-graph-pairs", type=int, default=DEFAULT_N_GRAPH_PAIRS
+    )
+    parser.add_argument(
+        "--candidates-per-pair", type=int, default=DEFAULT_CANDIDATES_PER_PAIR
+    )
+    parser.add_argument(
+        "--n-seeds", type=int, default=None,
+        help="Override the calibrated seed budget for every selected model.",
+    )
     parser.add_argument(
         "--threshold",
         type=int,
@@ -557,16 +575,24 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if args.graph_model == "all" and args.output is not None:
+    multiple_models = args.graph_model in ("focus", "all")
+    if multiple_models and args.output is not None:
         raise ValueError("--output can only be used with one graph model.")
 
-    graph_models = GRAPH_MODELS if args.graph_model == "all" else (args.graph_model,)
+    graph_models = (
+        FOCUS_GRAPH_MODELS if args.graph_model == "focus"
+        else GRAPH_MODELS if args.graph_model == "all"
+        else (args.graph_model,)
+    )
     for graph_model in graph_models:
         config = preset_config(graph_model)
         graph = replace(
             config.graph,
             n_graph_pairs=args.n_graph_pairs,
             candidates_per_pair=args.candidates_per_pair,
+            n_seeds=(
+                config.graph.n_seeds if args.n_seeds is None else args.n_seeds
+            ),
             random_seed=args.random_seed,
             max_minutes=args.max_minutes,
         )
@@ -584,7 +610,7 @@ def main() -> None:
             else args.output_dir / OUTPUT_FILENAMES[graph_model]
         )
         if args.features_only:
-            if args.graph_model == "all" and not output_path.exists():
+            if multiple_models and not output_path.exists():
                 print(f"Skipping {output_path}; no existing dataset was found.")
                 continue
             print(f"Refreshing features in {output_path} without running percolation.")
@@ -594,7 +620,7 @@ def main() -> None:
         print(
             f"Collecting {graph_model}: {graph.n_graph_pairs} graph pairs x "
             f"{graph.candidates_per_pair} candidates, {graph.n_seeds} seeds, "
-            f"threshold {config.threshold}."
+            f"{RUNS_PER_SEED_SET} run per seed set, threshold {config.threshold}."
         )
         collect_data(config, output_path, args.overwrite)
 

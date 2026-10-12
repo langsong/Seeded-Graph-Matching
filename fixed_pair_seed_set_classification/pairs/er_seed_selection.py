@@ -16,10 +16,10 @@ PROBLEM = FixedProblem(
     name="sparse_er",
     config=replace(
         preset_config("sparse_er"), n_graph_pairs=1, rho=0.70,
-        n_seeds=30, max_iter=100,
+        n_seeds=26, max_iter=100,
     ),
     graph_pair_seed=4192889773,
-    pilot_success_rate=0.42,
+    pilot_success_rate=0.556,
 )
 PROBLEM_DIR = DEFAULT_PROBLEM_DIR / "sgm_multi_rng" / "graph_pairs"
 

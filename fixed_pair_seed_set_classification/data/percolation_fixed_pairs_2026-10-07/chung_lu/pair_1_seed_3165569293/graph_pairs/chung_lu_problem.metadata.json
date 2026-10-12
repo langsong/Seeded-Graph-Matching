@@ -1,0 +1,50 @@
+{
+  "problem": "chung_lu",
+  "graph_pair_seed": 3165569293,
+  "sgm_seed": 2026,
+  "source_pair_id": null,
+  "pilot_success_rate": 0.45,
+  "config": {
+    "graph_model": "chung_lu",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "chung_lu_alpha": 2.0,
+    "chung_lu_weight_scale": 4.076194702720809,
+    "chung_lu_probability_floor": 0.0,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.7,
+    "n_seeds": 5,
+    "max_iter": 30,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "problem_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/percolation_fixed_pairs_2026-10-07/chung_lu/pair_1_seed_3165569293/graph_pairs/chung_lu_problem.npz"
+}

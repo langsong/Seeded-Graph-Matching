@@ -123,8 +123,11 @@ def gen_IER_graphs(
 
 
 def gen_correlated_powerlaw_graphs(n=N_PL_NODES, alpha=ALPHA, rho=PL_RHO, directed=False, loops=False):
-    """
-    Generates a pair of correlated power-law graphs with a specified correlation rho.
+    """Legacy random-weight Chung-Lu generator.
+
+    New experiments should use :func:`gen_pareto_chung_lu_graphs`, whose fixed
+    quantile weights avoid changing the degree-propensity distribution from one
+    graph pair to the next. This function remains for external compatibility.
     """
     # 1. Generate a power-law sequence for expected node degrees
     # Add 2 to avoid 0-degree nodes which can mess up matching metrics
@@ -183,10 +186,25 @@ def gen_chung_lu_graphs(weights, rho, p=0.0, directed=False, loops=False, cap=Tr
     return _sample_chung_lu_pair(weights, p, rho, directed, loops)
 
 
-def gen_pareto_chung_lu_graphs(n=N_PPR_NODES, alpha=PPR_ALPHA, p=PPR_EDGE_PROBABILITY, rho=PPR_RHO, directed=False, loops=False):
-    """Generate a Chung–Lu pair with fixed Pareto quantile weights."""
+def gen_pareto_chung_lu_graphs(
+    n=N_PPR_NODES,
+    alpha=PPR_ALPHA,
+    p=0.0,
+    rho=PPR_RHO,
+    directed=False,
+    loops=False,
+    weight_scale=1.0,
+):
+    """Generate a Chung-Lu pair with fixed Pareto quantile weights.
+
+    ``weight_scale`` multiplies the fixed weight sequence before the structural
+    cutoff is applied. ``p`` is an optional uniform ER floor; new plain
+    Chung-Lu experiments use ``p=0``.
+    """
+    if not np.isfinite(weight_scale) or weight_scale <= 0:
+        raise ValueError("weight_scale must be positive and finite.")
     return gen_chung_lu_graphs(
-        pareto_quantile_weights(n, alpha),
+        weight_scale * pareto_quantile_weights(n, alpha),
         rho=rho,
         p=p,
         directed=directed,

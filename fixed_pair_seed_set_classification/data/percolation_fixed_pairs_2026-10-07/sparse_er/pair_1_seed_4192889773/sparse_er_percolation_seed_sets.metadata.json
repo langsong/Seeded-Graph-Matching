@@ -1,0 +1,165 @@
+{
+  "status": "complete",
+  "started_at": "2026-10-07T03:45:19-04:00",
+  "algorithm": "percolation_expand_when_stuck",
+  "problem": "sparse_er",
+  "graph_pair_seed": 4192889773,
+  "config": {
+    "graph_model": "sparse_er",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.02,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "chung_lu_alpha": null,
+    "chung_lu_weight_scale": null,
+    "chung_lu_probability_floor": null,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.7,
+    "n_seeds": 8,
+    "max_iter": 30,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "percolation_threshold": 2,
+  "expand_when_stuck": true,
+  "algorithm_seed": 2026,
+  "runs_per_seed_set": 1,
+  "success_threshold": 0.9,
+  "random_seed": 1234,
+  "sampler_version": 2,
+  "sampling": {
+    "n_random_train": 400,
+    "n_random_test": 200,
+    "n_degree_weighted": 200,
+    "n_swap_paths": 0,
+    "n_decorrelated": 200,
+    "pool_size": 4000,
+    "sampler_version": 2,
+    "contrast_features": [
+      "coverage",
+      "pair_mass",
+      "unique_signatures_r3"
+    ],
+    "contrast_degree_feature": "seed_nonseed_degree_mean",
+    "contrast_degree_reference": "uniform_random_sets",
+    "contrast_degree_percentiles": [
+      10.0,
+      90.0
+    ],
+    "contrast_degree_range": [
+      10.125,
+      13.137500000000003
+    ],
+    "contrast_bin_edges": [
+      10.125,
+      10.75,
+      11.375,
+      11.75,
+      12.25,
+      12.75,
+      13.125
+    ],
+    "contrast_pool_sets_in_range": 2430,
+    "contrast_pool_gammas": [
+      -1.0,
+      -0.5,
+      0.0,
+      0.5,
+      1.0,
+      2.0,
+      3.0
+    ]
+  },
+  "rows": 1000,
+  "rows_completed": 1000,
+  "feature_columns": [
+    "seed_nonseed_degree_mean",
+    "seed_harmonic_mean",
+    "nonseed_covered_fraction",
+    "nonseed_witness_overlap_fraction",
+    "nonseed_witness_pair_mass_mean",
+    "nonseed_nearest_seed_distance_mean",
+    "nonseed_three_hop_seed_count_mean",
+    "nonseed_distance_signature_unique_fraction_r3",
+    "seed_nonseed_neighborhood_jaccard_mean"
+  ],
+  "feature_schema_version": 1,
+  "robustness_feature_columns": [
+    "nonseed_distance_signature_unique_fraction_r2",
+    "nonseed_distance_signature_unique_fraction_r4"
+  ],
+  "signature_cap_from_formula": 2,
+  "predictor_scope": "Graph A seed-set features only",
+  "outcome_columns": [
+    "final_unseeded_accuracy",
+    "final_all_accuracy",
+    "percolation_matched_unseeded_fraction",
+    "percolation_unseeded_precision",
+    "percolation_incorrect_unseeded_fraction",
+    "percolation_matches_added",
+    "percolation_completed",
+    "percolation_runtime_seconds"
+  ],
+  "output_csv": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/percolation_fixed_pairs_2026-10-07/sparse_er/pair_1_seed_4192889773/sparse_er_percolation_seed_sets.csv",
+  "environment": {
+    "python": "3.11.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "cpu_count": 10,
+    "package_versions": {
+      "numpy": "1.26.4",
+      "scipy": "1.17.1",
+      "networkx": "3.6.1",
+      "graspologic": "3.4.4",
+      "scikit-learn": "1.9.0"
+    },
+    "thread_environment": {
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null
+    },
+    "blas_threads_limit": null,
+    "threadpools": [
+      {
+        "internal_api": "openblas",
+        "num_threads": 4,
+        "version": "0.3.30"
+      },
+      {
+        "internal_api": "openmp",
+        "num_threads": 4,
+        "version": null
+      }
+    ],
+    "git_commit": "54247f0130bf38de4183a911b776c33fe21def78",
+    "git_tracked_changes": true
+  },
+  "finished_at": "2026-10-07T03:52:34-04:00",
+  "collection_minutes": 7.26
+}

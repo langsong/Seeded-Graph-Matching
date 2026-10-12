@@ -239,6 +239,36 @@ def distance_signature_unique_fraction(
     return float(np.sum(counts == 1) / len(nonseeds))
 
 
+# Stored next to the frozen panel to check that conclusions about distance-signature
+# uniqueness do not depend on the cap (the panel uses cap 3).
+SIGNATURE_ROBUSTNESS_COLUMNS = (
+    "nonseed_distance_signature_unique_fraction_r2",
+    "nonseed_distance_signature_unique_fraction_r4",
+)
+
+
+def signature_cap_from_formula(degrees: np.ndarray) -> int | None:
+    """Typical shortest-path length floor(log n / log mean degree), or None if undefined."""
+
+    mean_degree = float(np.mean(degrees))
+    if mean_degree <= 1:
+        return None
+    return int(np.floor(np.log(len(degrees)) / np.log(mean_degree)))
+
+
+def signature_robustness_features(
+    context: GraphContext, seeds: np.ndarray
+) -> dict[str, float]:
+    """Distance-signature uniqueness with caps 2 and 4 (robustness check)."""
+
+    seeds = np.asarray(seeds, dtype=int)
+    nonseeds = np.setdiff1d(np.arange(len(context.degrees)), seeds)
+    return {
+        column: distance_signature_unique_fraction(context, seeds, nonseeds, radius=radius)
+        for column, radius in zip(SIGNATURE_ROBUSTNESS_COLUMNS, (2, 4))
+    }
+
+
 def fixed_pair_seed_set_features(
     context: GraphContext, seeds: np.ndarray
 ) -> dict[str, float]:
