@@ -1,0 +1,17 @@
+
+$ python -m selection_rule_comparison.landscape --model sparse_er --cells percolation:16:0.2 faq:16:0.2 goat:16:0.2 --jobs 3 --blas-threads 3
+Sun 02:59  Landscape, ER: 13 tasks, 3 at a time, about 2.2 h (a rough guess). One line per finished task.
+Sun 03:05  [1/13] sets SGM (FAQ) ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 2: 1431 runs in 6.6 min; about 1.2 h left
+Sun 03:05  [2/13] sets SGM (FAQ) ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 1: 1431 runs in 6.6 min; about 1.2 h left
+Sun 03:06  [3/13] sets SGM (FAQ) ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 1431 runs in 6.7 min; about 1.2 h left
+Sun 03:10  [4/13] sets GOAT ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 478 runs in 4.2 min; about 0.7 h left
+Sun 03:10  [5/13] redraws SGM (FAQ) ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 1000 runs in 4.4 min; about 0.7 h left
+Sun 03:14  [6/13] redraws GOAT ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 1000 runs in 8.4 min; about 0.2 h left
+Sun 03:14  [7/13] sets GOAT ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 1: 478 runs in 4.2 min; about 0.2 h left
+Sun 03:14  [8/13] sets GOAT ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 2: 478 runs in 4.3 min; about 0.2 h left
+Sun 03:16  [9/13] regularizer GOAT ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 200 runs in 1.8 min; about 0.1 h left
+Sun 03:16  [10/13] sets Percolation ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 478 runs in 2.2 min; about 0.1 h left
+Sun 03:18  [11/13] sets Percolation ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 1: 478 runs in 2.2 min; about 0.0 h left
+Sun 03:18  [12/13] redraws Percolation ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 0: 1000 runs in 4.3 min; about 0.0 h left
+Sun 03:19  [13/13] sets Percolation ER, mean degree 16, rho 0.20, 300 seeds (50% level), pair 2: 478 runs in 2.2 min; about 0.0 h left
+Sun 03:19  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/landscape

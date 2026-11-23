@@ -1,0 +1,43 @@
+
+$ python -m selection_rule_comparison.landscape --model sparse_er --jobs 3 --blas-threads 3
+Sat 04:01  Landscape, ER: 39 tasks, 3 at a time, about 6.6 h (a rough guess). One line per finished task.
+Sat 04:50  [1/39] sets SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 1: 1431 runs in 49.3 min; about 5.6 h left
+Sat 04:52  [2/39] sets SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 0: 1431 runs in 50.8 min; about 5.6 h left
+Sat 04:53  [3/39] sets SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 2: 1431 runs in 52.0 min; about 5.6 h left
+Sat 05:49  [4/39] sets SGM (FAQ) ER, mean degree 8, rho 0.50, 58 seeds (50% level), pair 1: 1431 runs in 57.2 min; about 4.6 h left
+Sat 05:51  [5/39] sets SGM (FAQ) ER, mean degree 8, rho 0.50, 58 seeds (50% level), pair 2: 1431 runs in 58.6 min; about 4.6 h left
+Sat 05:52  [6/39] sets SGM (FAQ) ER, mean degree 8, rho 0.50, 58 seeds (50% level), pair 0: 1431 runs in 62.1 min; about 4.5 h left
+Sat 06:19  [7/39] sets SGM (FAQ) ER, mean degree 16, rho 0.30, 143 seeds (50% level), pair 1: 1431 runs in 28.1 min; about 3.6 h left
+Sat 06:20  [8/39] sets SGM (FAQ) ER, mean degree 16, rho 0.30, 143 seeds (50% level), pair 0: 1431 runs in 30.8 min; about 3.6 h left
+Sat 06:21  [9/39] sets SGM (FAQ) ER, mean degree 16, rho 0.30, 143 seeds (50% level), pair 2: 1431 runs in 28.9 min; about 3.6 h left
+Sat 06:55  [10/39] redraws GOAT ER, mean degree 8, rho 0.40, 105 seeds (50% level), pair 0: 1000 runs in 35.4 min; about 2.8 h left
+Sat 07:02  [11/39] redraws GOAT ER, mean degree 16, rho 0.30, 117 seeds (50% level), pair 0: 1000 runs in 41.5 min; about 2.7 h left
+Sat 07:24  [12/39] redraws GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 1000 runs in 64.6 min; about 2.3 h left
+Sat 07:30  [13/39] redraws SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 0: 1000 runs in 35.3 min; about 2.2 h left
+Sat 07:42  [14/39] redraws SGM (FAQ) ER, mean degree 8, rho 0.50, 58 seeds (50% level), pair 0: 1000 runs in 39.6 min; about 1.9 h left
+Sat 07:44  [15/39] redraws SGM (FAQ) ER, mean degree 16, rho 0.30, 143 seeds (50% level), pair 0: 1000 runs in 20.2 min; about 1.9 h left
+Sat 08:02  [16/39] sets GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 478 runs in 31.9 min; about 1.6 h left
+Sat 08:15  [17/39] sets GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 1: 478 runs in 33.3 min; about 1.4 h left
+Sat 08:19  [18/39] sets GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 2: 478 runs in 34.7 min; about 1.3 h left
+Sat 08:20  [19/39] sets GOAT ER, mean degree 8, rho 0.40, 105 seeds (50% level), pair 0: 478 runs in 17.6 min; about 1.3 h left
+Sat 08:33  [20/39] sets GOAT ER, mean degree 8, rho 0.40, 105 seeds (50% level), pair 1: 478 runs in 17.3 min; about 0.9 h left
+Sat 08:36  [21/39] sets GOAT ER, mean degree 8, rho 0.40, 105 seeds (50% level), pair 2: 478 runs in 17.1 min; about 0.9 h left
+Sat 08:42  [22/39] sets GOAT ER, mean degree 16, rho 0.30, 117 seeds (50% level), pair 0: 478 runs in 22.6 min; about 0.7 h left
+Sat 08:50  [23/39] regularizer GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 200 runs in 8.0 min; about 0.5 h left
+Sat 08:53  [24/39] sets GOAT ER, mean degree 16, rho 0.30, 117 seeds (50% level), pair 1: 478 runs in 20.0 min; about 0.5 h left
+Sat 08:57  [25/39] sets GOAT ER, mean degree 16, rho 0.30, 117 seeds (50% level), pair 2: 478 runs in 21.1 min; about 0.4 h left
+Sat 08:57  [26/39] regularizer GOAT ER, mean degree 8, rho 0.40, 105 seeds (50% level), pair 0: 200 runs in 6.9 min; about 0.4 h left
+Sat 09:00  [27/39] regularizer GOAT ER, mean degree 16, rho 0.30, 117 seeds (50% level), pair 0: 200 runs in 7.7 min; about 0.3 h left
+Sat 09:04  [28/39] redraws Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 0: 1000 runs in 7.4 min; about 0.2 h left
+Sat 09:05  [29/39] redraws Percolation ER, mean degree 16, rho 0.40, 51 seeds (50% level), pair 0: 1000 runs in 7.3 min; about 0.2 h left
+Sat 09:07  [30/39] redraws Percolation ER, mean degree 32, rho 0.30, 93 seeds (50% level), pair 0: 1000 runs in 7.1 min; about 0.2 h left
+Sat 09:08  [31/39] sets Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 0: 478 runs in 3.5 min; about 0.2 h left
+Sat 09:08  [32/39] sets Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 1: 478 runs in 3.6 min; about 0.1 h left
+Sat 09:11  [33/39] sets Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 2: 478 runs in 3.6 min; about 0.1 h left
+Sat 09:12  [34/39] sets Percolation ER, mean degree 16, rho 0.40, 51 seeds (50% level), pair 0: 478 runs in 3.5 min; about 0.1 h left
+Sat 09:12  [35/39] sets Percolation ER, mean degree 16, rho 0.40, 51 seeds (50% level), pair 1: 478 runs in 3.7 min; about 0.1 h left
+Sat 09:15  [36/39] sets Percolation ER, mean degree 16, rho 0.40, 51 seeds (50% level), pair 2: 478 runs in 3.5 min; about 0.0 h left
+Sat 09:15  [37/39] sets Percolation ER, mean degree 32, rho 0.30, 93 seeds (50% level), pair 0: 478 runs in 3.5 min; about 0.0 h left
+Sat 09:16  [38/39] sets Percolation ER, mean degree 32, rho 0.30, 93 seeds (50% level), pair 1: 478 runs in 3.7 min; about 0.0 h left
+Sat 09:18  [39/39] sets Percolation ER, mean degree 32, rho 0.30, 93 seeds (50% level), pair 2: 478 runs in 3.4 min; about 0.0 h left
+Sat 09:18  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/landscape

@@ -1,0 +1,100 @@
+
+$ python -m real_data_experiments.first_look --pairs small --jobs 3 --blas-threads 3
+Sat 03:57  First look (worm, worm_lcc, worm_male, enron_130_131, enron_130_132): 96 tasks, 3 at a time, about 0.1 h (a rough guess). One line per finished task.
+Sat 03:58  [1/96] worm, SGM (FAQ), 100 seeds: 120 runs in 0.3 min; about 0.1 h left
+Sat 03:58  [2/96] worm, SGM (FAQ), 150 seeds: 120 runs in 0.1 min; about 0.1 h left
+Sat 03:58  [3/96] worm, SGM (FAQ), 200 seeds: 120 runs in 0.1 min; about 0.1 h left
+Sat 03:58  [4/96] worm, SGM (FAQ), 50 seeds: 120 runs in 0.6 min; about 0.1 h left
+Sat 03:58  [5/96] worm, SGM (FAQ), 25 seeds: 120 runs in 0.8 min; about 0.1 h left
+Sat 03:58  [6/96] worm_lcc, SGM (FAQ), 50 seeds: 120 runs in 0.3 min; about 0.1 h left
+Sat 03:58  [7/96] worm_lcc, SGM (FAQ), 25 seeds: 120 runs in 0.4 min; about 0.1 h left
+Sat 03:58  [8/96] worm_lcc, SGM (FAQ), 100 seeds: 120 runs in 0.2 min; about 0.1 h left
+Sat 03:58  [9/96] worm, GOAT (r 100), 25 seeds: 40 runs in 0.0 min; about 0.1 h left
+Sat 03:58  [10/96] worm_lcc, SGM (FAQ), 150 seeds: 120 runs in 0.1 min; about 0.1 h left
+Sat 03:58  [11/96] worm, GOAT (r 100), 100 seeds: 40 runs in 0.0 min; about 0.1 h left
+Sat 03:58  [12/96] worm, GOAT (r 100), 50 seeds: 40 runs in 0.1 min; about 0.1 h left
+Sat 03:58  [13/96] worm, GOAT (r 100), 150 seeds: 40 runs in 0.0 min; about 0.1 h left
+Sat 03:58  [14/96] worm, GOAT (r 100), 200 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:58  [15/96] worm, GOAT (r 300), 100 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [16/96] worm, GOAT (r 300), 50 seeds: 40 runs in 0.2 min; about 0.0 h left
+Sat 03:59  [17/96] worm, GOAT (r 300), 150 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [18/96] worm, GOAT (r 300), 200 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [19/96] worm_lcc, GOAT (r 100), 25 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [20/96] worm, GOAT (r 300), 25 seeds: 40 runs in 0.2 min; about 0.0 h left
+Sat 03:59  [21/96] worm_lcc, GOAT (r 100), 50 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [22/96] worm_lcc, GOAT (r 100), 100 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [23/96] worm_lcc, GOAT (r 100), 150 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [24/96] worm_lcc, GOAT (r 300), 100 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [25/96] worm_lcc, GOAT (r 300), 150 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 03:59  [26/96] worm_lcc, GOAT (r 300), 50 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [27/96] worm_lcc, GOAT (r 300), 25 seeds: 40 runs in 0.2 min; about 0.0 h left
+Sat 03:59  [28/96] worm_male, SGM (FAQ), 20 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [29/96] worm_male, SGM (FAQ), 40 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [30/96] worm_male, SGM (FAQ), 10 seeds: 120 runs in 0.2 min; about 0.0 h left
+Sat 03:59  [31/96] worm_male, SGM (FAQ), 80 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [32/96] worm_male, SGM (FAQ), 60 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 03:59  [33/96] enron_130_131, SGM (FAQ), 5 seeds: 120 runs in 0.2 min; about 0.0 h left
+Sat 03:59  [34/96] enron_130_131, SGM (FAQ), 10 seeds: 120 runs in 0.4 min; about 0.0 h left
+Sat 03:59  [35/96] enron_130_131, SGM (FAQ), 20 seeds: 120 runs in 0.4 min; about 0.0 h left
+Sat 04:00  [36/96] enron_130_132, SGM (FAQ), 5 seeds: 120 runs in 0.2 min; about 0.0 h left
+Sat 04:00  [37/96] enron_130_131, SGM (FAQ), 40 seeds: 120 runs in 0.4 min; about 0.0 h left
+Sat 04:00  [38/96] enron_130_131, SGM (FAQ), 60 seeds: 120 runs in 0.3 min; about 0.0 h left
+Sat 04:00  [39/96] enron_130_132, SGM (FAQ), 20 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [40/96] enron_130_132, SGM (FAQ), 10 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [41/96] enron_130_132, SGM (FAQ), 40 seeds: 120 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [42/96] worm_male, GOAT (r 100), 10 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [43/96] enron_130_132, SGM (FAQ), 60 seeds: 120 runs in 0.2 min; about 0.0 h left
+Sat 04:00  [44/96] worm_male, GOAT (r 100), 20 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [45/96] worm_male, GOAT (r 100), 60 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [46/96] worm_male, GOAT (r 100), 40 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [47/96] worm_male, GOAT (r 100), 80 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [48/96] worm_male, GOAT (r 300), 40 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [49/96] worm_male, GOAT (r 300), 20 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [50/96] worm_male, GOAT (r 300), 10 seeds: 40 runs in 0.2 min; about 0.0 h left
+Sat 04:00  [51/96] enron_130_131, GOAT (r 100), 5 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [52/96] worm_male, GOAT (r 300), 80 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [53/96] enron_130_131, GOAT (r 100), 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [54/96] worm_male, GOAT (r 300), 60 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [55/96] enron_130_131, GOAT (r 100), 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [56/96] enron_130_131, GOAT (r 100), 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [57/96] enron_130_131, GOAT (r 100), 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [58/96] enron_130_131, GOAT (r 300), 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [59/96] enron_130_131, GOAT (r 300), 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [60/96] enron_130_131, GOAT (r 300), 5 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [61/96] enron_130_131, GOAT (r 300), 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [62/96] enron_130_131, GOAT (r 300), 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [63/96] enron_130_132, GOAT (r 100), 5 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [64/96] enron_130_132, GOAT (r 100), 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [65/96] enron_130_132, GOAT (r 100), 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [66/96] enron_130_132, GOAT (r 100), 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [67/96] enron_130_132, GOAT (r 100), 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [68/96] enron_130_132, GOAT (r 300), 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [69/96] enron_130_132, GOAT (r 300), 10 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [70/96] enron_130_132, GOAT (r 300), 5 seeds: 40 runs in 0.1 min; about 0.0 h left
+Sat 04:00  [71/96] enron_130_132, GOAT (r 300), 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [72/96] enron_130_132, GOAT (r 300), 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [73/96] worm, Percolation, 25 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [74/96] worm, Percolation, 100 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [75/96] worm, Percolation, 50 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [76/96] worm, Percolation, 150 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [77/96] worm, Percolation, 200 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [78/96] worm_lcc, Percolation, 25 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [79/96] worm_lcc, Percolation, 50 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [80/96] worm_lcc, Percolation, 100 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [81/96] worm_lcc, Percolation, 150 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [82/96] worm_male, Percolation, 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [83/96] worm_male, Percolation, 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [84/96] worm_male, Percolation, 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [85/96] worm_male, Percolation, 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [86/96] worm_male, Percolation, 80 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [87/96] enron_130_131, Percolation, 5 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [88/96] enron_130_131, Percolation, 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [89/96] enron_130_131, Percolation, 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [90/96] enron_130_131, Percolation, 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [91/96] enron_130_131, Percolation, 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [92/96] enron_130_132, Percolation, 10 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [93/96] enron_130_132, Percolation, 5 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [94/96] enron_130_132, Percolation, 20 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [95/96] enron_130_132, Percolation, 60 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  [96/96] enron_130_132, Percolation, 40 seeds: 40 runs in 0.0 min; about 0.0 h left
+Sat 04:00  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/real_data_experiments/results/first_look

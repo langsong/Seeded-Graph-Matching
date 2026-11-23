@@ -1,0 +1,8 @@
+{
+  "target_mean_degree": 10,
+  "rho": {
+    "sparse_er": 0.7,
+    "paper_pa": 0.62
+  },
+  "wrapper_sha256": "07f8388846655a57530812e641a0a32e83679a505ee6ad03b3953ddacd1f5ae2"
+}

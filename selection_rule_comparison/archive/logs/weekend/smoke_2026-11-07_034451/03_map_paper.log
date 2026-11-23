@@ -1,0 +1,11 @@
+
+$ python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5 --jobs 3 --blas-threads 3
+Sat 03:46  Stage 1, PAPER: 2 pair runs, 3 at a time, about 0 min (a rough guess). One line per finished pair.
+Sat 03:46  [1/2] stage 1 Percolation PAPER, mean degree 16, rho 0.50, pair 0: 40 runs in 0.3 min, middle budget 12; about 0 min left
+Sat 03:46  [2/2] stage 1 Percolation PAPER, mean degree 16, rho 0.50, pair 1: 44 runs in 0.3 min, middle budget 12; about 0 min left
+Sat 03:46  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/tmp/weekend_smoke/regime_map
+
+$ python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5 --pairs 1 --jobs 3 --blas-threads 3
+Sat 03:46  Stage 2, PAPER: 1 pair runs, 3 at a time, about 0 min (a rough guess). One line per finished pair.
+Sat 03:47  [1/1] stage 2 Percolation PAPER, mean degree 16, rho 0.50, pair 0: 54 runs in 0.4 min; about 0 min left
+Sat 03:47  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/tmp/weekend_smoke/regime_map

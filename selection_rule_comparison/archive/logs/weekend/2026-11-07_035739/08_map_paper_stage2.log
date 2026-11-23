@@ -1,0 +1,165 @@
+
+$ python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa --jobs 3 --blas-threads 3
+No 20-80% rise inside the budget range, so no stage 2, for 15 cells: GOAT d8 rho 0.50, Percolation d8 rho 0.70, GOAT d8 rho 0.70, Percolation d8 rho 0.90, SGM (FAQ) d8 rho 0.90, GOAT d8 rho 0.90, GOAT d16 rho 0.50, GOAT d16 rho 0.70, Percolation d16 rho 0.90, SGM (FAQ) d16 rho 0.90, GOAT d16 rho 0.90, GOAT d32 rho 0.70, Percolation d32 rho 0.90, SGM (FAQ) d32 rho 0.90, GOAT d32 rho 0.90
+Sat 23:33  Stage 2, PAPER: 156 pair runs, 3 at a time, about 121 min (a rough guess). One line per finished pair.
+Sat 23:36  [1/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 0: 93 runs in 2.4 min; about 118 min left
+Sat 23:36  [2/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 2: 93 runs in 2.4 min; about 118 min left
+Sat 23:36  [3/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 1: 93 runs in 2.5 min; about 117 min left
+Sat 23:38  [4/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 3: 93 runs in 2.6 min; about 114 min left
+Sat 23:39  [5/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 1: 93 runs in 3.4 min; about 113 min left
+Sat 23:39  [6/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 0: 93 runs in 3.5 min; about 113 min left
+Sat 23:42  [7/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 0: 93 runs in 3.0 min; about 110 min left
+Sat 23:42  [8/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 2: 93 runs in 4.0 min; about 110 min left
+Sat 23:43  [9/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 3: 93 runs in 3.6 min; about 109 min left
+Sat 23:44  [10/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 1: 93 runs in 2.4 min; about 107 min left
+Sat 23:45  [11/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 3: 93 runs in 2.5 min; about 106 min left
+Sat 23:46  [12/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 2: 93 runs in 3.7 min; about 105 min left
+Sat 23:48  [13/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 0: 93 runs in 3.5 min; about 103 min left
+Sat 23:48  [14/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 1: 93 runs in 3.1 min; about 102 min left
+Sat 23:49  [15/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 2: 93 runs in 2.8 min; about 102 min left
+Sat 23:50  [16/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 0: 93 runs in 1.6 min; about 99 min left
+Sat 23:50  [17/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 1: 93 runs in 1.6 min; about 98 min left
+Sat 23:51  [18/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 3: 93 runs in 2.7 min; about 98 min left
+Sat 23:51  [19/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 2: 93 runs in 1.6 min; about 96 min left
+Sat 23:52  [20/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 3: 93 runs in 1.6 min; about 95 min left
+Sat 23:54  [21/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 0: 93 runs in 3.3 min; about 92 min left
+Sat 23:54  [22/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 1: 93 runs in 2.7 min; about 92 min left
+Sat 23:55  [23/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 2: 93 runs in 3.0 min; about 91 min left
+Sat 23:56  [24/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 0: 93 runs in 2.4 min; about 89 min left
+Sat 23:57  [25/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 3: 93 runs in 3.2 min; about 88 min left
+Sat 23:58  [26/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 1: 93 runs in 3.0 min; about 87 min left
+Sat 23:59  [27/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 2: 93 runs in 2.7 min; about 85 min left
+Sun 00:00  [28/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 3: 93 runs in 2.8 min; about 84 min left
+Sun 00:01  [29/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 0: 93 runs in 3.0 min; about 83 min left
+Sun 00:02  [30/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 1: 93 runs in 2.8 min; about 82 min left
+Sun 00:04  [31/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 2: 93 runs in 3.8 min; about 80 min left
+Sun 00:04  [32/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 3: 93 runs in 3.1 min; about 79 min left
+Sun 00:05  [33/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 0: 93 runs in 3.0 min; about 78 min left
+Sun 00:07  [34/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 1: 93 runs in 3.4 min; about 76 min left
+Sun 00:07  [35/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 2: 93 runs in 3.4 min; about 75 min left
+Sun 00:08  [36/156] stage 2 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 3: 93 runs in 3.2 min; about 74 min left
+Sun 00:09  [37/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 0: 93 runs in 2.0 min; about 72 min left
+Sun 00:09  [38/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 1: 93 runs in 1.9 min; about 72 min left
+Sun 00:10  [39/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 2: 93 runs in 2.1 min; about 70 min left
+Sun 00:11  [40/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 3: 93 runs in 2.0 min; about 69 min left
+Sun 00:12  [41/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 0: 93 runs in 2.8 min; about 67 min left
+Sun 00:12  [42/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 1: 93 runs in 2.0 min; about 67 min left
+Sun 00:14  [43/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 2: 93 runs in 2.7 min; about 64 min left
+Sun 00:14  [44/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 3: 93 runs in 1.8 min; about 64 min left
+Sun 00:16  [45/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 0: 93 runs in 3.3 min; about 62 min left
+Sun 00:16  [46/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 1: 93 runs in 2.3 min; about 61 min left
+Sun 00:17  [47/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 2: 93 runs in 3.3 min; about 60 min left
+Sun 00:19  [48/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 3: 93 runs in 3.3 min; about 58 min left
+Sun 00:19  [49/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 0: 93 runs in 3.1 min; about 57 min left
+Sun 00:21  [50/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 1: 93 runs in 3.4 min; about 56 min left
+Sun 00:22  [51/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 2: 93 runs in 2.9 min; about 54 min left
+Sun 00:22  [52/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 3: 93 runs in 2.8 min; about 54 min left
+Sun 00:24  [53/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 0: 93 runs in 3.2 min; about 52 min left
+Sun 00:25  [54/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 1: 93 runs in 3.3 min; about 50 min left
+Sun 00:25  [55/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 2: 93 runs in 3.0 min; about 50 min left
+Sun 00:26  [56/156] stage 2 GOAT PAPER, mean degree 8, rho 0.30, pair 0: 54 runs in 1.0 min; about 48 min left
+Sun 00:27  [57/156] stage 2 GOAT PAPER, mean degree 8, rho 0.30, pair 1: 54 runs in 1.4 min; about 47 min left
+Sun 00:27  [58/156] stage 2 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 3: 93 runs in 3.1 min; about 47 min left
+Sun 00:28  [59/156] stage 2 GOAT PAPER, mean degree 8, rho 0.30, pair 2: 54 runs in 2.1 min; about 45 min left
+Sun 00:29  [60/156] stage 2 GOAT PAPER, mean degree 16, rho 0.20, pair 0: 54 runs in 2.0 min; about 44 min left
+Sun 00:29  [61/156] stage 2 GOAT PAPER, mean degree 8, rho 0.30, pair 3: 54 runs in 2.5 min; about 43 min left
+Sun 00:30  [62/156] stage 2 GOAT PAPER, mean degree 16, rho 0.20, pair 1: 54 runs in 1.9 min; about 42 min left
+Sun 00:31  [63/156] stage 2 GOAT PAPER, mean degree 16, rho 0.20, pair 2: 54 runs in 1.9 min; about 41 min left
+Sun 00:31  [64/156] stage 2 GOAT PAPER, mean degree 16, rho 0.20, pair 3: 54 runs in 1.9 min; about 40 min left
+Sun 00:33  [65/156] stage 2 GOAT PAPER, mean degree 16, rho 0.30, pair 0: 54 runs in 2.7 min; about 39 min left
+Sun 00:34  [66/156] stage 2 GOAT PAPER, mean degree 16, rho 0.30, pair 2: 54 runs in 2.7 min; about 38 min left
+Sun 00:35  [67/156] stage 2 GOAT PAPER, mean degree 16, rho 0.30, pair 1: 54 runs in 3.8 min; about 37 min left
+Sun 00:36  [68/156] stage 2 GOAT PAPER, mean degree 16, rho 0.40, pair 0: 54 runs in 2.1 min; about 35 min left
+Sun 00:36  [69/156] stage 2 GOAT PAPER, mean degree 16, rho 0.30, pair 3: 54 runs in 3.3 min; about 35 min left
+Sun 00:38  [70/156] stage 2 GOAT PAPER, mean degree 16, rho 0.40, pair 1: 54 runs in 3.1 min; about 33 min left
+Sun 00:38  [71/156] stage 2 GOAT PAPER, mean degree 16, rho 0.40, pair 3: 54 runs in 1.9 min; about 33 min left
+Sun 00:38  [72/156] stage 2 GOAT PAPER, mean degree 16, rho 0.40, pair 2: 54 runs in 2.6 min; about 32 min left
+Sun 00:40  [73/156] stage 2 GOAT PAPER, mean degree 32, rho 0.20, pair 0: 54 runs in 2.4 min; about 30 min left
+Sun 00:40  [74/156] stage 2 GOAT PAPER, mean degree 32, rho 0.20, pair 1: 54 runs in 2.4 min; about 29 min left
+Sun 00:41  [75/156] stage 2 GOAT PAPER, mean degree 32, rho 0.20, pair 2: 54 runs in 2.5 min; about 29 min left
+Sun 00:42  [76/156] stage 2 GOAT PAPER, mean degree 32, rho 0.20, pair 3: 54 runs in 2.3 min; about 27 min left
+Sun 00:43  [77/156] stage 2 GOAT PAPER, mean degree 32, rho 0.30, pair 1: 54 runs in 1.9 min; about 26 min left
+Sun 00:44  [78/156] stage 2 GOAT PAPER, mean degree 32, rho 0.30, pair 0: 54 runs in 3.4 min; about 25 min left
+Sun 00:45  [79/156] stage 2 GOAT PAPER, mean degree 32, rho 0.30, pair 3: 54 runs in 1.9 min; about 24 min left
+Sun 00:45  [80/156] stage 2 GOAT PAPER, mean degree 32, rho 0.30, pair 2: 54 runs in 2.7 min; about 23 min left
+Sun 00:47  [81/156] stage 2 GOAT PAPER, mean degree 32, rho 0.40, pair 0: 54 runs in 3.5 min; about 21 min left
+Sun 00:47  [82/156] stage 2 GOAT PAPER, mean degree 32, rho 0.40, pair 1: 54 runs in 2.6 min; about 21 min left
+Sun 00:49  [83/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 0: 62 runs in 1.2 min; about 20 min left
+Sun 00:49  [84/156] stage 2 GOAT PAPER, mean degree 32, rho 0.40, pair 2: 54 runs in 3.6 min; about 19 min left
+Sun 00:49  [85/156] stage 2 GOAT PAPER, mean degree 32, rho 0.40, pair 3: 54 runs in 2.2 min; about 18 min left
+Sun 00:50  [86/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 1: 62 runs in 1.2 min; about 17 min left
+Sun 00:50  [87/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 2: 62 runs in 1.3 min; about 17 min left
+Sun 00:51  [88/156] stage 2 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 3: 62 runs in 1.3 min; about 16 min left
+Sun 00:51  [89/156] stage 2 GOAT PAPER, mean degree 8, rho 0.20, pair 0: 36 runs in 1.4 min; about 15 min left
+Sun 00:52  [90/156] stage 2 GOAT PAPER, mean degree 8, rho 0.20, pair 1: 36 runs in 1.5 min; about 14 min left
+Sun 00:52  [91/156] stage 2 GOAT PAPER, mean degree 8, rho 0.20, pair 2: 36 runs in 1.6 min; about 14 min left
+Sun 00:53  [92/156] stage 2 GOAT PAPER, mean degree 8, rho 0.20, pair 3: 36 runs in 1.7 min; about 13 min left
+Sun 00:53  [93/156] stage 2 GOAT PAPER, mean degree 8, rho 0.40, pair 0: 36 runs in 1.5 min; about 12 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.11085650022918919 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sun 00:55  [94/156] stage 2 GOAT PAPER, mean degree 8, rho 0.40, pair 2: 36 runs in 1.7 min; about 11 min left
+Sun 00:55  [95/156] stage 2 GOAT PAPER, mean degree 8, rho 0.40, pair 1: 36 runs in 2.5 min; about 11 min left
+Sun 00:56  [96/156] stage 2 GOAT PAPER, mean degree 8, rho 0.40, pair 3: 36 runs in 2.3 min; about 10 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08401599169055707 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sun 00:56  [97/156] stage 2 GOAT PAPER, mean degree 32, rho 0.50, pair 0: 36 runs in 1.4 min; about 9 min left
+Sun 00:57  [98/156] stage 2 GOAT PAPER, mean degree 32, rho 0.50, pair 1: 36 runs in 1.7 min; about 8 min left
+Sun 00:57  [99/156] stage 2 GOAT PAPER, mean degree 32, rho 0.50, pair 2: 36 runs in 1.1 min; about 8 min left
+Sun 00:57  [100/156] stage 2 Percolation PAPER, mean degree 8, rho 0.30, pair 0: 54 runs in 0.4 min; about 8 min left
+Sun 00:57  [101/156] stage 2 Percolation PAPER, mean degree 8, rho 0.30, pair 1: 54 runs in 0.4 min; about 8 min left
+Sun 00:57  [102/156] stage 2 GOAT PAPER, mean degree 32, rho 0.50, pair 3: 36 runs in 1.1 min; about 7 min left
+Sun 00:57  [103/156] stage 2 Percolation PAPER, mean degree 8, rho 0.30, pair 2: 54 runs in 0.4 min; about 7 min left
+Sun 00:57  [104/156] stage 2 Percolation PAPER, mean degree 8, rho 0.30, pair 3: 54 runs in 0.4 min; about 7 min left
+Sun 00:57  [105/156] stage 2 Percolation PAPER, mean degree 8, rho 0.40, pair 0: 54 runs in 0.4 min; about 7 min left
+Sun 00:58  [106/156] stage 2 Percolation PAPER, mean degree 8, rho 0.40, pair 1: 54 runs in 0.4 min; about 7 min left
+Sun 00:58  [107/156] stage 2 Percolation PAPER, mean degree 8, rho 0.40, pair 2: 54 runs in 0.4 min; about 7 min left
+Sun 00:58  [108/156] stage 2 Percolation PAPER, mean degree 8, rho 0.40, pair 3: 54 runs in 0.4 min; about 7 min left
+Sun 00:58  [109/156] stage 2 Percolation PAPER, mean degree 8, rho 0.50, pair 0: 54 runs in 0.4 min; about 6 min left
+Sun 00:58  [110/156] stage 2 Percolation PAPER, mean degree 8, rho 0.50, pair 1: 54 runs in 0.4 min; about 6 min left
+Sun 00:58  [111/156] stage 2 Percolation PAPER, mean degree 8, rho 0.50, pair 2: 54 runs in 0.4 min; about 6 min left
+Sun 00:58  [112/156] stage 2 Percolation PAPER, mean degree 8, rho 0.50, pair 3: 54 runs in 0.4 min; about 6 min left
+Sun 00:58  [113/156] stage 2 Percolation PAPER, mean degree 16, rho 0.30, pair 0: 54 runs in 0.4 min; about 6 min left
+Sun 00:59  [114/156] stage 2 Percolation PAPER, mean degree 16, rho 0.30, pair 1: 54 runs in 0.4 min; about 6 min left
+Sun 00:59  [115/156] stage 2 Percolation PAPER, mean degree 16, rho 0.30, pair 2: 54 runs in 0.4 min; about 5 min left
+Sun 00:59  [116/156] stage 2 Percolation PAPER, mean degree 16, rho 0.30, pair 3: 54 runs in 0.4 min; about 5 min left
+Sun 00:59  [117/156] stage 2 Percolation PAPER, mean degree 16, rho 0.40, pair 0: 54 runs in 0.4 min; about 5 min left
+Sun 00:59  [118/156] stage 2 Percolation PAPER, mean degree 16, rho 0.40, pair 1: 54 runs in 0.4 min; about 5 min left
+Sun 00:59  [119/156] stage 2 Percolation PAPER, mean degree 16, rho 0.40, pair 2: 54 runs in 0.4 min; about 5 min left
+Sun 00:59  [120/156] stage 2 Percolation PAPER, mean degree 16, rho 0.40, pair 3: 54 runs in 0.4 min; about 5 min left
+Sun 01:00  [121/156] stage 2 Percolation PAPER, mean degree 16, rho 0.50, pair 0: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [122/156] stage 2 Percolation PAPER, mean degree 16, rho 0.50, pair 1: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [123/156] stage 2 Percolation PAPER, mean degree 16, rho 0.50, pair 2: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [124/156] stage 2 Percolation PAPER, mean degree 16, rho 0.50, pair 3: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [125/156] stage 2 Percolation PAPER, mean degree 32, rho 0.20, pair 0: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [126/156] stage 2 Percolation PAPER, mean degree 32, rho 0.20, pair 1: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [127/156] stage 2 Percolation PAPER, mean degree 32, rho 0.20, pair 2: 54 runs in 0.4 min; about 4 min left
+Sun 01:00  [128/156] stage 2 Percolation PAPER, mean degree 32, rho 0.20, pair 3: 54 runs in 0.4 min; about 4 min left
+Sun 01:01  [129/156] stage 2 Percolation PAPER, mean degree 32, rho 0.30, pair 0: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [130/156] stage 2 Percolation PAPER, mean degree 32, rho 0.30, pair 1: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [131/156] stage 2 Percolation PAPER, mean degree 32, rho 0.30, pair 2: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [132/156] stage 2 Percolation PAPER, mean degree 32, rho 0.30, pair 3: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [133/156] stage 2 Percolation PAPER, mean degree 32, rho 0.40, pair 0: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [134/156] stage 2 Percolation PAPER, mean degree 32, rho 0.40, pair 1: 54 runs in 0.4 min; about 3 min left
+Sun 01:01  [135/156] stage 2 Percolation PAPER, mean degree 32, rho 0.40, pair 2: 54 runs in 0.4 min; about 2 min left
+Sun 01:02  [136/156] stage 2 Percolation PAPER, mean degree 32, rho 0.40, pair 3: 54 runs in 0.4 min; about 2 min left
+Sun 01:02  [137/156] stage 2 Percolation PAPER, mean degree 32, rho 0.50, pair 0: 54 runs in 0.4 min; about 2 min left
+Sun 01:02  [138/156] stage 2 Percolation PAPER, mean degree 32, rho 0.50, pair 1: 54 runs in 0.5 min; about 2 min left
+Sun 01:02  [139/156] stage 2 Percolation PAPER, mean degree 32, rho 0.50, pair 2: 54 runs in 0.4 min; about 2 min left
+Sun 01:02  [140/156] stage 2 Percolation PAPER, mean degree 32, rho 0.50, pair 3: 54 runs in 0.4 min; about 2 min left
+Sun 01:02  [141/156] stage 2 Percolation PAPER, mean degree 32, rho 0.70, pair 0: 54 runs in 0.5 min; about 2 min left
+Sun 01:03  [142/156] stage 2 Percolation PAPER, mean degree 32, rho 0.70, pair 1: 54 runs in 0.5 min; about 1 min left
+Sun 01:03  [143/156] stage 2 Percolation PAPER, mean degree 32, rho 0.70, pair 2: 54 runs in 0.4 min; about 1 min left
+Sun 01:03  [144/156] stage 2 Percolation PAPER, mean degree 32, rho 0.70, pair 3: 54 runs in 0.5 min; about 1 min left
+Sun 01:03  [145/156] stage 2 Percolation PAPER, mean degree 8, rho 0.20, pair 0: 36 runs in 0.2 min; about 1 min left
+Sun 01:03  [146/156] stage 2 Percolation PAPER, mean degree 8, rho 0.20, pair 1: 36 runs in 0.2 min; about 1 min left
+Sun 01:03  [147/156] stage 2 Percolation PAPER, mean degree 8, rho 0.20, pair 2: 36 runs in 0.2 min; about 1 min left
+Sun 01:03  [148/156] stage 2 Percolation PAPER, mean degree 8, rho 0.20, pair 3: 36 runs in 0.2 min; about 1 min left
+Sun 01:03  [149/156] stage 2 Percolation PAPER, mean degree 16, rho 0.20, pair 0: 36 runs in 0.3 min; about 1 min left
+Sun 01:03  [150/156] stage 2 Percolation PAPER, mean degree 16, rho 0.20, pair 1: 36 runs in 0.3 min; about 0 min left
+Sun 01:03  [151/156] stage 2 Percolation PAPER, mean degree 16, rho 0.20, pair 2: 36 runs in 0.3 min; about 0 min left
+Sun 01:03  [152/156] stage 2 Percolation PAPER, mean degree 16, rho 0.20, pair 3: 36 runs in 0.3 min; about 0 min left
+Sun 01:04  [153/156] stage 2 Percolation PAPER, mean degree 16, rho 0.70, pair 0: 36 runs in 0.3 min; about 0 min left
+Sun 01:04  [154/156] stage 2 Percolation PAPER, mean degree 16, rho 0.70, pair 1: 36 runs in 0.3 min; about 0 min left
+Sun 01:04  [155/156] stage 2 Percolation PAPER, mean degree 16, rho 0.70, pair 2: 36 runs in 0.3 min; about 0 min left
+Sun 01:04  [156/156] stage 2 Percolation PAPER, mean degree 16, rho 0.70, pair 3: 36 runs in 0.3 min; about 0 min left
+Sun 01:04  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/regime_map

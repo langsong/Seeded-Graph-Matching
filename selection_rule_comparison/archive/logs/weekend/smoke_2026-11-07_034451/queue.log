@@ -1,0 +1,55 @@
+Sat 03:44  Weekend queue (smoke test): 5 steps, logs in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451
+Sat 03:44     1  check_pairs        0.0 h   ends about Sat 03:46   Every cell of the Chung-Lu and PAPER maps and landscapes can draw a pair (no runs)
+Sat 03:44     2  map_cl             0.0 h   ends about Sat 03:47   Regime map stages 1 and 2, Chung-Lu, one cell, percolation only
+Sat 03:44     3  map_paper          0.0 h   ends about Sat 03:49   Regime map stages 1 and 2, PAPER, one cell, percolation only
+Sat 03:44     4  landscape_er       0.1 h   ends about Sat 03:53   Landscape, ER: a tiny design in each algorithm's first cell (budgets from your ER map), then the same command again, which must find nothing left to run
+Sat 03:44     5  first_look         0.1 h   ends about Sat 03:56   Real pairs: worm and Enron (one budget, a few sets) and one Wikipedia set per variant
+Sat 03:44  Step 1/5 check_pairs: Every cell of the Chung-Lu and PAPER maps and landscapes can draw a pair (no runs)
+Sat 03:44    $ python -m selection_rule_comparison.weekend_queue --check-pairs
+Sat 03:45  Step 1/5 check_pairs: done after 0 min
+Sat 03:45  Step 2/5 map_cl: Regime map stages 1 and 2, Chung-Lu, one cell, percolation only
+Sat 03:45    $ python -m selection_rule_comparison.regime_map --stage 1 --model chung_lu --algorithms percolation --degrees 16 --rhos 0.5 --jobs 3 --blas-threads 3
+Sat 03:45    $ python -m selection_rule_comparison.regime_map --stage 2 --model chung_lu --algorithms percolation --degrees 16 --rhos 0.5 --pairs 1 --jobs 3 --blas-threads 3
+Sat 03:46  Step 2/5 map_cl: done after 1 min
+Sat 03:46  Step 3/5 map_paper: Regime map stages 1 and 2, PAPER, one cell, percolation only
+Sat 03:46    $ python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5 --jobs 3 --blas-threads 3
+Sat 03:46    $ python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5 --pairs 1 --jobs 3 --blas-threads 3
+Sat 03:47  Step 3/5 map_paper: done after 1 min
+Sat 03:47  Step 4/5 landscape_er: Landscape, ER: a tiny design in each algorithm's first cell (budgets from your ER map), then the same command again, which must find nothing left to run
+Sat 03:47    $ python -m selection_rule_comparison.landscape --model sparse_er --smoke --jobs 3 --blas-threads 3
+Sat 03:49    $ python -m selection_rule_comparison.landscape --model sparse_er --smoke --jobs 3 --blas-threads 3
+Sat 03:49  Step 4/5 landscape_er: done after 2 min
+Sat 03:49  Step 5/5 first_look: Real pairs: worm and Enron (one budget, a few sets) and one Wikipedia set per variant
+Sat 03:49    $ python -m real_data_experiments.first_look --smoke --jobs 3 --blas-threads 3
+Sat 03:50  Step 5/5 first_look: done after 1 min
+Sat 03:50  Summary:
+Sat 03:50    check_pairs       done                             0 min
+Sat 03:50    map_cl            done                             1 min
+Sat 03:50    map_paper         done                             1 min
+Sat 03:50    landscape_er      done                             2 min
+Sat 03:50    first_look        done                             1 min
+Sat 03:50  Smoke-test run times (median seconds per run, from the runs above):
+Sat 03:50    landscape:
+Sat 03:50      sparse_er / faq: 1.69 s (66 runs)
+Sat 03:50      sparse_er / goat: 2.77 s (46 runs)
+Sat 03:50      sparse_er / percolation: 0.45 s (38 runs)
+Sat 03:50    regime map:
+Sat 03:50      chung_lu / percolation: 0.40 s (166 runs)
+Sat 03:50      paper_pa / percolation: 0.42 s (138 runs)
+Sat 03:50    first look:
+Sat 03:50      enron_130_131 / faq: 0.17 s (16 runs)
+Sat 03:50      enron_130_131 / goat_r100: 0.03 s (8 runs)
+Sat 03:50      enron_130_131 / goat_r300: 0.04 s (8 runs)
+Sat 03:50      enron_130_131 / percolation: 0.01 s (8 runs)
+Sat 03:50      wikipedia / faq: 25.51 s (1 runs)
+Sat 03:50      wikipedia / goat_r100: 4.78 s (1 runs)
+Sat 03:50      wikipedia / goat_r300: 21.68 s (1 runs)
+Sat 03:50      wikipedia / percolation: 4.85 s (1 runs)
+Sat 03:50      worm / faq: 0.18 s (16 runs)
+Sat 03:50      worm / goat_r100: 0.02 s (8 runs)
+Sat 03:50      worm / goat_r300: 0.11 s (8 runs)
+Sat 03:50      worm / percolation: 0.03 s (8 runs)
+Sat 03:50    => one landscape model (the 9 standard cells): about 4.8 h with 3 jobs, if the other cells run as fast as these (the queue assumes 5.5 h).
+Sat 03:50    => Wikipedia (step first_look_wiki): about 39 min with 3 jobs (the queue assumes 3 h; it is the second-to-last step).
+Sat 03:50    The regime map assumed {'percolation': 0.5, 'faq': 2.5, 'goat': 3.5} seconds per run.
+Sat 03:50  No run recorded an error.

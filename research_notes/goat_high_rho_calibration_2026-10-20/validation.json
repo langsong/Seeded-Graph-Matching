@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "directories": {
+    ".": {
+      "runs": 202,
+      "warning_runs": 0,
+      "outer_cap_runs": 2,
+      "solver_seconds": 118.00656920438632,
+      "saved_mapping_accuracies_verified": true,
+      "seed_set_uniqueness_within_cells_verified": true,
+      "source_A_and_truth_verified": true
+    },
+    "intermediate": {
+      "runs": 342,
+      "warning_runs": 0,
+      "outer_cap_runs": 1,
+      "solver_seconds": 535.7580476587173,
+      "saved_mapping_accuracies_verified": true,
+      "seed_set_uniqueness_within_cells_verified": true,
+      "source_A_and_truth_verified": true
+    },
+    "recommended_rhos": {
+      "runs": 201,
+      "warning_runs": 0,
+      "outer_cap_runs": 0,
+      "solver_seconds": 533.8960309592658,
+      "saved_mapping_accuracies_verified": true,
+      "seed_set_uniqueness_within_cells_verified": true,
+      "source_A_and_truth_verified": true
+    }
+  },
+  "confirmation_checks": [
+    {
+      "model": "sparse_er",
+      "rho": 0.6,
+      "k": 3,
+      "sets": 100,
+      "successes": 45,
+      "warnings": 0,
+      "outer_cap_runs": 1
+    },
+    {
+      "model": "paper_pa",
+      "rho": 0.45,
+      "k": 9,
+      "sets": 100,
+      "successes": 57,
+      "warnings": 0,
+      "outer_cap_runs": 0
+    }
+  ],
+  "total_primary_runs": 745,
+  "confirmation_disjoint_from_all_screens": true
+}

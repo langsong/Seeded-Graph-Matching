@@ -1,0 +1,26 @@
+2026-10-20T20:57:11-04:00  start faq/sparse_er/main: 10 pairs, budgets 16 18 20 22 24 28
+[faq/sparse_er/main] graph settings match the training preset; 0 of 10 pairs already done.
+[faq/sparse_er/main] pair 1/10 in 214.6s; 74 solver runs; elapsed 3.6 min; about 32.2 min left
+[faq/sparse_er/main] pair 2/10 in 146.6s; 62 solver runs; elapsed 6.0 min; about 24.1 min left
+[faq/sparse_er/main] pair 3/10 in 194.3s; 72 solver runs; elapsed 9.3 min; about 21.6 min left
+[faq/sparse_er/main] pair 4/10 in 265.4s; 76 solver runs; elapsed 13.7 min; about 20.5 min left
+[faq/sparse_er/main] pair 5/10 in 295.1s; 82 solver runs; elapsed 18.6 min; about 18.6 min left
+[faq/sparse_er/main] pair 6/10 in 281.2s; 77 solver runs; elapsed 23.3 min; about 15.5 min left
+[faq/sparse_er/main] pair 7/10 in 304.8s; 83 solver runs; elapsed 28.4 min; about 12.2 min left
+[faq/sparse_er/main] pair 8/10 in 199.2s; 69 solver runs; elapsed 31.7 min; about 7.9 min left
+[faq/sparse_er/main] pair 9/10 in 146.6s; 75 solver runs; elapsed 34.1 min; about 3.8 min left
+[faq/sparse_er/main] pair 10/10 in 122.2s; 62 solver runs; elapsed 36.2 min; about 0.0 min left
+2026-10-20T21:33:21-04:00  done
+2026-10-27T01:31:24-04:00  start faq/sparse_er/main: 20 pairs, budgets 16 18 20 22 24 28
+[faq/sparse_er/main] graph settings match the training preset; 10 of 20 pairs already done.
+[faq/sparse_er/main] pair 11/20 in 1032.8s; 74 solver runs; elapsed 17.2 min; about 154.9 min left
+[faq/sparse_er/main] pair 12/20 in 592.9s; 76 solver runs; elapsed 27.1 min; about 108.4 min left
+[faq/sparse_er/main] pair 13/20 in 465.7s; 72 solver runs; elapsed 34.9 min; about 81.3 min left
+[faq/sparse_er/main] pair 14/20 in 558.5s; 80 solver runs; elapsed 44.2 min; about 66.2 min left
+[faq/sparse_er/main] pair 15/20 in 533.5s; 75 solver runs; elapsed 53.1 min; about 53.1 min left
+[faq/sparse_er/main] pair 16/20 in 453.9s; 75 solver runs; elapsed 60.6 min; about 40.4 min left
+[faq/sparse_er/main] pair 17/20 in 409.5s; 71 solver runs; elapsed 67.4 min; about 28.9 min left
+[faq/sparse_er/main] pair 18/20 in 452.3s; 73 solver runs; elapsed 75.0 min; about 18.7 min left
+[faq/sparse_er/main] pair 19/20 in 275.9s; 62 solver runs; elapsed 79.6 min; about 8.8 min left
+[faq/sparse_er/main] pair 20/20 in 285.6s; 71 solver runs; elapsed 84.3 min; about 0.0 min left
+2026-10-27T02:55:45-04:00  done

@@ -93,13 +93,22 @@ def main() -> int:
         graph_pair_seed=int(metadata["graph_pair_seed"]),
         sgm_seed=int(metadata.get("sgm_seed", PROBLEMS[name].sgm_seed)),
     )
-    problem = prepare_problem(saved_spec, args.data_dir / "graph_pairs")
+    if "graph_pair_dir_relative" in metadata:
+        problem_dir = (args.data_dir / metadata["graph_pair_dir_relative"]).resolve()
+    else:
+        problem_dir = Path(metadata.get("graph_pair_dir", args.data_dir / "graph_pairs"))
+    problem = prepare_problem(saved_spec, problem_dir)
     tol = metadata["config"]["tol"]
     feature_columns = metadata.get("feature_columns", list(FIXED_PAIR_FEATURE_COLUMNS))
     feature_columns += [c for c in metadata.get("robustness_feature_columns", []) if c in data]
 
     if not args.features_only:
-        from experiment_common.sgm import run_sgm_once
+        from experiment_common.sgm import SGM_DIAGNOSTIC_COLUMNS, run_sgm_once
+        solver_options = metadata.get("solver_options", {})
+        compare_columns = [*SGM_COMPARE_COLUMNS, *[
+            column for column in SGM_DIAGNOSTIC_COLUMNS
+            if column in runs and column != "sgm_warnings"
+        ]]
 
     problems: list[str] = []
     checked_runs = 0
@@ -132,9 +141,11 @@ def main() -> int:
                     int(run["sgm_seed"]),
                     int(run["sgm_max_iter"]),
                     tol,
+                    **solver_options,
+                    return_diagnostics=any(column in runs for column in SGM_DIAGNOSTIC_COLUMNS),
                 )
                 checked_runs += 1
-                for column in SGM_COMPARE_COLUMNS:
+                for column in compare_columns:
                     if differs(run[column], result[column]):
                         problems.append(
                             f"{label}, SGM seed {int(run['sgm_seed'])}: {column} "

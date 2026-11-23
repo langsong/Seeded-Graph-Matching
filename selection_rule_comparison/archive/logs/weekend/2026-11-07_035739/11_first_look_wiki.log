@@ -1,0 +1,24 @@
+
+$ python -m real_data_experiments.first_look --pairs wikipedia --jobs 3 --blas-threads 3
+Sun 03:19  First look (wikipedia): 20 tasks, 3 at a time, about 0.9 h (a rough guess). One line per finished task.
+Sun 03:21  [1/20] wikipedia, Percolation, 30 seeds: 25 runs in 1.9 min; about 0.9 h left
+Sun 03:21  [2/20] wikipedia, Percolation, 20 seeds: 25 runs in 1.9 min; about 0.9 h left
+Sun 03:21  [3/20] wikipedia, Percolation, 10 seeds: 25 runs in 1.9 min; about 0.9 h left
+Sun 03:23  [4/20] wikipedia, Percolation, 50 seeds: 25 runs in 2.0 min; about 0.9 h left
+Sun 03:23  [5/20] wikipedia, Percolation, 75 seeds: 25 runs in 2.0 min; about 0.9 h left
+Sun 03:38  [6/20] wikipedia, SGM (FAQ), 10 seeds: 25 runs in 17.3 min; about 0.8 h left
+Sun 03:38  [7/20] wikipedia, SGM (FAQ), 30 seeds: 25 runs in 15.8 min; about 0.7 h left
+Sun 03:40  [8/20] wikipedia, SGM (FAQ), 20 seeds: 25 runs in 17.1 min; about 0.7 h left
+Sun 03:43  [9/20] wikipedia, GOAT (r 100), 10 seeds: 25 runs in 3.5 min; about 0.6 h left
+Sun 03:46  [10/20] wikipedia, GOAT (r 100), 20 seeds: 25 runs in 2.9 min; about 0.5 h left
+Sun 03:48  [11/20] wikipedia, SGM (FAQ), 75 seeds: 25 runs in 9.6 min; about 0.5 h left
+Sun 03:49  [12/20] wikipedia, GOAT (r 100), 30 seeds: 25 runs in 2.4 min; about 0.4 h left
+Sun 03:50  [13/20] wikipedia, SGM (FAQ), 50 seeds: 25 runs in 11.6 min; about 0.4 h left
+Sun 03:50  [14/20] wikipedia, GOAT (r 100), 75 seeds: 25 runs in 1.6 min; about 0.3 h left
+Sun 03:50  [15/20] wikipedia, GOAT (r 100), 50 seeds: 25 runs in 2.4 min; about 0.3 h left
+Sun 04:04  [16/20] wikipedia, GOAT (r 300), 30 seeds: 25 runs in 14.0 min; about 0.2 h left
+Sun 04:08  [17/20] wikipedia, GOAT (r 300), 20 seeds: 25 runs in 17.5 min; about 0.1 h left
+Sun 04:13  [18/20] wikipedia, GOAT (r 300), 10 seeds: 25 runs in 23.4 min; about 0.0 h left
+Sun 04:15  [19/20] wikipedia, GOAT (r 300), 50 seeds: 25 runs in 10.2 min; about 0.0 h left
+Sun 04:15  [20/20] wikipedia, GOAT (r 300), 75 seeds: 25 runs in 7.5 min; about 0.0 h left
+Sun 04:15  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/real_data_experiments/results/first_look

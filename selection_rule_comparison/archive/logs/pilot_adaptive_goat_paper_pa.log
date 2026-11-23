@@ -1,0 +1,12 @@
+2026-10-21T02:46:27-04:00 start {'kind': 'adaptive', 'algorithm': 'goat', 'model': 'paper_pa', 'n_pairs': 10, 'blas_threads': 3, 'verify': True}
+2026-10-21T02:46:56-04:00 [adaptive goat/paper_pa] pair 1/10: stop 9 queries, uncertainty 11 queries, retry 9 queries; 15 GOAT runs; elapsed 0.5 min
+2026-10-21T02:47:46-04:00 [adaptive goat/paper_pa] pair 2/10: stop 8 queries, uncertainty 10 queries, retry 8 queries; 11 GOAT runs; elapsed 1.3 min
+2026-10-21T02:49:23-04:00 [adaptive goat/paper_pa] pair 3/10: stop 11 queries, uncertainty 11 queries, retry 10 queries; 20 GOAT runs; elapsed 2.9 min
+2026-10-21T02:51:36-04:00 [adaptive goat/paper_pa] pair 4/10: stop 13 queries, uncertainty 12 queries, retry 13 queries; 28 GOAT runs; elapsed 5.2 min
+2026-10-21T02:52:18-04:00 [adaptive goat/paper_pa] pair 5/10: stop 8 queries, uncertainty 8 queries, retry 8 queries; 9 GOAT runs; elapsed 5.8 min
+2026-10-21T02:52:25-04:00 [adaptive goat/paper_pa] pair 6/10: stop 7 queries, uncertainty 7 queries, retry 7 queries; 5 GOAT runs; elapsed 6.0 min
+2026-10-21T02:52:44-04:00 [adaptive goat/paper_pa] pair 7/10: stop 7 queries, uncertainty 7 queries, retry 7 queries; 5 GOAT runs; elapsed 6.3 min
+2026-10-21T02:52:45-04:00 [adaptive goat/paper_pa] pair 8/10: stop 6 queries, uncertainty 6 queries, retry 6 queries; 1 GOAT runs; elapsed 6.3 min
+2026-10-21T02:52:47-04:00 [adaptive goat/paper_pa] pair 9/10: stop 6 queries, uncertainty 6 queries, retry 6 queries; 1 GOAT runs; elapsed 6.3 min
+2026-10-21T02:53:27-04:00 [adaptive goat/paper_pa] pair 10/10: stop 7 queries, uncertainty 9 queries, retry 7 queries; 7 GOAT runs; elapsed 7.0 min
+2026-10-21T02:53:27-04:00 done

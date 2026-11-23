@@ -1,0 +1,33 @@
+{
+  "python": "3.11.14",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "cpu_count": 10,
+  "package_versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "networkx": "3.6.1",
+    "graspologic": "3.4.4",
+    "scikit-learn": "1.9.0"
+  },
+  "thread_environment": {
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "VECLIB_MAXIMUM_THREADS": null
+  },
+  "blas_threads_limit": 4,
+  "threadpools": [
+    {
+      "internal_api": "openblas",
+      "num_threads": 4,
+      "version": "0.3.30"
+    },
+    {
+      "internal_api": "openmp",
+      "num_threads": 4,
+      "version": null
+    }
+  ],
+  "git_commit": "377e7f1d7303cd99374582c9d863fc8514723055",
+  "git_tracked_changes": false
+}

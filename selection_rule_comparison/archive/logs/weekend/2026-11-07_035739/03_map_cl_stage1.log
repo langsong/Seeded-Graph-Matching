@@ -1,0 +1,112 @@
+
+$ python -m selection_rule_comparison.regime_map --stage 1 --model chung_lu --jobs 3 --blas-threads 3
+Sat 09:18  Stage 1, Chung-Lu: 108 pair runs, 3 at a time, about 78 min (a rough guess). One line per finished pair.
+Sat 09:22  [1/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.20, pair 0: 94 runs in 3.5 min, middle budget 300; about 77 min left
+Sat 09:22  [2/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 0: 102 runs in 4.0 min, middle budget 200; about 76 min left
+Sat 09:23  [3/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.70, pair 0: 24 runs in 0.4 min, middle budget 3; about 74 min left
+Sat 09:23  [4/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.90, pair 0: 24 runs in 0.2 min, middle budget 3; about 73 min left
+Sat 09:24  [5/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 0: 118 runs in 6.0 min, middle budget 60; about 72 min left
+Sat 09:26  [6/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 0: 74 runs in 4.1 min, middle budget 8; about 71 min left
+Sat 09:27  [7/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.20, pair 0: 102 runs in 4.2 min, middle budget 300; about 70 min left
+Sat 09:29  [8/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 0: 66 runs in 3.5 min, middle budget 18; about 69 min left
+Sat 09:30  [9/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.70, pair 0: 24 runs in 0.2 min, middle budget 3; about 68 min left
+Sat 09:30  [10/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.90, pair 0: 24 runs in 0.2 min, middle budget 3; about 66 min left
+Sat 09:30  [11/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 0: 110 runs in 5.5 min, middle budget 60; about 65 min left
+Sat 09:30  [12/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 0: 58 runs in 2.9 min, middle budget 3; about 64 min left
+Sat 09:34  [13/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 0: 58 runs in 3.5 min, middle budget 8; about 63 min left
+Sat 09:34  [14/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.50, pair 0: 24 runs in 0.7 min, middle budget 3; about 62 min left
+Sat 09:34  [15/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.70, pair 0: 24 runs in 0.2 min, middle budget 3; about 60 min left
+Sat 09:35  [16/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 0: 98 runs in 4.9 min, middle budget 300; about 59 min left
+Sat 09:35  [17/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.90, pair 0: 24 runs in 0.1 min, middle budget 3; about 58 min left
+Sat 09:35  [18/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 0: 82 runs in 5.7 min, middle budget 27; about 57 min left
+Sat 09:38  [19/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.20, pair 1: 90 runs in 3.5 min, middle budget 300; about 56 min left
+Sat 09:39  [20/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 1: 102 runs in 4.0 min, middle budget 200; about 55 min left
+Sat 09:39  [21/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.70, pair 1: 24 runs in 0.3 min, middle budget 3; about 54 min left
+Sat 09:39  [22/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.90, pair 1: 24 runs in 0.2 min, middle budget 3; about 52 min left
+Sat 09:41  [23/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 1: 114 runs in 5.6 min, middle budget 40; about 51 min left
+Sat 09:42  [24/108] stage 1 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 1: 66 runs in 4.2 min, middle budget 12; about 50 min left
+Sat 09:43  [25/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.20, pair 1: 94 runs in 3.6 min, middle budget 300; about 49 min left
+Sat 09:45  [26/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 1: 58 runs in 2.4 min, middle budget 3; about 48 min left
+Sat 09:45  [27/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.70, pair 1: 24 runs in 0.2 min, middle budget 3; about 46 min left
+Sat 09:46  [28/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.90, pair 1: 24 runs in 0.2 min, middle budget 3; about 45 min left
+Sat 09:46  [29/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 1: 106 runs in 5.3 min, middle budget 90; about 44 min left
+Sat 09:47  [30/108] stage 1 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 1: 74 runs in 4.7 min, middle budget 8; about 43 min left
+Sat 09:50  [31/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 1: 50 runs in 3.0 min, middle budget 3; about 42 min left
+Sat 09:50  [32/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.50, pair 1: 24 runs in 0.3 min, middle budget 3; about 41 min left
+Sat 09:51  [33/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.70, pair 1: 24 runs in 0.2 min, middle budget 3; about 40 min left
+Sat 09:51  [34/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.90, pair 1: 24 runs in 0.1 min, middle budget 3; about 38 min left
+Sat 09:51  [35/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 1: 106 runs in 5.2 min, middle budget 200; about 37 min left
+Sat 09:52  [36/108] stage 1 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 1: 82 runs in 5.4 min, middle budget 40; about 36 min left
+Sat 09:52  [37/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.20, pair 0: 78 runs in 1.7 min, middle budget 300; about 35 min left
+Sat 09:53  [38/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 0: 86 runs in 2.2 min, middle budget 200; about 34 min left
+Sat 09:54  [39/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 0: 86 runs in 2.1 min, middle budget 90; about 34 min left
+Sat 09:54  [40/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.90, pair 0: 16 runs in 0.2 min, middle budget 3; about 33 min left
+Sat 09:54  [41/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 0: 42 runs in 1.5 min, middle budget 8; about 32 min left
+Sat 09:55  [42/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 0: 70 runs in 2.6 min, middle budget 27; about 31 min left
+Sat 09:56  [43/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.20, pair 0: 78 runs in 2.0 min, middle budget 300; about 30 min left
+Sat 09:57  [44/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 0: 90 runs in 2.6 min, middle budget 90; about 29 min left
+Sat 09:57  [45/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 0: 58 runs in 2.1 min, middle budget 40; about 28 min left
+Sat 09:57  [46/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.90, pair 0: 16 runs in 0.1 min, middle budget 3; about 28 min left
+Sat 09:58  [47/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.70, pair 0: 26 runs in 0.6 min, middle budget 3; about 27 min left
+Sat 09:58  [48/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 0: 54 runs in 2.0 min, middle budget 18; about 26 min left
+Sat 09:59  [49/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 0: 78 runs in 2.2 min, middle budget 300; about 25 min left
+Sat 10:00  [50/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 0: 54 runs in 2.2 min, middle budget 18; about 24 min left
+Sat 10:00  [51/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 0: 70 runs in 2.6 min, middle budget 60; about 24 min left
+Sat 10:00  [52/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.90, pair 0: 16 runs in 0.1 min, middle budget 3; about 23 min left
+Sat 10:01  [53/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.70, pair 0: 26 runs in 0.4 min, middle budget 3; about 22 min left
+Sat 10:01  [54/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 0: 50 runs in 1.6 min, middle budget 12; about 21 min left
+Sat 10:02  [55/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.20, pair 1: 70 runs in 1.7 min, middle budget 300; about 20 min left
+Sat 10:02  [56/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 1: 82 runs in 1.9 min, middle budget 300; about 19 min left
+Sat 10:04  [57/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 1: 90 runs in 2.5 min, middle budget 60; about 18 min left
+Sat 10:04  [58/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.90, pair 1: 16 runs in 0.2 min, middle budget 3; about 18 min left
+Sat 10:04  [59/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 1: 42 runs in 1.4 min, middle budget 5; about 17 min left
+Sat 10:05  [60/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 1: 62 runs in 2.6 min, middle budget 27; about 16 min left
+Sat 10:06  [61/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.20, pair 1: 78 runs in 2.0 min, middle budget 300; about 15 min left
+Sat 10:06  [62/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 1: 90 runs in 2.3 min, middle budget 135; about 14 min left
+Sat 10:07  [63/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 1: 54 runs in 2.0 min, middle budget 40; about 14 min left
+Sat 10:07  [64/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.90, pair 1: 16 runs in 0.1 min, middle budget 3; about 13 min left
+Sat 10:07  [65/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.70, pair 1: 26 runs in 0.9 min, middle budget 3; about 12 min left
+Sat 10:08  [66/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 1: 58 runs in 2.1 min, middle budget 18; about 11 min left
+Sat 10:09  [67/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 1: 82 runs in 2.4 min, middle budget 300; about 10 min left
+Sat 10:10  [68/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 1: 74 runs in 2.7 min, middle budget 60; about 9 min left
+Sat 10:10  [69/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 1: 54 runs in 2.0 min, middle budget 18; about 8 min left
+Sat 10:10  [70/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.90, pair 1: 16 runs in 0.1 min, middle budget 3; about 8 min left
+Sat 10:10  [71/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.70, pair 1: 16 runs in 0.3 min, middle budget 3; about 7 min left
+Sat 10:10  [72/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.20, pair 0: 60 runs in 0.4 min, middle budget 300; about 7 min left
+Sat 10:10  [73/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.30, pair 0: 72 runs in 0.5 min, middle budget 300; about 6 min left
+Sat 10:11  [74/108] stage 1 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 1: 46 runs in 1.5 min, middle budget 8; about 6 min left
+Sat 10:11  [75/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 0: 76 runs in 0.5 min, middle budget 135; about 6 min left
+Sat 10:11  [76/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 0: 40 runs in 0.3 min, middle budget 5; about 5 min left
+Sat 10:11  [77/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.90, pair 0: 20 runs in 0.2 min, middle budget 3; about 5 min left
+Sat 10:11  [78/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 0: 88 runs in 0.6 min, middle budget 27; about 5 min left
+Sat 10:11  [79/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.20, pair 0: 68 runs in 0.5 min, middle budget 300; about 5 min left
+Sat 10:11  [80/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 0: 80 runs in 0.5 min, middle budget 135; about 5 min left
+Sat 10:12  [81/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 0: 84 runs in 0.6 min, middle budget 60; about 4 min left
+Sat 10:12  [82/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.70, pair 0: 20 runs in 0.2 min, middle budget 3; about 4 min left
+Sat 10:12  [83/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.90, pair 0: 12 runs in 0.1 min, middle budget 5; about 4 min left
+Sat 10:12  [84/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 0: 56 runs in 0.4 min, middle budget 18; about 4 min left
+Sat 10:12  [85/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.20, pair 0: 68 runs in 0.5 min, middle budget 300; about 4 min left
+Sat 10:12  [86/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 0: 72 runs in 0.5 min, middle budget 90; about 4 min left
+Sat 10:12  [87/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.70, pair 0: 8 runs in 0.1 min, middle budget 3; about 4 min left
+Sat 10:12  [88/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 0: 64 runs in 0.5 min, middle budget 40; about 3 min left
+Sat 10:12  [89/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.90, pair 0: 8 runs in 0.1 min, middle budget 3; about 3 min left
+Sat 10:12  [90/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 0: 40 runs in 0.3 min, middle budget 12; about 3 min left
+Sat 10:13  [91/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.20, pair 1: 60 runs in 0.4 min, middle budget 300; about 3 min left
+Sat 10:13  [92/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.30, pair 1: 68 runs in 0.4 min, middle budget 300; about 3 min left
+Sat 10:13  [93/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 1: 76 runs in 0.5 min, middle budget 90; about 2 min left
+Sat 10:13  [94/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.90, pair 1: 16 runs in 0.1 min, middle budget 3; about 2 min left
+Sat 10:13  [95/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 1: 84 runs in 0.5 min, middle budget 40; about 2 min left
+Sat 10:13  [96/108] stage 1 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 1: 56 runs in 0.4 min, middle budget 8; about 2 min left
+Sat 10:13  [97/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.20, pair 1: 64 runs in 0.4 min, middle budget 300; about 2 min left
+Sat 10:14  [98/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 1: 72 runs in 0.5 min, middle budget 200; about 2 min left
+Sat 10:14  [99/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 1: 80 runs in 0.5 min, middle budget 60; about 2 min left
+Sat 10:14  [100/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.70, pair 1: 16 runs in 0.1 min, middle budget 3; about 1 min left
+Sat 10:14  [101/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.90, pair 1: 8 runs in 0.1 min, middle budget 3; about 1 min left
+Sat 10:14  [102/108] stage 1 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 1: 56 runs in 0.4 min, middle budget 18; about 1 min left
+Sat 10:14  [103/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.20, pair 1: 68 runs in 0.5 min, middle budget 300; about 1 min left
+Sat 10:14  [104/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 1: 72 runs in 0.5 min, middle budget 90; about 1 min left
+Sat 10:14  [105/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 1: 60 runs in 0.5 min, middle budget 27; about 0 min left
+Sat 10:14  [106/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.90, pair 1: 8 runs in 0.1 min, middle budget 3; about 0 min left
+Sat 10:14  [107/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.70, pair 1: 20 runs in 0.2 min, middle budget 3; about 0 min left
+Sat 10:15  [108/108] stage 1 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 1: 40 runs in 0.3 min, middle budget 12; about 0 min left
+Sat 10:15  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/regime_map

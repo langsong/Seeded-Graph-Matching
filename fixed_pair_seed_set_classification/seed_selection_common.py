@@ -30,6 +30,7 @@ from experiment_common.sgm import run_sgm_once
 
 
 DEFAULT_PROBLEM_DIR = Path(__file__).resolve().parent / "data"
+SGM_COLLECTION_DIR = DEFAULT_PROBLEM_DIR / "sgm_fixed_pairs_2026-10-13"
 PairBuilder = Callable[
     [int], tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, Any]]
 ]
@@ -189,6 +190,11 @@ def evaluate_seed_set(
     *,
     sgm_seed: int | None = None,
     max_iter: int | None = None,
+    transport: bool = False,
+    transport_regularizer: float = 100,
+    transport_tol: float = 0.05,
+    transport_max_iter: int = 5000,
+    return_diagnostics: bool = False,
 ) -> dict[str, Any]:
     """Evaluate one Graph-A seed set on a prepared fixed graph pair."""
 
@@ -223,13 +229,19 @@ def evaluate_seed_set(
             sgm_seed,
             max_iter,
             config.tol,
+            transport=transport,
+            transport_regularizer=transport_regularizer,
+            transport_tol=transport_tol,
+            transport_max_iter=transport_max_iter,
+            return_diagnostics=return_diagnostics,
         )
     )
     return row
 
 
 def run_problem_cli(
-    spec: FixedProblem, problem_dir: Path = DEFAULT_PROBLEM_DIR
+    spec: FixedProblem, problem_dir: Path = DEFAULT_PROBLEM_DIR, *,
+    goat_spec: FixedProblem | None = None, transport_regularizer: float = 100,
 ) -> None:
     parser = argparse.ArgumentParser(
         description=f"Evaluate one seed set on the fixed {spec.name} graph pair."
@@ -239,10 +251,15 @@ def run_problem_cli(
         type=int,
         nargs="+",
         required=True,
-        help=f"Exactly {spec.config.n_seeds} vertex indices from Graph A.",
+        help=(f"Graph-A vertices: FAQ expects {spec.config.n_seeds} seeds."
+              + (f" GOAT expects {goat_spec.config.n_seeds}." if goat_spec else "")),
     )
     parser.add_argument("--problem-dir", type=Path, default=problem_dir)
+    parser.add_argument("--solver", choices=("faq", "goat") if goat_spec else ("faq",), default="faq")
     args = parser.parse_args()
-
-    result = evaluate_seed_set(prepare_problem(spec, args.problem_dir), args.seeds)
+    selected = goat_spec if args.solver == "goat" else spec
+    result = evaluate_seed_set(
+        prepare_problem(selected, args.problem_dir), args.seeds,
+        transport=args.solver == "goat", transport_regularizer=transport_regularizer,
+    )
     print(json.dumps(result, indent=2))

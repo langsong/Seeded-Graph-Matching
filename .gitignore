@@ -31,3 +31,10 @@ wheels/
 Literature Review/
 tmp/
 _to_delete/
+
+# Experiment outputs: too large for git. They stay on disk; back them up separately (added 23 Nov 2026).
+selection_rule_comparison/data/
+real_data_experiments/results/
+fixed_pair_seed_set_classification/data/multi_pair_2026-10-30/
+fixed_pair_seed_set_classification/data/sbm_multi_pair/
+Data/

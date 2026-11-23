@@ -1,0 +1,68 @@
+{
+  "model": "sparse_er",
+  "graph_pair_seed": 88424077,
+  "target_mean_degree": 10,
+  "config": {
+    "graph_model": "sparse_er",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01669449081803005,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "chung_lu_alpha": null,
+    "chung_lu_weight_scale": null,
+    "chung_lu_probability_floor": null,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.005,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.7,
+    "n_seeds": 29,
+    "max_iter": 100,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "budget_note": "config.n_seeds is inherited and unused for pair generation; actual k is in runs.csv",
+  "structure": {
+    "passes": true,
+    "graph1_connected": true,
+    "graph1_n_unresolved": 0,
+    "graph1_mean_degree": 9.82,
+    "graph1_min_degree": 1,
+    "graph2_connected": true,
+    "graph2_n_unresolved": 0,
+    "graph2_mean_degree": 9.85,
+    "graph2_min_degree": 1
+  },
+  "source_config": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sgm_fixed_pairs_2026-10-13/graph_pairs/sparse_er/pair_seed_88424077/sparse_er_problem.metadata.json",
+  "source_config_sha256": "45c282ae5541824708aa1b06df773b874c1d874298743937b384b206a3966cf0",
+  "same_graph_A_as_degree16": false,
+  "same_graph_A_for_lower_rho_at_this_density_verified": true,
+  "generation": "Original project generator and pair RNG seed; change density and rho. No rejected draws.",
+  "retained_edge_fraction": 0.7046843177189409,
+  "observed_edge_correlation": 0.6986627291576877,
+  "solver": "goat",
+  "regularizer": 100
+}

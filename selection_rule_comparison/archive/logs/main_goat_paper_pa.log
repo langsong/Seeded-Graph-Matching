@@ -1,0 +1,82 @@
+2026-10-20T20:35:17-04:00  start goat/paper_pa/main: 10 pairs, budgets 6 8 9 10 12 16
+[goat/paper_pa/main] graph settings match the training preset; 0 of 10 pairs already done.
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.11795103559841122 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1181317616446729 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 1/10 in 139.1s; 36 solver runs; elapsed 2.3 min; about 20.9 min left
+[goat/paper_pa/main] pair 2/10 in 124.0s; 35 solver runs; elapsed 4.4 min; about 17.5 min left
+[goat/paper_pa/main] pair 3/10 in 122.6s; 35 solver runs; elapsed 6.4 min; about 15.0 min left
+[goat/paper_pa/main] pair 4/10 in 156.6s; 36 solver runs; elapsed 9.0 min; about 13.6 min left
+[goat/paper_pa/main] pair 5/10 in 146.0s; 36 solver runs; elapsed 11.5 min; about 11.5 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1064201670543252 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09745071289564608 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09199497079290224 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09608354223720458 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 6/10 in 97.8s; 36 solver runs; elapsed 13.1 min; about 8.7 min left
+[goat/paper_pa/main] pair 7/10 in 103.3s; 35 solver runs; elapsed 14.8 min; about 6.4 min left
+[goat/paper_pa/main] pair 8/10 in 62.9s; 36 solver runs; elapsed 15.9 min; about 4.0 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10774411701336738 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10390617166201914 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 9/10 in 96.3s; 36 solver runs; elapsed 17.5 min; about 1.9 min left
+[goat/paper_pa/main] pair 10/10 in 127.7s; 36 solver runs; elapsed 19.6 min; about 0.0 min left
+2026-10-20T20:54:53-04:00  done
+2026-10-20T21:48:50-04:00  start goat/paper_pa/main: 20 pairs, budgets 6 8 9 10 12 16
+[goat/paper_pa/main] graph settings match the training preset; 10 of 20 pairs already done.
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10292350839115344 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10466996146388097 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10330206927439446 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 11/20 in 67.7s; 36 solver runs; elapsed 1.1 min; about 10.2 min left
+[goat/paper_pa/main] pair 12/20 in 116.1s; 36 solver runs; elapsed 3.1 min; about 12.3 min left
+[goat/paper_pa/main] pair 13/20 in 129.5s; 36 solver runs; elapsed 5.2 min; about 12.2 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.10804164840209692 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 14/20 in 144.0s; 36 solver runs; elapsed 7.6 min; about 11.4 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.0980804063495022 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09835830039083686 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.05214898615447693 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08544165833102549 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 15/20 in 147.7s; 36 solver runs; elapsed 10.1 min; about 10.1 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1265142480859213 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 16/20 in 143.0s; 36 solver runs; elapsed 12.5 min; about 8.3 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09015585847821511 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09049132076131049 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.14347855142913318 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.15778493864992738 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1304477315445348 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09028283618476701 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08709868530556453 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 17/20 in 148.1s; 36 solver runs; elapsed 14.9 min; about 6.4 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08262025347606712 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08687633021427103 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.09319216938580667 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08501241433492908 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+[goat/paper_pa/main] pair 18/20 in 78.1s; 36 solver runs; elapsed 16.2 min; about 4.1 min left
+[goat/paper_pa/main] pair 19/20 in 100.1s; 36 solver runs; elapsed 17.9 min; about 2.0 min left
+[goat/paper_pa/main] pair 20/20 in 121.0s; 36 solver runs; elapsed 19.9 min; about 0.0 min left
+2026-10-20T22:08:46-04:00  done

@@ -1,0 +1,14 @@
+
+$ python -m selection_rule_comparison.landscape --model sparse_er --smoke --jobs 3 --blas-threads 3
+Sat 03:47  Landscape, ER: 7 tasks, 3 at a time, about 0.0 h (a rough guess). One line per finished task.
+Sat 03:47  [1/7] redraws GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 8 runs in 0.5 min; about 0.0 h left
+Sat 03:48  [2/7] regularizer GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 8 runs in 0.3 min; about 0.0 h left
+Sat 03:48  [3/7] redraws SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 0: 8 runs in 0.3 min; about 0.0 h left
+Sat 03:48  [4/7] sets Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 0: 30 runs in 0.2 min; about 0.0 h left
+Sat 03:48  [5/7] redraws Percolation ER, mean degree 8, rho 0.70, 13 seeds (50% level), pair 0: 8 runs in 0.1 min; about 0.0 h left
+Sat 03:49  [6/7] sets SGM (FAQ) ER, mean degree 32, rho 0.30, 71 seeds (50% level), pair 0: 58 runs in 1.6 min; about 0.0 h left
+Sat 03:49  [7/7] sets GOAT ER, mean degree 8, rho 0.50, 33 seeds (50% level), pair 0: 30 runs in 1.9 min; about 0.0 h left
+Sat 03:49  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/tmp/weekend_smoke/landscape
+
+$ python -m selection_rule_comparison.landscape --model sparse_er --smoke --jobs 3 --blas-threads 3
+Landscape: nothing left to run for ER. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/tmp/weekend_smoke/landscape/sparse_er

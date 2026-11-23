@@ -1,0 +1,12 @@
+2026-10-21T02:46:27-04:00 start {'kind': 'weighted', 'algorithm': 'goat', 'model': 'chung_lu', 'n_pairs': 10, 'blas_threads': 3, 'verify': True}
+2026-10-21T02:46:58-04:00 [weighted goat/chung_lu] pair 1/10 done; elapsed 0.5 min
+2026-10-21T02:47:37-04:00 [weighted goat/chung_lu] pair 2/10 done; elapsed 1.2 min
+2026-10-21T02:48:29-04:00 [weighted goat/chung_lu] pair 3/10 done; elapsed 2.0 min
+2026-10-21T02:49:08-04:00 [weighted goat/chung_lu] pair 4/10 done; elapsed 2.7 min
+2026-10-21T02:49:52-04:00 [weighted goat/chung_lu] pair 5/10 done; elapsed 3.4 min
+2026-10-21T02:50:41-04:00 [weighted goat/chung_lu] pair 6/10 done; elapsed 4.2 min
+2026-10-21T02:51:14-04:00 [weighted goat/chung_lu] pair 7/10 done; elapsed 4.8 min
+2026-10-21T02:51:24-04:00 [weighted goat/chung_lu] pair 8/10 done; elapsed 4.9 min
+2026-10-21T02:51:57-04:00 [weighted goat/chung_lu] pair 9/10 done; elapsed 5.5 min
+2026-10-21T02:52:24-04:00 [weighted goat/chung_lu] pair 10/10 done; elapsed 6.0 min
+2026-10-21T02:52:24-04:00 done

@@ -1,0 +1,26 @@
+2026-10-20T20:57:11-04:00  start faq/chung_lu/main: 10 pairs, budgets 12 15 18 21 24 28
+[faq/chung_lu/main] graph settings match the training preset; 0 of 10 pairs already done.
+[faq/chung_lu/main] pair 1/10 in 164.2s; 67 solver runs; elapsed 2.7 min; about 24.6 min left
+[faq/chung_lu/main] pair 2/10 in 144.7s; 60 solver runs; elapsed 5.1 min; about 20.6 min left
+[faq/chung_lu/main] pair 3/10 in 190.1s; 61 solver runs; elapsed 8.3 min; about 19.4 min left
+[faq/chung_lu/main] pair 4/10 in 234.4s; 68 solver runs; elapsed 12.2 min; about 18.3 min left
+[faq/chung_lu/main] pair 5/10 in 180.1s; 58 solver runs; elapsed 15.2 min; about 15.2 min left
+[faq/chung_lu/main] pair 6/10 in 214.5s; 63 solver runs; elapsed 18.8 min; about 12.5 min left
+[faq/chung_lu/main] pair 7/10 in 140.9s; 50 solver runs; elapsed 21.1 min; about 9.1 min left
+[faq/chung_lu/main] pair 8/10 in 209.5s; 47 solver runs; elapsed 24.6 min; about 6.2 min left
+[faq/chung_lu/main] pair 9/10 in 151.7s; 51 solver runs; elapsed 27.2 min; about 3.0 min left
+[faq/chung_lu/main] pair 10/10 in 142.5s; 52 solver runs; elapsed 29.5 min; about 0.0 min left
+2026-10-20T21:26:44-04:00  done
+2026-10-27T01:31:23-04:00  start faq/chung_lu/main: 20 pairs, budgets 12 15 18 21 24 28
+[faq/chung_lu/main] graph settings match the training preset; 10 of 20 pairs already done.
+[faq/chung_lu/main] pair 11/20 in 1056.2s; 64 solver runs; elapsed 17.6 min; about 158.4 min left
+[faq/chung_lu/main] pair 12/20 in 469.1s; 64 solver runs; elapsed 25.4 min; about 101.7 min left
+[faq/chung_lu/main] pair 13/20 in 434.6s; 72 solver runs; elapsed 32.7 min; about 76.2 min left
+[faq/chung_lu/main] pair 14/20 in 413.1s; 63 solver runs; elapsed 39.5 min; about 59.3 min left
+[faq/chung_lu/main] pair 15/20 in 397.2s; 63 solver runs; elapsed 46.2 min; about 46.2 min left
+[faq/chung_lu/main] pair 16/20 in 370.4s; 61 solver runs; elapsed 52.3 min; about 34.9 min left
+[faq/chung_lu/main] pair 17/20 in 408.4s; 74 solver runs; elapsed 59.1 min; about 25.3 min left
+[faq/chung_lu/main] pair 18/20 in 342.1s; 60 solver runs; elapsed 64.9 min; about 16.2 min left
+[faq/chung_lu/main] pair 19/20 in 350.6s; 63 solver runs; elapsed 70.7 min; about 7.9 min left
+[faq/chung_lu/main] pair 20/20 in 280.8s; 55 solver runs; elapsed 75.4 min; about 0.0 min left
+2026-10-27T02:46:46-04:00  done

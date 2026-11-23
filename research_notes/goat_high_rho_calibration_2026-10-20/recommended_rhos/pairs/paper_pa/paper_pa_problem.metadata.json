@@ -1,0 +1,66 @@
+{
+  "model": "paper_pa",
+  "graph_pair_seed": 7301002,
+  "config": {
+    "graph_model": "paper_pa",
+    "n_graph_pairs": 1,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "chung_lu_alpha": null,
+    "chung_lu_weight_scale": null,
+    "chung_lu_probability_floor": null,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.023378,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.45,
+    "n_seeds": 31,
+    "max_iter": 100,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "structure": {
+    "passes": true,
+    "graph1_connected": true,
+    "graph1_n_unresolved": 0,
+    "graph1_mean_degree": 15.833333333333334,
+    "graph1_min_degree": 5,
+    "graph2_connected": true,
+    "graph2_n_unresolved": 0,
+    "graph2_mean_degree": 15.686666666666667,
+    "graph2_min_degree": 6
+  },
+  "source_pair": "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/data/sgm_fixed_pairs_2026-10-13/graph_pairs/paper_pa/pair_seed_7301002/paper_pa_problem.npz",
+  "source_pair_sha256": "b23342aa677c31adb1966acdfaf313a8a1c4f0e60e5370bca77c33e06b7f1583",
+  "same_graph_A": true,
+  "same_truth": true,
+  "generation": "Same generator and pair RNG seed; change only rho. No rejected draws.",
+  "retained_edge_fraction": 0.5218947368421053,
+  "observed_edge_correlation": 0.5114758221919493,
+  "solver": "goat",
+  "regularizer": 300
+}

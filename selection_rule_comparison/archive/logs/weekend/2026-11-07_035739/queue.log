@@ -1,0 +1,68 @@
+Sat 03:57  Weekend queue: 12 steps, logs in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739
+Sat 03:57     1  first_look         0.5 h   ends about Sat 04:27   Real pairs: both worms and two Enron week pairs, all four solver variants
+Sat 03:57     2  landscape_er       5.5 h   ends about Sat 09:57   Match-ratio landscape, ER: 9 cells x 3 pairs, about 480 seed sets per pair
+Sat 03:57     3  map_cl_stage1      1.0 h   ends about Sat 10:57   Regime map, Chung-Lu, stage 1: random-set ladders (they set the landscape budgets)
+Sat 03:57     4  map_paper_stage1   1.0 h   ends about Sat 11:57   Regime map, PAPER, stage 1
+Sat 03:57     5  landscape_cl       5.5 h   ends about Sat 17:27   Match-ratio landscape, Chung-Lu
+Sat 03:57     6  landscape_paper    5.5 h   ends about Sat 22:57   Match-ratio landscape, PAPER
+Sat 03:57     7  map_cl_stage2      1.5 h   ends about Sun 00:27   Regime map, Chung-Lu, stage 2: rules and best-of-N vs random sets at 20/50/80%
+Sat 03:57     8  map_paper_stage2   1.5 h   ends about Sun 01:57   Regime map, PAPER, stage 2
+Sat 03:57     9  fillers_levels     2.5 h   ends about Sun 04:27   Landscape, ER: the same cells at the 20% and 80% levels (1 pair per cell, no extras)
+Sat 03:57    10  fillers_cells      1.5 h   ends about Sun 05:57   Landscape, ER: mean degree 16, rho 0.2 for all three algorithms (300 seeds: random sets stay below 50% in the map's range)
+Sat 03:57    11  first_look_wiki    3.0 h   ends about Sun 08:57   Real pairs: English vs French Wikipedia (1,382 vertices, slow)
+Sat 03:57    12  more_pairs         6.0 h   ends about Sun 14:57   Landscape: a 4th pair per cell on ER, Chung-Lu and PAPER, then a 5th, until the deadline
+Sat 03:57    deadline Sun 14:57 (2026-11-08T14:57:39-05:00); the hours are rough guesses
+Sat 03:57  Step 1/12 first_look: Real pairs: both worms and two Enron week pairs, all four solver variants
+Sat 03:57    $ python -m real_data_experiments.first_look --pairs small --jobs 3 --blas-threads 3
+Sat 04:00  Step 1/12 first_look: done after 3 min
+Sat 04:00  Step 2/12 landscape_er: Match-ratio landscape, ER: 9 cells x 3 pairs, about 480 seed sets per pair
+Sat 04:00    $ python -m selection_rule_comparison.landscape --model sparse_er --jobs 3 --blas-threads 3
+Sat 09:18  Step 2/12 landscape_er: done after 5.3 h
+Sat 09:18  Step 3/12 map_cl_stage1: Regime map, Chung-Lu, stage 1: random-set ladders (they set the landscape budgets)
+Sat 09:18    $ python -m selection_rule_comparison.regime_map --stage 1 --model chung_lu --jobs 3 --blas-threads 3
+Sat 10:15  Step 3/12 map_cl_stage1: done after 57 min
+Sat 10:15  Step 4/12 map_paper_stage1: Regime map, PAPER, stage 1
+Sat 10:15    $ python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa --jobs 3 --blas-threads 3
+Sat 11:11  Step 4/12 map_paper_stage1: done after 56 min
+Sat 11:11  Step 5/12 landscape_cl: Match-ratio landscape, Chung-Lu
+Sat 11:11    $ python -m selection_rule_comparison.landscape --model chung_lu --jobs 3 --blas-threads 3
+Sat 16:58  Step 5/12 landscape_cl: done after 5.8 h
+Sat 16:58  Step 6/12 landscape_paper: Match-ratio landscape, PAPER
+Sat 16:58    $ python -m selection_rule_comparison.landscape --model paper_pa --jobs 3 --blas-threads 3
+Sat 22:25  Step 6/12 landscape_paper: done after 5.4 h
+Sat 22:25  Step 7/12 map_cl_stage2: Regime map, Chung-Lu, stage 2: rules and best-of-N vs random sets at 20/50/80%
+Sat 22:25    $ python -m selection_rule_comparison.regime_map --stage 2 --model chung_lu --jobs 3 --blas-threads 3
+Sat 23:33  Step 7/12 map_cl_stage2: done after 1.1 h
+Sat 23:33  Step 8/12 map_paper_stage2: Regime map, PAPER, stage 2
+Sat 23:33    $ python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa --jobs 3 --blas-threads 3
+Sun 01:04  Step 8/12 map_paper_stage2: done after 1.5 h
+Sun 01:04  Step 9/12 fillers_levels: Landscape, ER: the same cells at the 20% and 80% levels (1 pair per cell, no extras)
+Sun 01:04    $ python -m selection_rule_comparison.landscape --model sparse_er --levels 0.2 0.8 --pairs 1 --no-extras --jobs 3 --blas-threads 3
+Sun 02:59  Step 9/12 fillers_levels: done after 1.9 h
+Sun 02:59  Step 10/12 fillers_cells: Landscape, ER: mean degree 16, rho 0.2 for all three algorithms (300 seeds: random sets stay below 50% in the map's range)
+Sun 02:59    $ python -m selection_rule_comparison.landscape --model sparse_er --cells percolation:16:0.2 faq:16:0.2 goat:16:0.2 --jobs 3 --blas-threads 3
+Sun 03:19  Step 10/12 fillers_cells: done after 20 min
+Sun 03:19  Step 11/12 first_look_wiki: Real pairs: English vs French Wikipedia (1,382 vertices, slow)
+Sun 03:19    $ python -m real_data_experiments.first_look --pairs wikipedia --jobs 3 --blas-threads 3
+Sun 04:15  Step 11/12 first_look_wiki: done after 57 min
+Sun 04:15  Step 12/12 more_pairs: Landscape: a 4th pair per cell on ER, Chung-Lu and PAPER, then a 5th, until the deadline
+Sun 04:15    $ python -m selection_rule_comparison.landscape --model sparse_er --pairs 4 --jobs 3 --blas-threads 3
+Sun 05:25    $ python -m selection_rule_comparison.landscape --model chung_lu --pairs 4 --jobs 3 --blas-threads 3
+Sun 06:45    $ python -m selection_rule_comparison.landscape --model paper_pa --pairs 4 --jobs 3 --blas-threads 3
+Sun 08:06    $ python -m selection_rule_comparison.landscape --model sparse_er --pairs 5 --jobs 3 --blas-threads 3
+Sun 09:18    $ python -m selection_rule_comparison.landscape --model chung_lu --pairs 5 --jobs 3 --blas-threads 3
+Sun 10:37    $ python -m selection_rule_comparison.landscape --model paper_pa --pairs 5 --jobs 3 --blas-threads 3
+Sun 11:55  Step 12/12 more_pairs: done after 7.7 h
+Sun 11:55  Summary:
+Sun 11:55    first_look        done                             3 min
+Sun 11:55    landscape_er      done                             318 min
+Sun 11:55    map_cl_stage1     done                             56 min
+Sun 11:55    map_paper_stage1  done                             56 min
+Sun 11:55    landscape_cl      done                             347 min
+Sun 11:55    landscape_paper   done                             327 min
+Sun 11:55    map_cl_stage2     done                             68 min
+Sun 11:55    map_paper_stage2  done                             91 min
+Sun 11:55    fillers_levels    done                             115 min
+Sun 11:55    fillers_cells     done                             20 min
+Sun 11:55    first_look_wiki   done                             57 min
+Sun 11:55    more_pairs        done                             460 min

@@ -1,0 +1,26 @@
+2026-10-20T20:35:17-04:00  start goat/chung_lu/main: 10 pairs, budgets 4 6 8 10 14 20
+[goat/chung_lu/main] graph settings match the training preset; 0 of 10 pairs already done.
+[goat/chung_lu/main] pair 1/10 in 129.4s; 34 solver runs; elapsed 2.2 min; about 19.4 min left
+[goat/chung_lu/main] pair 2/10 in 131.9s; 34 solver runs; elapsed 4.4 min; about 17.4 min left
+[goat/chung_lu/main] pair 3/10 in 123.1s; 33 solver runs; elapsed 6.4 min; about 14.9 min left
+[goat/chung_lu/main] pair 4/10 in 144.4s; 34 solver runs; elapsed 8.8 min; about 13.2 min left
+[goat/chung_lu/main] pair 5/10 in 125.3s; 33 solver runs; elapsed 10.9 min; about 10.9 min left
+[goat/chung_lu/main] pair 6/10 in 118.6s; 33 solver runs; elapsed 12.9 min; about 8.6 min left
+[goat/chung_lu/main] pair 7/10 in 99.1s; 35 solver runs; elapsed 14.5 min; about 6.2 min left
+[goat/chung_lu/main] pair 8/10 in 75.5s; 34 solver runs; elapsed 15.8 min; about 3.9 min left
+[goat/chung_lu/main] pair 9/10 in 116.9s; 34 solver runs; elapsed 17.7 min; about 2.0 min left
+[goat/chung_lu/main] pair 10/10 in 68.6s; 34 solver runs; elapsed 18.9 min; about 0.0 min left
+2026-10-20T20:54:10-04:00  done
+2026-10-20T21:48:50-04:00  start goat/chung_lu/main: 20 pairs, budgets 4 6 8 10 14 20
+[goat/chung_lu/main] graph settings match the training preset; 10 of 20 pairs already done.
+[goat/chung_lu/main] pair 11/20 in 112.7s; 34 solver runs; elapsed 1.9 min; about 16.9 min left
+[goat/chung_lu/main] pair 12/20 in 157.7s; 34 solver runs; elapsed 4.5 min; about 18.0 min left
+[goat/chung_lu/main] pair 13/20 in 127.8s; 34 solver runs; elapsed 6.6 min; about 15.5 min left
+[goat/chung_lu/main] pair 14/20 in 104.1s; 34 solver runs; elapsed 8.4 min; about 12.6 min left
+[goat/chung_lu/main] pair 15/20 in 141.0s; 34 solver runs; elapsed 10.7 min; about 10.7 min left
+[goat/chung_lu/main] pair 16/20 in 116.9s; 33 solver runs; elapsed 12.7 min; about 8.4 min left
+[goat/chung_lu/main] pair 17/20 in 136.2s; 34 solver runs; elapsed 14.9 min; about 6.4 min left
+[goat/chung_lu/main] pair 18/20 in 110.8s; 33 solver runs; elapsed 16.8 min; about 4.2 min left
+[goat/chung_lu/main] pair 19/20 in 151.5s; 35 solver runs; elapsed 19.3 min; about 2.1 min left
+[goat/chung_lu/main] pair 20/20 in 83.6s; 34 solver runs; elapsed 20.7 min; about 0.0 min left
+2026-10-20T22:09:33-04:00  done

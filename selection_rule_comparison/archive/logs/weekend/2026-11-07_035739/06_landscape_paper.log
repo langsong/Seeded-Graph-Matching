@@ -1,0 +1,73 @@
+
+$ python -m selection_rule_comparison.landscape --model paper_pa --jobs 3 --blas-threads 3
+Sat 16:58  Landscape, PAPER: 39 tasks, 3 at a time, about 6.6 h (a rough guess). One line per finished task.
+Sat 17:49  [1/39] sets SGM (FAQ) PAPER, mean degree 32, rho 0.30, 48 seeds (50% level), pair 0: 1431 runs in 50.9 min; about 5.7 h left
+Sat 17:55  [2/39] sets SGM (FAQ) PAPER, mean degree 32, rho 0.30, 48 seeds (50% level), pair 1: 1431 runs in 56.6 min; about 5.6 h left
+Sat 17:56  [3/39] sets SGM (FAQ) PAPER, mean degree 32, rho 0.30, 48 seeds (50% level), pair 2: 1431 runs in 57.3 min; about 5.5 h left
+Sat 18:43  [4/39] sets SGM (FAQ) PAPER, mean degree 8, rho 0.50, 22 seeds (50% level), pair 0: 1431 runs in 54.0 min; about 4.7 h left
+Sat 18:49  [5/39] sets SGM (FAQ) PAPER, mean degree 8, rho 0.50, 22 seeds (50% level), pair 2: 1431 runs in 53.6 min; about 4.6 h left
+Sat 18:50  [6/39] sets SGM (FAQ) PAPER, mean degree 8, rho 0.50, 22 seeds (50% level), pair 1: 1431 runs in 55.4 min; about 4.5 h left
+Sat 19:40  [7/39] sets SGM (FAQ) PAPER, mean degree 16, rho 0.30, 53 seeds (50% level), pair 0: 1431 runs in 56.5 min; about 3.7 h left
+Sat 19:45  [8/39] sets SGM (FAQ) PAPER, mean degree 16, rho 0.30, 53 seeds (50% level), pair 2: 1431 runs in 54.5 min; about 3.5 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1289247529372635 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 19:45  [9/39] sets SGM (FAQ) PAPER, mean degree 16, rho 0.30, 53 seeds (50% level), pair 1: 1431 runs in 56.1 min; about 3.4 h left
+Sat 19:53  [10/39] redraws GOAT PAPER, mean degree 8, rho 0.50, 3 seeds (50% level), pair 0: 1000 runs in 12.9 min; about 3.2 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.132640523814612 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.13244135745447355 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.12574564265203353 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 20:17  [11/39] redraws GOAT PAPER, mean degree 8, rho 0.40, 7 seeds (50% level), pair 0: 1000 runs in 32.3 min; about 2.6 h left
+Sat 20:30  [12/39] redraws SGM (FAQ) PAPER, mean degree 32, rho 0.30, 48 seeds (50% level), pair 0: 1000 runs in 37.6 min; about 2.4 h left
+Sat 20:40  [13/39] redraws GOAT PAPER, mean degree 16, rho 0.30, 36 seeds (50% level), pair 0: 1000 runs in 54.3 min; about 2.2 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.11713603518379902 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.11713603518379902 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.11805629725196351 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 20:48  [14/39] sets GOAT PAPER, mean degree 8, rho 0.50, 3 seeds (50% level), pair 0: 478 runs in 7.9 min; about 2.0 h left
+Sat 20:58  [15/39] redraws SGM (FAQ) PAPER, mean degree 8, rho 0.50, 22 seeds (50% level), pair 0: 1000 runs in 41.2 min; about 1.7 h left
+Sat 21:03  [16/39] sets GOAT PAPER, mean degree 8, rho 0.50, 3 seeds (50% level), pair 1: 478 runs in 15.7 min; about 1.6 h left
+Sat 21:08  [17/39] sets GOAT PAPER, mean degree 8, rho 0.50, 3 seeds (50% level), pair 2: 478 runs in 10.2 min; about 1.4 h left
+Sat 21:10  [18/39] redraws SGM (FAQ) PAPER, mean degree 16, rho 0.30, 53 seeds (50% level), pair 0: 1000 runs in 40.2 min; about 1.4 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.05973370907825763 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.13423633499578583 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.1260196143125097 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 21:19  [19/39] sets GOAT PAPER, mean degree 8, rho 0.40, 7 seeds (50% level), pair 0: 478 runs in 15.5 min; about 1.2 h left
+Sat 21:41  [20/39] sets GOAT PAPER, mean degree 16, rho 0.30, 36 seeds (50% level), pair 0: 478 runs in 22.5 min; about 0.9 h left
+Sat 21:45  [21/39] sets GOAT PAPER, mean degree 8, rho 0.40, 7 seeds (50% level), pair 1: 478 runs in 36.1 min; about 0.8 h left
+Sat 21:46  [22/39] sets GOAT PAPER, mean degree 8, rho 0.40, 7 seeds (50% level), pair 2: 478 runs in 35.6 min; about 0.8 h left
+Sat 21:50  [23/39] regularizer GOAT PAPER, mean degree 8, rho 0.50, 3 seeds (50% level), pair 0: 200 runs in 4.2 min; about 0.7 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.2665318617039694 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08756073078073111 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.06568405901447656 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 21:58  [24/39] regularizer GOAT PAPER, mean degree 8, rho 0.40, 7 seeds (50% level), pair 0: 200 runs in 7.9 min; about 0.5 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.08774798681136352 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 22:02  [25/39] sets GOAT PAPER, mean degree 16, rho 0.30, 36 seeds (50% level), pair 1: 478 runs in 20.8 min; about 0.4 h left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.06993542680154312 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 22:05  [26/39] regularizer GOAT PAPER, mean degree 16, rho 0.30, 36 seeds (50% level), pair 0: 200 runs in 6.9 min; about 0.4 h left
+Sat 22:09  [27/39] sets GOAT PAPER, mean degree 16, rho 0.30, 36 seeds (50% level), pair 2: 478 runs in 24.6 min; about 0.3 h left
+Sat 22:10  [28/39] redraws Percolation PAPER, mean degree 8, rho 0.70, 3 seeds (50% level), pair 0: 1000 runs in 7.7 min; about 0.3 h left
+Sat 22:13  [29/39] redraws Percolation PAPER, mean degree 16, rho 0.40, 24 seeds (50% level), pair 0: 1000 runs in 7.8 min; about 0.2 h left
+Sat 22:13  [30/39] sets Percolation PAPER, mean degree 8, rho 0.70, 3 seeds (50% level), pair 0: 478 runs in 3.6 min; about 0.2 h left
+Sat 22:16  [31/39] sets Percolation PAPER, mean degree 8, rho 0.70, 3 seeds (50% level), pair 1: 478 runs in 3.7 min; about 0.1 h left
+Sat 22:17  [32/39] redraws Percolation PAPER, mean degree 32, rho 0.30, 47 seeds (50% level), pair 0: 1000 runs in 7.7 min; about 0.1 h left
+Sat 22:17  [33/39] sets Percolation PAPER, mean degree 8, rho 0.70, 3 seeds (50% level), pair 2: 478 runs in 3.7 min; about 0.1 h left
+Sat 22:20  [34/39] sets Percolation PAPER, mean degree 16, rho 0.40, 24 seeds (50% level), pair 0: 478 runs in 3.7 min; about 0.1 h left
+Sat 22:21  [35/39] sets Percolation PAPER, mean degree 16, rho 0.40, 24 seeds (50% level), pair 1: 478 runs in 3.7 min; about 0.1 h left
+Sat 22:21  [36/39] sets Percolation PAPER, mean degree 16, rho 0.40, 24 seeds (50% level), pair 2: 478 runs in 3.8 min; about 0.1 h left
+Sat 22:24  [37/39] sets Percolation PAPER, mean degree 32, rho 0.30, 47 seeds (50% level), pair 0: 478 runs in 3.7 min; about 0.0 h left
+Sat 22:24  [38/39] sets Percolation PAPER, mean degree 32, rho 0.30, 47 seeds (50% level), pair 1: 478 runs in 3.9 min; about 0.0 h left
+Sat 22:25  [39/39] sets Percolation PAPER, mean degree 32, rho 0.30, 47 seeds (50% level), pair 2: 478 runs in 3.8 min; about 0.0 h left
+Sat 22:25  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/landscape

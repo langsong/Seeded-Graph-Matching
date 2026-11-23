@@ -1,0 +1,212 @@
+{
+  "pid": 18699,
+  "label": "queue",
+  "started_at": "2026-11-07T03:57:39-05:00",
+  "deadline": "2026-11-08T14:57:39-05:00",
+  "log_dir": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739",
+  "steps": [
+    {
+      "name": "first_look",
+      "description": "Real pairs: both worms and two Enron week pairs, all four solver variants",
+      "hours_guess": 0.5,
+      "status": "done",
+      "commands": [
+        "python -m real_data_experiments.first_look --pairs small"
+      ],
+      "started_at": "2026-11-07T03:57:39-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/01_first_look.log",
+      "finished_at": "2026-11-07T04:00:56-05:00",
+      "minutes": 3.3,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "landscape_er",
+      "description": "Match-ratio landscape, ER: 9 cells x 3 pairs, about 480 seed sets per pair",
+      "hours_guess": 5.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model sparse_er"
+      ],
+      "started_at": "2026-11-07T04:00:56-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/02_landscape_er.log",
+      "finished_at": "2026-11-07T09:18:33-05:00",
+      "minutes": 317.6,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "map_cl_stage1",
+      "description": "Regime map, Chung-Lu, stage 1: random-set ladders (they set the landscape budgets)",
+      "hours_guess": 1.0,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 1 --model chung_lu"
+      ],
+      "started_at": "2026-11-07T09:18:33-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/03_map_cl_stage1.log",
+      "finished_at": "2026-11-07T10:15:05-05:00",
+      "minutes": 56.5,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "map_paper_stage1",
+      "description": "Regime map, PAPER, stage 1",
+      "hours_guess": 1.0,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa"
+      ],
+      "started_at": "2026-11-07T10:15:05-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/04_map_paper_stage1.log",
+      "finished_at": "2026-11-07T11:11:17-05:00",
+      "minutes": 56.2,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "landscape_cl",
+      "description": "Match-ratio landscape, Chung-Lu",
+      "hours_guess": 5.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model chung_lu"
+      ],
+      "started_at": "2026-11-07T11:11:17-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/05_landscape_cl.log",
+      "finished_at": "2026-11-07T16:58:33-05:00",
+      "minutes": 347.3,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "landscape_paper",
+      "description": "Match-ratio landscape, PAPER",
+      "hours_guess": 5.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model paper_pa"
+      ],
+      "started_at": "2026-11-07T16:58:33-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/06_landscape_paper.log",
+      "finished_at": "2026-11-07T22:25:10-05:00",
+      "minutes": 326.6,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "map_cl_stage2",
+      "description": "Regime map, Chung-Lu, stage 2: rules and best-of-N vs random sets at 20/50/80%",
+      "hours_guess": 1.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 2 --model chung_lu"
+      ],
+      "started_at": "2026-11-07T22:25:10-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/07_map_cl_stage2.log",
+      "finished_at": "2026-11-07T23:33:26-05:00",
+      "minutes": 68.3,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "map_paper_stage2",
+      "description": "Regime map, PAPER, stage 2",
+      "hours_guess": 1.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa"
+      ],
+      "started_at": "2026-11-07T23:33:26-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/08_map_paper_stage2.log",
+      "finished_at": "2026-11-08T01:04:27-05:00",
+      "minutes": 91.0,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "fillers_levels",
+      "description": "Landscape, ER: the same cells at the 20% and 80% levels (1 pair per cell, no extras)",
+      "hours_guess": 2.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model sparse_er --levels 0.2 0.8 --pairs 1 --no-extras"
+      ],
+      "started_at": "2026-11-08T01:04:27-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/09_fillers_levels.log",
+      "finished_at": "2026-11-08T02:59:08-05:00",
+      "minutes": 114.7,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "fillers_cells",
+      "description": "Landscape, ER: mean degree 16, rho 0.2 for all three algorithms (300 seeds: random sets stay below 50% in the map's range)",
+      "hours_guess": 1.5,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model sparse_er --cells percolation:16:0.2 faq:16:0.2 goat:16:0.2"
+      ],
+      "started_at": "2026-11-08T02:59:08-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/10_fillers_cells.log",
+      "finished_at": "2026-11-08T03:19:06-05:00",
+      "minutes": 20.0,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "first_look_wiki",
+      "description": "Real pairs: English vs French Wikipedia (1,382 vertices, slow)",
+      "hours_guess": 3.0,
+      "status": "done",
+      "commands": [
+        "python -m real_data_experiments.first_look --pairs wikipedia"
+      ],
+      "started_at": "2026-11-08T03:19:06-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/11_first_look_wiki.log",
+      "finished_at": "2026-11-08T04:15:46-05:00",
+      "minutes": 56.7,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "more_pairs",
+      "description": "Landscape: a 4th pair per cell on ER, Chung-Lu and PAPER, then a 5th, until the deadline",
+      "hours_guess": 6.0,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model sparse_er --pairs 4",
+        "python -m selection_rule_comparison.landscape --model chung_lu --pairs 4",
+        "python -m selection_rule_comparison.landscape --model paper_pa --pairs 4",
+        "python -m selection_rule_comparison.landscape --model sparse_er --pairs 5",
+        "python -m selection_rule_comparison.landscape --model chung_lu --pairs 5",
+        "python -m selection_rule_comparison.landscape --model paper_pa --pairs 5"
+      ],
+      "started_at": "2026-11-08T04:15:46-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/2026-11-07_035739/12_more_pairs.log",
+      "finished_at": "2026-11-08T11:55:45-05:00",
+      "minutes": 460.0,
+      "exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "finished_at": "2026-11-08T11:55:45-05:00"
+}

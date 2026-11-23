@@ -1,0 +1,26 @@
+2026-10-20T20:32:30-04:00  start percolation/paper_pa/main: 10 pairs, budgets 2 3 4 6 8 10
+[percolation/paper_pa/main] graph settings match the training preset; 0 of 10 pairs already done.
+[percolation/paper_pa/main] pair 1/10 in 13.8s; 29 solver runs; elapsed 0.2 min; about 2.1 min left
+[percolation/paper_pa/main] pair 2/10 in 14.6s; 31 solver runs; elapsed 0.5 min; about 1.9 min left
+[percolation/paper_pa/main] pair 3/10 in 13.5s; 29 solver runs; elapsed 0.7 min; about 1.6 min left
+[percolation/paper_pa/main] pair 4/10 in 13.6s; 28 solver runs; elapsed 0.9 min; about 1.4 min left
+[percolation/paper_pa/main] pair 5/10 in 14.6s; 31 solver runs; elapsed 1.2 min; about 1.2 min left
+[percolation/paper_pa/main] pair 6/10 in 15.1s; 31 solver runs; elapsed 1.4 min; about 0.9 min left
+[percolation/paper_pa/main] pair 7/10 in 12.7s; 27 solver runs; elapsed 1.6 min; about 0.7 min left
+[percolation/paper_pa/main] pair 8/10 in 13.7s; 29 solver runs; elapsed 1.9 min; about 0.5 min left
+[percolation/paper_pa/main] pair 9/10 in 12.3s; 26 solver runs; elapsed 2.1 min; about 0.2 min left
+[percolation/paper_pa/main] pair 10/10 in 13.4s; 30 solver runs; elapsed 2.3 min; about 0.0 min left
+2026-10-20T20:34:47-04:00  done
+2026-10-20T23:43:43-04:00  start percolation/paper_pa/main: 20 pairs, budgets 2 3 4 6 8 10
+[percolation/paper_pa/main] graph settings match the training preset; 10 of 20 pairs already done.
+[percolation/paper_pa/main] pair 11/20 in 12.8s; 28 solver runs; elapsed 0.2 min; about 1.9 min left
+[percolation/paper_pa/main] pair 12/20 in 13.4s; 29 solver runs; elapsed 0.4 min; about 1.7 min left
+[percolation/paper_pa/main] pair 13/20 in 13.0s; 28 solver runs; elapsed 0.7 min; about 1.5 min left
+[percolation/paper_pa/main] pair 14/20 in 13.6s; 29 solver runs; elapsed 0.9 min; about 1.3 min left
+[percolation/paper_pa/main] pair 15/20 in 14.3s; 31 solver runs; elapsed 1.1 min; about 1.1 min left
+[percolation/paper_pa/main] pair 16/20 in 12.5s; 27 solver runs; elapsed 1.3 min; about 0.9 min left
+[percolation/paper_pa/main] pair 17/20 in 14.3s; 30 solver runs; elapsed 1.6 min; about 0.7 min left
+[percolation/paper_pa/main] pair 18/20 in 14.1s; 30 solver runs; elapsed 1.8 min; about 0.5 min left
+[percolation/paper_pa/main] pair 19/20 in 15.1s; 34 solver runs; elapsed 2.1 min; about 0.2 min left
+[percolation/paper_pa/main] pair 20/20 in 13.5s; 30 solver runs; elapsed 2.3 min; about 0.0 min left
+2026-10-20T23:46:00-04:00  done

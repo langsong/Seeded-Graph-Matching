@@ -1,0 +1,96 @@
+{
+  "pid": 18242,
+  "label": "smoke",
+  "started_at": "2026-11-07T03:44:51-05:00",
+  "deadline": null,
+  "log_dir": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451",
+  "steps": [
+    {
+      "name": "check_pairs",
+      "description": "Every cell of the Chung-Lu and PAPER maps and landscapes can draw a pair (no runs)",
+      "hours_guess": 0.02,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.weekend_queue --check-pairs"
+      ],
+      "started_at": "2026-11-07T03:44:51-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451/01_check_pairs.log",
+      "finished_at": "2026-11-07T03:45:00-05:00",
+      "minutes": 0.2,
+      "exit_codes": [
+        0
+      ]
+    },
+    {
+      "name": "map_cl",
+      "description": "Regime map stages 1 and 2, Chung-Lu, one cell, percolation only",
+      "hours_guess": 0.03,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 1 --model chung_lu --algorithms percolation --degrees 16 --rhos 0.5",
+        "python -m selection_rule_comparison.regime_map --stage 2 --model chung_lu --algorithms percolation --degrees 16 --rhos 0.5 --pairs 1"
+      ],
+      "started_at": "2026-11-07T03:45:00-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451/02_map_cl.log",
+      "finished_at": "2026-11-07T03:46:10-05:00",
+      "minutes": 1.2,
+      "exit_codes": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "map_paper",
+      "description": "Regime map stages 1 and 2, PAPER, one cell, percolation only",
+      "hours_guess": 0.03,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5",
+        "python -m selection_rule_comparison.regime_map --stage 2 --model paper_pa --algorithms percolation --degrees 16 --rhos 0.5 --pairs 1"
+      ],
+      "started_at": "2026-11-07T03:46:10-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451/03_map_paper.log",
+      "finished_at": "2026-11-07T03:47:16-05:00",
+      "minutes": 1.1,
+      "exit_codes": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "landscape_er",
+      "description": "Landscape, ER: a tiny design in each algorithm's first cell (budgets from your ER map), then the same command again, which must find nothing left to run",
+      "hours_guess": 0.07,
+      "status": "done",
+      "commands": [
+        "python -m selection_rule_comparison.landscape --model sparse_er --smoke",
+        "python -m selection_rule_comparison.landscape --model sparse_er --smoke"
+      ],
+      "started_at": "2026-11-07T03:47:16-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451/04_landscape_er.log",
+      "finished_at": "2026-11-07T03:49:27-05:00",
+      "minutes": 2.2,
+      "exit_codes": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "first_look",
+      "description": "Real pairs: worm and Enron (one budget, a few sets) and one Wikipedia set per variant",
+      "hours_guess": 0.05,
+      "status": "done",
+      "commands": [
+        "python -m real_data_experiments.first_look --smoke"
+      ],
+      "started_at": "2026-11-07T03:49:27-05:00",
+      "log": "/Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/logs/weekend/smoke_2026-11-07_034451/05_first_look.log",
+      "finished_at": "2026-11-07T03:50:10-05:00",
+      "minutes": 0.7,
+      "exit_codes": [
+        0
+      ]
+    }
+  ],
+  "finished_at": "2026-11-07T03:50:10-05:00"
+}

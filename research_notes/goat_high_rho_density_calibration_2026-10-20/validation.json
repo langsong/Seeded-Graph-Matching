@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "directories": {
+    "degree_10": {
+      "runs": 342,
+      "warnings": 0,
+      "iteration_cap_runs": 0,
+      "solver_seconds": 552.1032901649596,
+      "saved_matching_accuracies_verified": true,
+      "seed_matches_and_bijectivity_verified": true,
+      "unique_sets_within_cells_verified": true,
+      "confirmation_disjoint_from_screen_and_refine": true,
+      "source_config_hashes_verified": true,
+      "required_high_rho_preserved": true
+    },
+    "degree_12": {
+      "runs": 162,
+      "warnings": 0,
+      "iteration_cap_runs": 0,
+      "solver_seconds": 142.46693846100243,
+      "saved_matching_accuracies_verified": true,
+      "seed_matches_and_bijectivity_verified": true,
+      "unique_sets_within_cells_verified": true,
+      "confirmation_disjoint_from_screen_and_refine": true,
+      "source_config_hashes_verified": true,
+      "required_high_rho_preserved": true
+    }
+  },
+  "total_runs": 504
+}

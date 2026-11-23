@@ -1,0 +1,16 @@
+
+$ python -m real_data_experiments.first_look --smoke --jobs 3 --blas-threads 3
+Sat 03:49  First look (worm, enron_130_131, wikipedia): 12 tasks, 3 at a time, about 0.0 h (a rough guess). One line per finished task.
+Sat 03:49  [1/12] worm, GOAT (r 100), 100 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [2/12] worm, GOAT (r 300), 100 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [3/12] enron_130_131, GOAT (r 100), 20 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [4/12] enron_130_131, GOAT (r 300), 20 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [5/12] worm, Percolation, 100 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [6/12] enron_130_131, Percolation, 20 seeds: 8 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [7/12] worm, SGM (FAQ), 100 seeds: 16 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [8/12] enron_130_131, SGM (FAQ), 20 seeds: 16 runs in 0.0 min; about 0.0 h left
+Sat 03:49  [9/12] wikipedia, Percolation, 50 seeds: 1 runs in 0.1 min; about 0.0 h left
+Sat 03:49  [10/12] wikipedia, GOAT (r 100), 50 seeds: 1 runs in 0.1 min; about 0.0 h left
+Sat 03:50  [11/12] wikipedia, SGM (FAQ), 50 seeds: 1 runs in 0.4 min; about 0.0 h left
+Sat 03:50  [12/12] wikipedia, GOAT (r 300), 50 seeds: 1 runs in 0.4 min; about 0.0 h left
+Sat 03:50  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/tmp/weekend_smoke/first_look

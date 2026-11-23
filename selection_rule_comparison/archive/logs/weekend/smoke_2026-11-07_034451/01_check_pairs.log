@@ -1,0 +1,64 @@
+
+$ python -m selection_rule_comparison.weekend_queue --check-pairs
+
+Chung-Lu: regime map grid
+ mean degree  rho          pair 0  seconds
+          10  0.2 ok (0 rejected)      0.1
+          10  0.3 ok (0 rejected)      0.0
+          10  0.4 ok (1 rejected)      0.0
+          10  0.5 ok (1 rejected)      0.0
+          10  0.7 ok (0 rejected)      0.0
+          10  0.9 ok (2 rejected)      0.1
+          16  0.2 ok (0 rejected)      0.1
+          16  0.3 ok (0 rejected)      0.0
+          16  0.4 ok (0 rejected)      0.0
+          16  0.5 ok (0 rejected)      0.0
+          16  0.7 ok (0 rejected)      0.0
+          16  0.9 ok (0 rejected)      0.0
+          32  0.2 ok (0 rejected)      0.1
+          32  0.3 ok (0 rejected)      0.0
+          32  0.4 ok (0 rejected)      0.0
+          32  0.5 ok (0 rejected)      0.0
+          32  0.7 ok (0 rejected)      0.0
+          32  0.9 ok (0 rejected)      0.0
+
+Chung-Lu: landscape cells
+ mean degree  rho pair  rejected draws  mean degree of A     redraw of B  seconds
+          10  0.7   ok               0             10.09 ok (0 rejected)      0.1
+          16  0.4   ok               0             16.32 ok (0 rejected)      0.0
+          32  0.3   ok               0             32.46 ok (0 rejected)      0.0
+          10  0.5   ok               0              9.82 ok (0 rejected)      0.0
+          16  0.3   ok               0             16.12 ok (0 rejected)      0.0
+          10  0.4   ok               2             10.18 ok (1 rejected)      0.1
+
+PAPER: regime map grid
+ mean degree  rho          pair 0  seconds
+           8  0.2 ok (0 rejected)      0.0
+           8  0.3 ok (0 rejected)      0.0
+           8  0.4 ok (0 rejected)      0.0
+           8  0.5 ok (0 rejected)      0.0
+           8  0.7 ok (0 rejected)      0.0
+           8  0.9 ok (0 rejected)      0.0
+          16  0.2 ok (0 rejected)      0.0
+          16  0.3 ok (0 rejected)      0.0
+          16  0.4 ok (0 rejected)      0.0
+          16  0.5 ok (0 rejected)      0.0
+          16  0.7 ok (0 rejected)      0.0
+          16  0.9 ok (0 rejected)      0.0
+          32  0.2 ok (0 rejected)      0.0
+          32  0.3 ok (0 rejected)      0.0
+          32  0.4 ok (0 rejected)      0.0
+          32  0.5 ok (0 rejected)      0.0
+          32  0.7 ok (0 rejected)      0.0
+          32  0.9 ok (0 rejected)      0.0
+
+PAPER: landscape cells
+ mean degree  rho pair  rejected draws  mean degree of A     redraw of B  seconds
+           8  0.7   ok               0              7.82 ok (0 rejected)      0.0
+          16  0.4   ok               0             15.50 ok (0 rejected)      0.0
+          32  0.3   ok               0             31.78 ok (0 rejected)      0.1
+           8  0.5   ok               0              8.09 ok (0 rejected)      0.0
+          16  0.3   ok               0             16.17 ok (0 rejected)      0.0
+           8  0.4   ok               0              8.06 ok (0 rejected)      0.0
+
+All cells can draw pairs.

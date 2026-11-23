@@ -1,0 +1,26 @@
+2026-10-20T20:57:11-04:00  start faq/paper_pa/main: 10 pairs, budgets 14 16 18 20 24 32
+[faq/paper_pa/main] graph settings match the training preset; 0 of 10 pairs already done.
+[faq/paper_pa/main] pair 1/10 in 189.1s; 70 solver runs; elapsed 3.2 min; about 28.4 min left
+[faq/paper_pa/main] pair 2/10 in 149.1s; 59 solver runs; elapsed 5.6 min; about 22.5 min left
+[faq/paper_pa/main] pair 3/10 in 155.0s; 63 solver runs; elapsed 8.2 min; about 19.2 min left
+[faq/paper_pa/main] pair 4/10 in 207.8s; 65 solver runs; elapsed 11.7 min; about 17.5 min left
+[faq/paper_pa/main] pair 5/10 in 237.9s; 72 solver runs; elapsed 15.6 min; about 15.6 min left
+[faq/paper_pa/main] pair 6/10 in 236.8s; 67 solver runs; elapsed 19.6 min; about 13.1 min left
+[faq/paper_pa/main] pair 7/10 in 169.7s; 56 solver runs; elapsed 22.4 min; about 9.6 min left
+[faq/paper_pa/main] pair 8/10 in 149.8s; 53 solver runs; elapsed 24.9 min; about 6.2 min left
+[faq/paper_pa/main] pair 9/10 in 198.7s; 60 solver runs; elapsed 28.2 min; about 3.1 min left
+[faq/paper_pa/main] pair 10/10 in 200.0s; 68 solver runs; elapsed 31.6 min; about 0.0 min left
+2026-10-20T21:28:45-04:00  done
+2026-10-27T01:31:19-04:00  start faq/paper_pa/main: 20 pairs, budgets 14 16 18 20 24 32
+[faq/paper_pa/main] graph settings match the training preset; 10 of 20 pairs already done.
+[faq/paper_pa/main] pair 11/20 in 725.3s; 53 solver runs; elapsed 12.1 min; about 108.8 min left
+[faq/paper_pa/main] pair 12/20 in 605.3s; 67 solver runs; elapsed 22.2 min; about 88.7 min left
+[faq/paper_pa/main] pair 13/20 in 450.6s; 70 solver runs; elapsed 29.7 min; about 69.3 min left
+[faq/paper_pa/main] pair 14/20 in 477.8s; 76 solver runs; elapsed 37.6 min; about 56.5 min left
+[faq/paper_pa/main] pair 15/20 in 475.7s; 72 solver runs; elapsed 45.6 min; about 45.6 min left
+[faq/paper_pa/main] pair 16/20 in 479.0s; 71 solver runs; elapsed 53.6 min; about 35.7 min left
+[faq/paper_pa/main] pair 17/20 in 400.8s; 68 solver runs; elapsed 60.2 min; about 25.8 min left
+[faq/paper_pa/main] pair 18/20 in 373.1s; 66 solver runs; elapsed 66.5 min; about 16.6 min left
+[faq/paper_pa/main] pair 19/20 in 314.8s; 57 solver runs; elapsed 71.7 min; about 8.0 min left
+[faq/paper_pa/main] pair 20/20 in 352.4s; 62 solver runs; elapsed 77.6 min; about 0.0 min left
+2026-10-27T02:48:54-04:00  done

@@ -1,0 +1,49 @@
+{
+  "python": "3.11.14",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "cpu_count": 10,
+  "package_versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "networkx": "3.6.1",
+    "graspologic": "3.4.4",
+    "scikit-learn": "1.9.0"
+  },
+  "thread_environment": {
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "VECLIB_MAXIMUM_THREADS": null
+  },
+  "blas_threads_limit": 4,
+  "threadpools": [
+    {
+      "internal_api": "openblas",
+      "num_threads": 4,
+      "version": "0.3.30"
+    },
+    {
+      "internal_api": "openmp",
+      "num_threads": 4,
+      "version": null
+    }
+  ],
+  "git_commit": "377e7f1d7303cd99374582c9d863fc8514723055",
+  "git_tracked_changes": true,
+  "solver_settings": {
+    "n_init": 1,
+    "max_iter": 100,
+    "tol": 0.01,
+    "init": "barycenter",
+    "init_perturbation": 0,
+    "shuffle_input": true,
+    "transport": true,
+    "transport_tol": 0.05,
+    "transport_max_iter": 5000
+  },
+  "scripts_sha256": {
+    "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/audits/calibrate_goat_high_rho.py": "eb7b71a4cc3af70c15e2ab75e00503024dbc892fce9317f088cdd841bfe4da7a",
+    "/Users/langsong/Desktop/Seeded-Graph-Matching/fixed_pair_seed_set_classification/audits/calibrate_faq_goat.py": "385818437456747bb07916dc0917d85a2e54b0d3fe8b39aaa4d1431d4ce9f370",
+    "/Users/langsong/Desktop/Seeded-Graph-Matching/utils/Graphs.py": "24041aadfc90e9c6bca84a67c6412f0431a16810ef9ce82bc928fbe5294297fd"
+  }
+}

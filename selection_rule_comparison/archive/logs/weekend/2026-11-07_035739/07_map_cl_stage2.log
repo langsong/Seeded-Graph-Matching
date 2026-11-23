@@ -1,0 +1,123 @@
+
+$ python -m selection_rule_comparison.regime_map --stage 2 --model chung_lu --jobs 3 --blas-threads 3
+No 20-80% rise inside the budget range, so no stage 2, for 25 cells: Percolation d10 rho 0.20, SGM (FAQ) d10 rho 0.20, GOAT d10 rho 0.20, Percolation d10 rho 0.30, GOAT d10 rho 0.70, Percolation d10 rho 0.90, SGM (FAQ) d10 rho 0.90, GOAT d10 rho 0.90, Percolation d16 rho 0.20, SGM (FAQ) d16 rho 0.20, GOAT d16 rho 0.20, Percolation d16 rho 0.70, SGM (FAQ) d16 rho 0.70, GOAT d16 rho 0.70, Percolation d16 rho 0.90, SGM (FAQ) d16 rho 0.90, GOAT d16 rho 0.90, Percolation d32 rho 0.20, GOAT d32 rho 0.50, Percolation d32 rho 0.70, SGM (FAQ) d32 rho 0.70, GOAT d32 rho 0.70, Percolation d32 rho 0.90, SGM (FAQ) d32 rho 0.90, GOAT d32 rho 0.90
+Sat 22:25  Stage 2, Chung-Lu: 116 pair runs, 3 at a time, about 91 min (a rough guess). One line per finished pair.
+Sat 22:27  [1/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 0: 93 runs in 2.1 min; about 87 min left
+Sat 22:27  [2/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 2: 93 runs in 2.3 min; about 87 min left
+Sat 22:27  [3/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 1: 93 runs in 2.3 min; about 87 min left
+Sat 22:29  [4/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.40, pair 3: 93 runs in 2.3 min; about 84 min left
+Sat 22:30  [5/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 0: 93 runs in 3.3 min; about 83 min left
+Sat 22:32  [6/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 1: 93 runs in 5.0 min; about 81 min left
+Sat 22:33  [7/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 2: 93 runs in 3.8 min; about 81 min left
+Sat 22:34  [8/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.50, pair 3: 93 runs in 3.3 min; about 80 min left
+Sat 22:35  [9/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 0: 93 runs in 2.4 min; about 78 min left
+Sat 22:35  [10/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 1: 93 runs in 2.4 min; about 77 min left
+Sat 22:36  [11/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 2: 93 runs in 2.2 min; about 76 min left
+Sat 22:37  [12/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.70, pair 3: 93 runs in 2.0 min; about 74 min left
+Sat 22:37  [13/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 0: 93 runs in 1.8 min; about 73 min left
+Sat 22:38  [14/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 1: 93 runs in 1.7 min; about 72 min left
+Sat 22:38  [15/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 2: 93 runs in 1.8 min; about 71 min left
+Sat 22:39  [16/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.30, pair 3: 93 runs in 1.9 min; about 69 min left
+Sat 22:40  [17/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 0: 93 runs in 2.8 min; about 68 min left
+Sat 22:41  [18/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 1: 93 runs in 2.9 min; about 66 min left
+Sat 22:42  [19/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 2: 93 runs in 3.0 min; about 65 min left
+Sat 22:43  [20/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.40, pair 3: 93 runs in 2.7 min; about 64 min left
+Sat 22:44  [21/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 0: 93 runs in 2.5 min; about 63 min left
+Sat 22:45  [22/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 1: 93 runs in 2.6 min; about 61 min left
+Sat 22:45  [23/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 2: 93 runs in 2.2 min; about 60 min left
+Sat 22:46  [24/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 16, rho 0.50, pair 3: 93 runs in 2.4 min; about 59 min left
+Sat 22:48  [25/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 0: 93 runs in 3.1 min; about 57 min left
+Sat 22:48  [26/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 1: 93 runs in 2.8 min; about 56 min left
+Sat 22:49  [27/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 2: 93 runs in 2.9 min; about 55 min left
+Sat 22:51  [28/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.30, pair 3: 93 runs in 3.1 min; about 53 min left
+Sat 22:51  [29/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 0: 93 runs in 2.9 min; about 53 min left
+Sat 22:52  [30/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 1: 93 runs in 2.8 min; about 51 min left
+Sat 22:54  [31/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 3: 93 runs in 3.1 min; about 49 min left
+Sat 22:55  [32/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.40, pair 2: 93 runs in 3.9 min; about 48 min left
+Sat 22:55  [33/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 0: 93 runs in 2.7 min; about 48 min left
+Sat 22:57  [34/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 2: 93 runs in 1.8 min; about 45 min left
+Sat 22:57  [35/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 1: 93 runs in 2.5 min; about 45 min left
+Sat 22:57  [36/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.50, pair 3: 93 runs in 2.7 min; about 44 min left
+Sat 23:00  [37/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 1: 54 runs in 3.2 min; about 42 min left
+Sat 23:00  [38/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 0: 54 runs in 3.3 min; about 42 min left
+Sat 23:01  [39/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 2: 54 runs in 3.1 min; about 41 min left
+/Users/langsong/miniforge3/envs/ds/lib/python3.11/site-packages/graspologic/match/solver.py:383: UserWarning: Sinkhorn-Knopp algorithm for solving linear sum transport problem did not converge. The final error was 0.07107628200546598 and the `transport_tol` was 0.05. You may want to consider increasing `transport_regularizer`, increasing `transport_max_iter`, or this could be the result of `transport_tol` set too small.
+  warnings.warn(
+Sat 23:03  [40/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 0: 54 runs in 2.8 min; about 39 min left
+Sat 23:03  [41/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.40, pair 3: 54 runs in 3.1 min; about 38 min left
+Sat 23:04  [42/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 1: 54 runs in 3.5 min; about 37 min left
+Sat 23:06  [43/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 2: 54 runs in 3.4 min; about 36 min left
+Sat 23:07  [44/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 0: 54 runs in 2.5 min; about 35 min left
+Sat 23:07  [45/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.50, pair 3: 54 runs in 3.9 min; about 35 min left
+Sat 23:09  [46/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 1: 54 runs in 2.5 min; about 33 min left
+Sat 23:09  [47/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 2: 54 runs in 2.6 min; about 32 min left
+Sat 23:09  [48/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.30, pair 3: 54 runs in 2.6 min; about 31 min left
+Sat 23:12  [49/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 0: 54 runs in 3.7 min; about 29 min left
+Sat 23:13  [50/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 2: 54 runs in 3.2 min; about 29 min left
+Sat 23:13  [51/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 1: 54 runs in 4.0 min; about 28 min left
+Sat 23:15  [52/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.40, pair 3: 54 runs in 3.1 min; about 26 min left
+Sat 23:16  [53/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 0: 54 runs in 3.8 min; about 25 min left
+Sat 23:17  [54/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 1: 54 runs in 3.6 min; about 25 min left
+Sat 23:18  [55/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 0: 62 runs in 0.9 min; about 24 min left
+Sat 23:19  [56/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 1: 62 runs in 0.8 min; about 22 min left
+Sat 23:19  [57/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 2: 54 runs in 3.5 min; about 22 min left
+Sat 23:19  [58/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 2: 62 runs in 0.9 min; about 21 min left
+Sat 23:20  [59/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 10, rho 0.30, pair 3: 62 runs in 0.9 min; about 20 min left
+Sat 23:20  [60/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 0: 62 runs in 0.8 min; about 19 min left
+Sat 23:20  [61/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.30, pair 3: 54 runs in 4.1 min; about 18 min left
+Sat 23:21  [62/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 1: 62 runs in 0.8 min; about 18 min left
+Sat 23:21  [63/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 2: 62 runs in 0.8 min; about 17 min left
+Sat 23:21  [64/116] stage 2 SGM (FAQ) Chung-Lu, mean degree 32, rho 0.20, pair 3: 62 runs in 0.8 min; about 16 min left
+Sat 23:22  [65/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 0: 36 runs in 1.0 min; about 15 min left
+Sat 23:22  [66/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 1: 36 runs in 0.9 min; about 15 min left
+Sat 23:22  [67/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 2: 36 runs in 1.1 min; about 14 min left
+Sat 23:23  [68/116] stage 2 GOAT Chung-Lu, mean degree 10, rho 0.30, pair 3: 36 runs in 1.0 min; about 13 min left
+Sat 23:23  [69/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 0: 36 runs in 1.5 min; about 12 min left
+Sat 23:24  [70/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 1: 36 runs in 1.3 min; about 12 min left
+Sat 23:24  [71/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 2: 36 runs in 1.1 min; about 11 min left
+Sat 23:24  [72/116] stage 2 GOAT Chung-Lu, mean degree 16, rho 0.50, pair 3: 36 runs in 0.8 min; about 10 min left
+Sat 23:25  [73/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 0: 36 runs in 1.1 min; about 9 min left
+Sat 23:25  [74/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 1: 36 runs in 1.0 min; about 9 min left
+Sat 23:25  [75/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 2: 36 runs in 1.1 min; about 8 min left
+Sat 23:26  [76/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.20, pair 3: 36 runs in 1.2 min; about 7 min left
+Sat 23:26  [77/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 1: 36 runs in 1.0 min; about 7 min left
+Sat 23:27  [78/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 0: 36 runs in 2.4 min; about 6 min left
+Sat 23:27  [79/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 0: 54 runs in 0.4 min; about 6 min left
+Sat 23:28  [80/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 1: 54 runs in 0.4 min; about 5 min left
+Sat 23:28  [81/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 2: 54 runs in 0.4 min; about 5 min left
+Sat 23:29  [82/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 2: 36 runs in 2.7 min; about 5 min left
+Sat 23:29  [83/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.40, pair 3: 54 runs in 0.4 min; about 5 min left
+Sat 23:29  [84/116] stage 2 GOAT Chung-Lu, mean degree 32, rho 0.40, pair 3: 36 runs in 2.5 min; about 4 min left
+Sat 23:29  [85/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 0: 54 runs in 0.4 min; about 4 min left
+Sat 23:29  [86/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 1: 54 runs in 0.4 min; about 4 min left
+Sat 23:29  [87/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 2: 54 runs in 0.4 min; about 4 min left
+Sat 23:29  [88/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.50, pair 3: 54 runs in 0.4 min; about 4 min left
+Sat 23:29  [89/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 0: 54 runs in 0.4 min; about 4 min left
+Sat 23:30  [90/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 1: 54 runs in 0.4 min; about 4 min left
+Sat 23:30  [91/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 2: 54 runs in 0.4 min; about 3 min left
+Sat 23:30  [92/116] stage 2 Percolation Chung-Lu, mean degree 10, rho 0.70, pair 3: 54 runs in 0.4 min; about 3 min left
+Sat 23:30  [93/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 0: 54 runs in 0.4 min; about 3 min left
+Sat 23:30  [94/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 1: 54 runs in 0.4 min; about 3 min left
+Sat 23:30  [95/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 2: 54 runs in 0.4 min; about 3 min left
+Sat 23:30  [96/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.40, pair 3: 54 runs in 0.4 min; about 3 min left
+Sat 23:31  [97/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 0: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [98/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 1: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [99/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 2: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [100/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.50, pair 3: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [101/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 0: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [102/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 1: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [103/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 2: 54 runs in 0.4 min; about 2 min left
+Sat 23:31  [104/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.30, pair 3: 54 runs in 0.4 min; about 2 min left
+Sat 23:32  [105/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 0: 54 runs in 0.4 min; about 1 min left
+Sat 23:32  [106/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 1: 54 runs in 0.4 min; about 1 min left
+Sat 23:32  [107/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 2: 54 runs in 0.4 min; about 1 min left
+Sat 23:32  [108/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.40, pair 3: 54 runs in 0.4 min; about 1 min left
+Sat 23:32  [109/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 0: 54 runs in 0.5 min; about 1 min left
+Sat 23:32  [110/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 1: 54 runs in 0.4 min; about 1 min left
+Sat 23:32  [111/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 2: 54 runs in 0.5 min; about 0 min left
+Sat 23:32  [112/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 0: 36 runs in 0.2 min; about 0 min left
+Sat 23:33  [113/116] stage 2 Percolation Chung-Lu, mean degree 32, rho 0.50, pair 3: 54 runs in 0.4 min; about 0 min left
+Sat 23:33  [114/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 1: 36 runs in 0.2 min; about 0 min left
+Sat 23:33  [115/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 2: 36 runs in 0.2 min; about 0 min left
+Sat 23:33  [116/116] stage 2 Percolation Chung-Lu, mean degree 16, rho 0.30, pair 3: 36 runs in 0.2 min; about 0 min left
+Sat 23:33  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/regime_map

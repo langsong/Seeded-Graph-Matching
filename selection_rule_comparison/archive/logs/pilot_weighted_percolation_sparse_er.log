@@ -1,0 +1,22 @@
+2026-10-21T02:53:27-04:00 start {'kind': 'weighted', 'algorithm': 'percolation', 'model': 'sparse_er', 'n_pairs': 20, 'blas_threads': 3, 'verify': True}
+2026-10-21T02:53:34-04:00 [weighted percolation/sparse_er] pair 1/20 done; elapsed 0.1 min
+2026-10-21T02:53:40-04:00 [weighted percolation/sparse_er] pair 2/20 done; elapsed 0.2 min
+2026-10-21T02:53:46-04:00 [weighted percolation/sparse_er] pair 3/20 done; elapsed 0.3 min
+2026-10-21T02:53:52-04:00 [weighted percolation/sparse_er] pair 4/20 done; elapsed 0.4 min
+2026-10-21T02:53:59-04:00 [weighted percolation/sparse_er] pair 5/20 done; elapsed 0.5 min
+2026-10-21T02:54:05-04:00 [weighted percolation/sparse_er] pair 6/20 done; elapsed 0.6 min
+2026-10-21T02:54:11-04:00 [weighted percolation/sparse_er] pair 7/20 done; elapsed 0.7 min
+2026-10-21T02:54:18-04:00 [weighted percolation/sparse_er] pair 8/20 done; elapsed 0.8 min
+2026-10-21T02:54:24-04:00 [weighted percolation/sparse_er] pair 9/20 done; elapsed 0.9 min
+2026-10-21T02:54:30-04:00 [weighted percolation/sparse_er] pair 10/20 done; elapsed 1.0 min
+2026-10-21T02:54:36-04:00 [weighted percolation/sparse_er] pair 11/20 done; elapsed 1.1 min
+2026-10-21T02:54:43-04:00 [weighted percolation/sparse_er] pair 12/20 done; elapsed 1.3 min
+2026-10-21T02:54:49-04:00 [weighted percolation/sparse_er] pair 13/20 done; elapsed 1.4 min
+2026-10-21T02:54:55-04:00 [weighted percolation/sparse_er] pair 14/20 done; elapsed 1.5 min
+2026-10-21T02:55:01-04:00 [weighted percolation/sparse_er] pair 15/20 done; elapsed 1.6 min
+2026-10-21T02:55:08-04:00 [weighted percolation/sparse_er] pair 16/20 done; elapsed 1.7 min
+2026-10-21T02:55:14-04:00 [weighted percolation/sparse_er] pair 17/20 done; elapsed 1.8 min
+2026-10-21T02:55:20-04:00 [weighted percolation/sparse_er] pair 18/20 done; elapsed 1.9 min
+2026-10-21T02:55:28-04:00 [weighted percolation/sparse_er] pair 19/20 done; elapsed 2.0 min
+2026-10-21T02:55:36-04:00 [weighted percolation/sparse_er] pair 20/20 done; elapsed 2.1 min
+2026-10-21T02:55:36-04:00 done

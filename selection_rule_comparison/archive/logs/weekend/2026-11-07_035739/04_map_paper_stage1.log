@@ -1,0 +1,112 @@
+
+$ python -m selection_rule_comparison.regime_map --stage 1 --model paper_pa --jobs 3 --blas-threads 3
+Sat 10:15  Stage 1, PAPER: 108 pair runs, 3 at a time, about 78 min (a rough guess). One line per finished pair.
+Sat 10:16  [1/108] stage 1 GOAT PAPER, mean degree 8, rho 0.30, pair 0: 114 runs in 1.1 min, middle budget 60; about 77 min left
+Sat 10:17  [2/108] stage 1 GOAT PAPER, mean degree 8, rho 0.50, pair 0: 42 runs in 0.8 min, middle budget 3; about 76 min left
+Sat 10:17  [3/108] stage 1 GOAT PAPER, mean degree 8, rho 0.70, pair 0: 24 runs in 0.3 min, middle budget 3; about 74 min left
+Sat 10:17  [4/108] stage 1 GOAT PAPER, mean degree 8, rho 0.90, pair 0: 24 runs in 0.2 min, middle budget 3; about 73 min left
+Sat 10:18  [5/108] stage 1 GOAT PAPER, mean degree 8, rho 0.40, pair 0: 58 runs in 3.3 min, middle budget 5; about 72 min left
+Sat 10:20  [6/108] stage 1 GOAT PAPER, mean degree 8, rho 0.20, pair 0: 122 runs in 5.3 min, middle budget 135; about 71 min left
+Sat 10:22  [7/108] stage 1 GOAT PAPER, mean degree 16, rho 0.20, pair 0: 102 runs in 4.6 min, middle budget 135; about 70 min left
+Sat 10:22  [8/108] stage 1 GOAT PAPER, mean degree 16, rho 0.50, pair 0: 24 runs in 0.7 min, middle budget 3; about 69 min left
+Sat 10:23  [9/108] stage 1 GOAT PAPER, mean degree 16, rho 0.70, pair 0: 24 runs in 0.2 min, middle budget 3; about 68 min left
+Sat 10:23  [10/108] stage 1 GOAT PAPER, mean degree 16, rho 0.90, pair 0: 24 runs in 0.2 min, middle budget 3; about 66 min left
+Sat 10:24  [11/108] stage 1 GOAT PAPER, mean degree 16, rho 0.40, pair 0: 62 runs in 3.4 min, middle budget 12; about 65 min left
+Sat 10:24  [12/108] stage 1 GOAT PAPER, mean degree 16, rho 0.30, pair 0: 90 runs in 6.0 min, middle budget 40; about 64 min left
+Sat 10:28  [13/108] stage 1 GOAT PAPER, mean degree 32, rho 0.20, pair 0: 90 runs in 4.9 min, middle budget 90; about 63 min left
+Sat 10:28  [14/108] stage 1 GOAT PAPER, mean degree 32, rho 0.40, pair 0: 58 runs in 4.1 min, middle budget 12; about 62 min left
+Sat 10:28  [15/108] stage 1 GOAT PAPER, mean degree 32, rho 0.70, pair 0: 24 runs in 0.2 min, middle budget 3; about 60 min left
+Sat 10:29  [16/108] stage 1 GOAT PAPER, mean degree 32, rho 0.90, pair 0: 24 runs in 0.2 min, middle budget 3; about 59 min left
+Sat 10:29  [17/108] stage 1 GOAT PAPER, mean degree 32, rho 0.30, pair 0: 78 runs in 5.1 min, middle budget 40; about 58 min left
+Sat 10:30  [18/108] stage 1 GOAT PAPER, mean degree 8, rho 0.30, pair 1: 118 runs in 1.6 min, middle budget 60; about 57 min left
+Sat 10:30  [19/108] stage 1 GOAT PAPER, mean degree 32, rho 0.50, pair 0: 50 runs in 2.5 min, middle budget 5; about 56 min left
+Sat 10:33  [20/108] stage 1 GOAT PAPER, mean degree 8, rho 0.50, pair 1: 50 runs in 2.5 min, middle budget 3; about 55 min left
+Sat 10:33  [21/108] stage 1 GOAT PAPER, mean degree 8, rho 0.70, pair 1: 24 runs in 0.3 min, middle budget 3; about 54 min left
+Sat 10:33  [22/108] stage 1 GOAT PAPER, mean degree 8, rho 0.90, pair 1: 24 runs in 0.2 min, middle budget 3; about 52 min left
+Sat 10:34  [23/108] stage 1 GOAT PAPER, mean degree 8, rho 0.40, pair 1: 74 runs in 3.9 min, middle budget 8; about 51 min left
+Sat 10:34  [24/108] stage 1 GOAT PAPER, mean degree 8, rho 0.20, pair 1: 122 runs in 5.6 min, middle budget 135; about 50 min left
+Sat 10:38  [25/108] stage 1 GOAT PAPER, mean degree 16, rho 0.20, pair 1: 102 runs in 4.4 min, middle budget 135; about 49 min left
+Sat 10:38  [26/108] stage 1 GOAT PAPER, mean degree 16, rho 0.40, pair 1: 66 runs in 4.3 min, middle budget 12; about 48 min left
+Sat 10:39  [27/108] stage 1 GOAT PAPER, mean degree 16, rho 0.70, pair 1: 50 runs in 0.3 min, middle budget 5; about 46 min left
+Sat 10:39  [28/108] stage 1 GOAT PAPER, mean degree 16, rho 0.90, pair 1: 24 runs in 0.2 min, middle budget 3; about 45 min left
+Sat 10:39  [29/108] stage 1 GOAT PAPER, mean degree 16, rho 0.30, pair 1: 82 runs in 5.3 min, middle budget 40; about 44 min left
+Sat 10:40  [30/108] stage 1 GOAT PAPER, mean degree 16, rho 0.50, pair 1: 58 runs in 2.5 min, middle budget 3; about 43 min left
+Sat 10:44  [31/108] stage 1 GOAT PAPER, mean degree 32, rho 0.20, pair 1: 90 runs in 4.8 min, middle budget 90; about 42 min left
+Sat 10:44  [32/108] stage 1 GOAT PAPER, mean degree 32, rho 0.30, pair 1: 66 runs in 4.4 min, middle budget 27; about 41 min left
+Sat 10:44  [33/108] stage 1 GOAT PAPER, mean degree 32, rho 0.40, pair 1: 66 runs in 3.6 min, middle budget 12; about 40 min left
+Sat 10:44  [34/108] stage 1 GOAT PAPER, mean degree 32, rho 0.70, pair 1: 24 runs in 0.2 min, middle budget 3; about 38 min left
+Sat 10:44  [35/108] stage 1 GOAT PAPER, mean degree 32, rho 0.90, pair 1: 24 runs in 0.2 min, middle budget 3; about 37 min left
+Sat 10:46  [36/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 0: 82 runs in 1.9 min, middle budget 135; about 36 min left
+Sat 10:46  [37/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 0: 86 runs in 2.4 min, middle budget 60; about 36 min left
+Sat 10:47  [38/108] stage 1 GOAT PAPER, mean degree 32, rho 0.50, pair 1: 58 runs in 2.9 min, middle budget 5; about 34 min left
+Sat 10:48  [39/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 0: 42 runs in 1.6 min, middle budget 8; about 34 min left
+Sat 10:48  [40/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 0: 58 runs in 2.1 min, middle budget 18; about 33 min left
+Sat 10:49  [41/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.90, pair 0: 26 runs in 0.6 min, middle budget 3; about 32 min left
+Sat 10:49  [42/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 0: 70 runs in 3.1 min, middle budget 40; about 31 min left
+Sat 10:51  [43/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 0: 46 runs in 1.8 min, middle budget 27; about 30 min left
+Sat 10:51  [44/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 0: 86 runs in 2.6 min, middle budget 135; about 29 min left
+Sat 10:51  [45/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 0: 62 runs in 2.3 min, middle budget 60; about 28 min left
+Sat 10:52  [46/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.90, pair 0: 26 runs in 0.6 min, middle budget 3; about 28 min left
+Sat 10:52  [47/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 0: 34 runs in 1.4 min, middle budget 5; about 27 min left
+Sat 10:53  [48/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 0: 42 runs in 1.8 min, middle budget 12; about 26 min left
+Sat 10:54  [49/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 0: 74 runs in 2.5 min, middle budget 135; about 25 min left
+Sat 10:54  [50/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 0: 50 runs in 2.0 min, middle budget 27; about 24 min left
+Sat 10:55  [51/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 0: 62 runs in 2.2 min, middle budget 60; about 24 min left
+Sat 10:55  [52/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.90, pair 0: 26 runs in 0.6 min, middle budget 3; about 23 min left
+Sat 10:56  [53/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 0: 30 runs in 1.3 min, middle budget 5; about 22 min left
+Sat 10:56  [54/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 0: 38 runs in 1.7 min, middle budget 12; about 21 min left
+Sat 10:58  [55/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.20, pair 1: 94 runs in 2.4 min, middle budget 135; about 20 min left
+Sat 10:58  [56/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.40, pair 1: 58 runs in 2.2 min, middle budget 40; about 19 min left
+Sat 10:59  [57/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.30, pair 1: 98 runs in 2.8 min, middle budget 60; about 18 min left
+Sat 10:59  [58/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.90, pair 1: 16 runs in 0.4 min, middle budget 3; about 18 min left
+Sat 11:00  [59/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.70, pair 1: 42 runs in 1.4 min, middle budget 8; about 17 min left
+Sat 11:00  [60/108] stage 1 SGM (FAQ) PAPER, mean degree 8, rho 0.50, pair 1: 50 runs in 1.9 min, middle budget 18; about 16 min left
+Sat 11:02  [61/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.20, pair 1: 86 runs in 2.5 min, middle budget 135; about 15 min left
+Sat 11:02  [62/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.40, pair 1: 50 runs in 2.0 min, middle budget 27; about 14 min left
+Sat 11:02  [63/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.30, pair 1: 62 runs in 2.2 min, middle budget 60; about 14 min left
+Sat 11:03  [64/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.90, pair 1: 26 runs in 0.8 min, middle budget 3; about 13 min left
+Sat 11:03  [65/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.70, pair 1: 42 runs in 1.5 min, middle budget 8; about 12 min left
+Sat 11:03  [66/108] stage 1 SGM (FAQ) PAPER, mean degree 16, rho 0.50, pair 1: 50 runs in 1.7 min, middle budget 18; about 11 min left
+Sat 11:05  [67/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.40, pair 1: 46 runs in 2.0 min, middle budget 18; about 10 min left
+Sat 11:05  [68/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.30, pair 1: 54 runs in 2.3 min, middle budget 40; about 9 min left
+Sat 11:06  [69/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.20, pair 1: 86 runs in 3.0 min, middle budget 135; about 8 min left
+Sat 11:06  [70/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.90, pair 1: 16 runs in 0.3 min, middle budget 3; about 8 min left
+Sat 11:06  [71/108] stage 1 Percolation PAPER, mean degree 8, rho 0.20, pair 0: 80 runs in 0.5 min, middle budget 200; about 8 min left
+Sat 11:07  [72/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.70, pair 1: 30 runs in 1.2 min, middle budget 5; about 7 min left
+Sat 11:07  [73/108] stage 1 SGM (FAQ) PAPER, mean degree 32, rho 0.50, pair 1: 38 runs in 1.6 min, middle budget 12; about 6 min left
+Sat 11:07  [74/108] stage 1 Percolation PAPER, mean degree 8, rho 0.30, pair 0: 80 runs in 0.5 min, middle budget 90; about 6 min left
+Sat 11:07  [75/108] stage 1 Percolation PAPER, mean degree 8, rho 0.40, pair 0: 88 runs in 0.6 min, middle budget 40; about 6 min left
+Sat 11:07  [76/108] stage 1 Percolation PAPER, mean degree 8, rho 0.90, pair 0: 8 runs in 0.1 min, middle budget 3; about 5 min left
+Sat 11:07  [77/108] stage 1 Percolation PAPER, mean degree 8, rho 0.70, pair 0: 40 runs in 0.3 min, middle budget 3; about 5 min left
+Sat 11:07  [78/108] stage 1 Percolation PAPER, mean degree 8, rho 0.50, pair 0: 76 runs in 0.5 min, middle budget 12; about 5 min left
+Sat 11:08  [79/108] stage 1 Percolation PAPER, mean degree 16, rho 0.30, pair 0: 68 runs in 0.5 min, middle budget 60; about 5 min left
+Sat 11:08  [80/108] stage 1 Percolation PAPER, mean degree 16, rho 0.20, pair 0: 72 runs in 0.5 min, middle budget 200; about 5 min left
+Sat 11:08  [81/108] stage 1 Percolation PAPER, mean degree 16, rho 0.40, pair 0: 48 runs in 0.4 min, middle budget 27; about 4 min left
+Sat 11:08  [82/108] stage 1 Percolation PAPER, mean degree 16, rho 0.90, pair 0: 12 runs in 0.1 min, middle budget 3; about 4 min left
+Sat 11:08  [83/108] stage 1 Percolation PAPER, mean degree 16, rho 0.70, pair 0: 36 runs in 0.3 min, middle budget 5; about 4 min left
+Sat 11:08  [84/108] stage 1 Percolation PAPER, mean degree 16, rho 0.50, pair 0: 40 runs in 0.3 min, middle budget 12; about 4 min left
+Sat 11:08  [85/108] stage 1 Percolation PAPER, mean degree 32, rho 0.20, pair 0: 64 runs in 0.4 min, middle budget 135; about 4 min left
+Sat 11:08  [86/108] stage 1 Percolation PAPER, mean degree 32, rho 0.40, pair 0: 40 runs in 0.3 min, middle budget 27; about 4 min left
+Sat 11:08  [87/108] stage 1 Percolation PAPER, mean degree 32, rho 0.30, pair 0: 56 runs in 0.4 min, middle budget 60; about 4 min left
+Sat 11:08  [88/108] stage 1 Percolation PAPER, mean degree 32, rho 0.70, pair 0: 16 runs in 0.1 min, middle budget 5; about 3 min left
+Sat 11:09  [89/108] stage 1 Percolation PAPER, mean degree 32, rho 0.90, pair 0: 16 runs in 0.1 min, middle budget 3; about 3 min left
+Sat 11:09  [90/108] stage 1 Percolation PAPER, mean degree 32, rho 0.50, pair 0: 40 runs in 0.3 min, middle budget 12; about 3 min left
+Sat 11:09  [91/108] stage 1 Percolation PAPER, mean degree 8, rho 0.20, pair 1: 80 runs in 0.5 min, middle budget 200; about 3 min left
+Sat 11:09  [92/108] stage 1 Percolation PAPER, mean degree 8, rho 0.30, pair 1: 84 runs in 0.5 min, middle budget 90; about 3 min left
+Sat 11:09  [93/108] stage 1 Percolation PAPER, mean degree 8, rho 0.40, pair 1: 88 runs in 0.6 min, middle budget 40; about 2 min left
+Sat 11:09  [94/108] stage 1 Percolation PAPER, mean degree 8, rho 0.90, pair 1: 8 runs in 0.1 min, middle budget 3; about 2 min left
+Sat 11:09  [95/108] stage 1 Percolation PAPER, mean degree 8, rho 0.70, pair 1: 40 runs in 0.3 min, middle budget 3; about 2 min left
+Sat 11:10  [96/108] stage 1 Percolation PAPER, mean degree 8, rho 0.50, pair 1: 92 runs in 0.6 min, middle budget 12; about 2 min left
+Sat 11:10  [97/108] stage 1 Percolation PAPER, mean degree 16, rho 0.20, pair 1: 72 runs in 0.5 min, middle budget 200; about 2 min left
+Sat 11:10  [98/108] stage 1 Percolation PAPER, mean degree 16, rho 0.30, pair 1: 72 runs in 0.5 min, middle budget 60; about 2 min left
+Sat 11:10  [99/108] stage 1 Percolation PAPER, mean degree 16, rho 0.40, pair 1: 52 runs in 0.4 min, middle budget 27; about 2 min left
+Sat 11:10  [100/108] stage 1 Percolation PAPER, mean degree 16, rho 0.50, pair 1: 44 runs in 0.3 min, middle budget 12; about 1 min left
+Sat 11:10  [101/108] stage 1 Percolation PAPER, mean degree 16, rho 0.90, pair 1: 20 runs in 0.2 min, middle budget 3; about 1 min left
+Sat 11:10  [102/108] stage 1 Percolation PAPER, mean degree 16, rho 0.70, pair 1: 32 runs in 0.3 min, middle budget 3; about 1 min left
+Sat 11:11  [103/108] stage 1 Percolation PAPER, mean degree 32, rho 0.40, pair 1: 40 runs in 0.3 min, middle budget 18; about 1 min left
+Sat 11:11  [104/108] stage 1 Percolation PAPER, mean degree 32, rho 0.20, pair 1: 72 runs in 0.5 min, middle budget 135; about 1 min left
+Sat 11:11  [105/108] stage 1 Percolation PAPER, mean degree 32, rho 0.30, pair 1: 60 runs in 0.5 min, middle budget 40; about 0 min left
+Sat 11:11  [106/108] stage 1 Percolation PAPER, mean degree 32, rho 0.70, pair 1: 24 runs in 0.2 min, middle budget 5; about 0 min left
+Sat 11:11  [107/108] stage 1 Percolation PAPER, mean degree 32, rho 0.90, pair 1: 16 runs in 0.1 min, middle budget 3; about 0 min left
+Sat 11:11  [108/108] stage 1 Percolation PAPER, mean degree 32, rho 0.50, pair 1: 32 runs in 0.3 min, middle budget 12; about 0 min left
+Sat 11:11  Done. Results are in /Users/langsong/Desktop/Seeded-Graph-Matching/selection_rule_comparison/data/regime_map

@@ -1,0 +1,63 @@
+{
+  "model": "paper_pa",
+  "pair_id": 2,
+  "pair_seed": 7301002,
+  "config": {
+    "graph_model": "paper_pa",
+    "n_graph_pairs": 20,
+    "candidates_per_pair": 50,
+    "vertex_count": 600,
+    "n_blocks": 3,
+    "n_per_block": 200,
+    "sbm_block_probabilities": [
+      [
+        0.02,
+        0.005,
+        0.01
+      ],
+      [
+        0.005,
+        0.02,
+        0.005
+      ],
+      [
+        0.01,
+        0.005,
+        0.02
+      ]
+    ],
+    "er_probability": 0.01,
+    "paper_alpha": 2.0,
+    "paper_probability": 0.005,
+    "chung_lu_alpha": null,
+    "chung_lu_weight_scale": null,
+    "chung_lu_probability_floor": null,
+    "paper_pa_alpha": 0.0,
+    "paper_pa_beta": 1.0,
+    "paper_pa_probability": 0.023378,
+    "ier_alpha": 1.0,
+    "ier_beta": 99.0,
+    "rho": 0.4,
+    "n_seeds": 20,
+    "max_iter": 100,
+    "tol": 0.01,
+    "random_seed": 1234,
+    "max_minutes": 30.0
+  },
+  "rejected_draws": 0,
+  "structure": {
+    "passes": true,
+    "graph1_connected": true,
+    "graph1_n_unresolved": 0,
+    "graph1_mean_degree": 15.833333333333334,
+    "graph1_min_degree": 5,
+    "graph2_connected": true,
+    "graph2_n_unresolved": 0,
+    "graph2_mean_degree": 15.723333333333333,
+    "graph2_min_degree": 6
+  },
+  "max_degree_A": 51,
+  "max_degree_B": 44,
+  "retained_edge_fraction": 0.4787368421052632,
+  "observed_edge_correlation": 0.4663518069672332
+}

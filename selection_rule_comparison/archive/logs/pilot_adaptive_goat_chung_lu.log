@@ -1,0 +1,12 @@
+2026-10-21T02:46:27-04:00 start {'kind': 'adaptive', 'algorithm': 'goat', 'model': 'chung_lu', 'n_pairs': 10, 'blas_threads': 3, 'verify': True}
+2026-10-21T02:47:20-04:00 [adaptive goat/chung_lu] pair 1/10: stop 7 queries, uncertainty 11 queries, retry 6 queries; 17 GOAT runs; elapsed 0.9 min
+2026-10-21T02:48:18-04:00 [adaptive goat/chung_lu] pair 2/10: stop 6 queries, uncertainty 8 queries, retry 6 queries; 11 GOAT runs; elapsed 1.9 min
+2026-10-21T02:49:14-04:00 [adaptive goat/chung_lu] pair 3/10: stop 6 queries, uncertainty 6 queries, retry 6 queries; 9 GOAT runs; elapsed 2.8 min
+2026-10-21T02:50:24-04:00 [adaptive goat/chung_lu] pair 4/10: stop 7 queries, uncertainty 9 queries, retry 7 queries; 15 GOAT runs; elapsed 3.9 min
+2026-10-21T02:52:10-04:00 [adaptive goat/chung_lu] pair 5/10: stop 11 queries, uncertainty 5 queries, retry 11 queries; 23 GOAT runs; elapsed 5.7 min
+2026-10-21T02:53:37-04:00 [adaptive goat/chung_lu] pair 6/10: stop 8 queries, uncertainty 8 queries, retry 8 queries; 17 GOAT runs; elapsed 7.2 min
+2026-10-21T02:54:29-04:00 [adaptive goat/chung_lu] pair 7/10: stop 7 queries, uncertainty 7 queries, retry 7 queries; 13 GOAT runs; elapsed 8.0 min
+2026-10-21T02:54:42-04:00 [adaptive goat/chung_lu] pair 8/10: stop 11 queries, uncertainty 10 queries, retry 10 queries; 28 GOAT runs; elapsed 8.3 min
+2026-10-21T02:56:14-04:00 [adaptive goat/chung_lu] pair 9/10: stop 8 queries, uncertainty 10 queries, retry 7 queries; 18 GOAT runs; elapsed 9.8 min
+2026-10-21T02:56:28-04:00 [adaptive goat/chung_lu] pair 10/10: stop 6 queries, uncertainty 5 queries, retry 6 queries; 8 GOAT runs; elapsed 10.0 min
+2026-10-21T02:56:28-04:00 done

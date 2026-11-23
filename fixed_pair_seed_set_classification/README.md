@@ -1,73 +1,178 @@
 # Fixed-pair seed-set selection
 
-Each benchmark keeps one correlated graph pair fixed, varies the seed set in Graph A, and measures SGM performance. The current focus is sparse ER, true PAPER (`paper_pa`), and fixed-weight Pareto–Chung–Lu (`chung_lu`). The older `paper` name refers to the historical random-weight Chung–Lu generator.
+The current SGM collection compares standard FAQ-SGM and GOAT-SGM on one fixed
+primary pair per model. Each solver receives **1,000 distinct seed sets and one
+SGM run per set**. Graph pairs are shared between the solvers; their calibrated
+seed budgets differ. The `sparse_er` generator name is retained for ER even
+though the new family has mean degree about 16.
 
-| Model | Pair settings | Seed count |
-| --- | --- | ---: |
-| `sparse_er` | 600 vertices, edge probability 0.010, correlation 0.70 | 26 |
-| `paper_pa` | 600 vertices, attachment alpha=0 and beta=1, ER background probability 0.005 and correlation 0.62 | 13 |
-| `chung_lu` | 600 vertices, fixed Pareto quantile weights with alpha=2, weight scale 1.9260087733615983, no ER floor, correlation 0.70 | 17 |
+## SGM settings
 
-These budgets were calibrated so that a uniformly random seed set has roughly a 50% chance that the **highest-objective result among five SGM runs** reaches 0.90 unseeded accuracy. The calibration is approximate and varies across graph pairs; every individual run is still saved for grouped-binomial analysis.
+| Model | Graph parameters | rho | Pair RNG seed | FAQ seeds | GOAT seeds | GOAT regularizer |
+|---|---|---:|---:|---:|---:|---:|
+| `sparse_er` | n=600, p=16/599 (0.0267111853) | 0.50 | 88424077 | 29 | 12 | 100 |
+| `paper_pa` | n=600, alpha=0, beta=1, background p=0.023378 | 0.40 | 7301002 | 31 | 12 | 300 |
+| `chung_lu` | n=600, Pareto alpha=2, weight scale=5.452064, ER floor=0 | 0.45 | 18472911 | 27 | 9 | 300 |
+
+Common solver settings are `n_init=1`, barycenter initialization,
+`init_perturbation=0`, `shuffle_input=True`, `max_iter=100`, `tol=0.01`, and four
+BLAS threads. GOAT uses `transport=True`, `transport_tol=0.05`, and
+`transport_max_iter=5000`. PAPER's rho applies to the ER background; its PA tree
+is shared by the two graphs.
+
+Both graphs must be connected and have a discrete color refinement, which
+certifies the absence of nontrivial automorphisms. A nondiscrete refinement is
+inconclusive and is rejected by this collection. Supplied pair seeds are not
+silently replaced. The calibrated primary seeds above passed these checks.
+
+The seed budgets were selected for approximately balanced **single-run random
+seed-set outcomes**, not best-of-five outcomes. The chosen fixed pairs gave
+FAQ/GOAT success rates of 8/12 and 7/12 (ER), 7/12 and 5/12 (PAPER), and 4/12 and
+7/12 (Chung-Lu) in calibration. Larger collections can differ. Evidence and
+repeat-stability results are in
+`research_notes/sgm_calibration_2026-10-13/README.md`. FAQ remains especially
+variable across RNG seeds on Chung-Lu; a one-run label is one observed outcome.
 
 ## Seed sets
 
-By default each pair gets 500 unique seed sets, chosen from Graph A only (no SGM outcome is used):
+The following allocation applies to each solver and pair:
 
 | Group | Count | Purpose |
-| --- | ---: | --- |
-| Uniform random training | 200 | Typical sets for fitting |
-| Uniform random test | 100 | Held-out reference distribution |
-| Degree-weighted training | 100 | About 16–17 sets at each exponent −1, −0.5, 0.5, 1, 2, and 3 (weights `max(degree, 1) ** gamma`) |
-| Degree-controlled training | 100 | 50 pairs: a low and a high value of one feature at equal seed-to-nonseed degree |
+|---|---:|---|
+| Uniform random training | 400 | Fit on typical seed sets |
+| Uniform random test | 200 | Hold out for evaluation |
+| Degree-weighted training | 200 | Explore a wider feature range |
+| Degree-controlled training | 200 | 100 contrast pairs for effects beyond degree |
+| **Total** | **1,000** | **1,000 single-initialization SGM runs** |
 
-Swap-path sets are no longer part of the default 500, but can still be added with `--swap-paths`. Their starting rules are top degree, top harmonic centrality, greedy one-hop coverage, greedy witness-pair mass, greedy one-hop signature separation, and farthest-point spread within the largest component; ties are broken at random. Swap counts are 0, 2, 5, 10, and half the budget.
+All selection uses Graph A and no SGM outcomes. Seed sets are unique across
+training/test and sampling groups within each dataset. The sampling seed is
+1234 by default. Degree weighting cycles through exponents -1, -0.5, 0.5, 1,
+2, and 3 with weights `max(degree, 1) ** gamma`. Contrasts use a 4,000-set pool,
+the 10th-90th percentile of random sets' seed-to-nonseed degree, and six bins.
+Contrast sets retain their low/high feature labels and `contrast_pair_id`.
+The shared sampler and percolation's sampling defaults are unchanged.
 
-**Contrasts (sampler version 2, 6 Oct 2026).** Pairs come from a pool of 4,000 sets drawn with exponents −1 to 3 (including uniform), restricted to the 10th–90th percentile of the random sets' seed-to-nonseed degree (where the calibrated budget puts success near 50%) and split into 6 equal-count bins. Within a bin, the two sets of a pair have exactly the same number of seed-to-nonseed edges and share a `contrast_pair_id`. Options: `--contrast-features` (repeat a name to give it more pairs, e.g. `unique_signatures_r3 unique_signatures_r3 pair_mass`), `--contrast-bins`, `--contrast-percentiles`; the range and bin edges are saved in the metadata. Version 1 (the `sgm_pilot_400` pilot) used ten bins over the whole pool, matched on total seed degree and had no pair IDs. Random and degree-weighted sets are identical in both versions for the same `--random-seed`.
+Both solvers use the same sampling design and graph pair. Because their k
+values differ, these balanced collections compare predictors for two solver
+regimes. They are not a solver comparison at an equal seed budget. For a common
+budget comparison, supply `--n-seeds K --solver both` and a new output directory;
+the sampled seed sets are then identical for FAQ and GOAT.
 
-## Features and outcomes
+## Features and labels
 
-The panel (version 1) has nine Graph-A features: mean seed-to-nonseed degree, mean seed harmonic centrality, one-hop coverage, witness overlap, witness-pair mass, mean nearest-seed distance, mean number of seeds within three hops, distance-signature uniqueness, and mean seed-neighbourhood Jaccard overlap. Distance-signature uniqueness (`..._r3`) is the fraction of nonseeds whose vector of distances to the seeds, capped at 3, is unique: in words, whose 2-hop seed profile (which seeds are neighbours, which are neighbours' neighbours) no other vertex shares. It is a truncated version of the resolving-set (metric dimension) idea. New collections also store caps 2 and 4 (`..._r2`, `..._r4`) as robustness checks, and the metadata records the cap `floor(log n / log mean degree)` (3 for these pairs).
+The Graph-A predictor panel is unchanged: seed-to-nonseed degree, harmonic
+centrality, coverage, witness overlap, witness-pair mass, nearest-seed distance,
+three-hop seed count, capped distance-signature uniqueness, and neighborhood
+Jaccard overlap. Signature caps 2 and 4 are also recorded. The primary signature
+cap remains 3: distances 1 and 2 are distinct, and all distances at least 3 share
+the capped category. The formula `floor(log(n)/log(mean degree))` is recorded in
+metadata and is normally 2 in this denser family.
 
-Every set gets the same five solver RNG seeds, **2026–2030**, at `max_iter=100`. A run succeeds at final unseeded accuracy ≥ 0.90. The main CSV has one row per set (features, mean accuracy and H0, number and fraction of successful runs, best-objective accuracy and success); `_runs.csv` has every run.
+A set's binary label is **final unseeded accuracy >= 0.90 in its single run**.
+`sgm_success_count` and `sgm_success_rate` are therefore 0 or 1. Historical
+majority/best-objective columns remain for file compatibility; with one run
+their labels and accuracies agree with that run. Each candidate gets an
+independent reproducible solver RNG seed, saved in the run CSV. `sgm_seed` in
+metadata is the base for this policy, not the seed used for every candidate.
 
-## Analysis notebook
+GOAT's `h0_accuracy` uses a deterministic one-to-one assignment projection of
+the first soft direction. Additional diagnostic columns store row-argmax
+accuracy, mass on the true matches, row entropy, solver warnings, and numerical
+validity. These solver/ground-truth diagnostics are not predictor features.
+Metadata stores the solver options, RNG policy, graph-pair checks, warning
+counts, convergence counts, versions, and thread settings.
 
-`seed_set_classification.ipynb` (helpers in `count_analysis.py`) rebuilds outcomes from the run-level CSV and models the number of successful runs with a regularized grouped-binomial logistic model of the single-run success probability p(S). It compares degree only, signatures only, both, and the full panel. C and the primary model are chosen by repeated 5-fold cross-validation on the random training sets (constructed training sets stay in every fit unless `TRAIN_ON = 'random'`); the 100 random test sets are used once, with the random-training success rate as the no-feature reference. Best-objective-of-R success (ties to the earliest run), any-run success and objective-selection misses come directly from the runs; `1 - (1 - p) ** R` is shown only as a diagnostic and tends to overstate restart success when predictions are imprecise. The notebook also reports solver noise, feature correlations with and without controlling for degree, residuals of constructed groups, and contrast pairs.
+## Collect the primary pairs
 
-## Running a collection
-
-From the repository root, activate the project environment and collect the three graph pairs for each model. Each command below writes 500 seed sets and 2,500 SGM runs per pair into a separate subfolder of `data/sgm_balanced_2026-10-07/`:
+Run from the repository root after the diagnostic notebook finishes:
 
 ```bash
 conda activate ds
+cd /Users/langsong/Desktop/Seeded-Graph-Matching
 
 python -m fixed_pair_seed_set_classification.candidate_data \
-  --graph-model sparse_er \
-  --pair-seeds 4192889773 18472911 37051993
-
-python -m fixed_pair_seed_set_classification.candidate_data \
-  --graph-model paper_pa \
-  --pair-seeds 424242 18472911 37051993
-
-python -m fixed_pair_seed_set_classification.candidate_data \
-  --graph-model chung_lu \
-  --pair-seeds 3165569293 18472911 37051993
+  --graph-model focus --solver both
 ```
 
-The defaults already encode 200 uniform training sets, 100 uniform test sets, 100 degree-weighted sets, 100 degree-controlled contrast sets, and five SGM runs per set. The collection limits BLAS/OpenMP threads to 4 (`--blas-threads`, matching the calibration; thread count changes SGM outcomes). The metadata file is written at the start with `"status": "running"`, updated every 25 sets and marked `"complete"` at the end; it records library versions, thread settings and the git commit. Both CSVs are flushed after every set, so an interrupted run keeps its finished rows (the notebook only reads complete collections). Graph pairs are cached inside each pair folder and checked against the generating settings. Existing outputs are protected; use a new `--output-dir`, or add `--overwrite` only when intentionally restarting a collection. At 500 sets × 5 runs, expect roughly 65–100 minutes per graph pair.
+This collects one primary pair for each of three models and both solvers:
+**six datasets, 6,000 seed sets, and 6,000 SGM runs**. It does not create three
+pairs per model. To collect one model at a time instead:
 
-To analyse a result, set `GRAPH_MODEL` and `DATA_DIR` in the first code cell of `seed_set_classification.ipynb` to the model and one pair folder, then run the notebook from top to bottom. For example, the checked-in default points to the first ER pair. Do not combine graph pairs into one folder; pair-specific evaluation and later leave-one-pair-out analysis need their identities preserved.
+```bash
+python -m fixed_pair_seed_set_classification.candidate_data --graph-model sparse_er --solver both
+python -m fixed_pair_seed_set_classification.candidate_data --graph-model paper_pa --solver both
+python -m fixed_pair_seed_set_classification.candidate_data --graph-model chung_lu --solver both
+```
 
-To check that a saved collection reproduces (features and every SGM run of a few sets), use the same thread setting:
+Use either the combined command or the three individual commands. Replace
+`both` with `faq` or `goat` to collect one solver. No count arguments are needed
+for the default 1,000-set design. `--n-seeds`, `--transport-regularizer`,
+`--transport-tol`, `--transport-max-iter`, and `--blas-threads` are optional
+overrides. A custom `--n-seeds` overrides the budget of each selected solver.
+
+## Output locations
+
+The default root is
+`fixed_pair_seed_set_classification/data/sgm_fixed_pairs_2026-10-13/`:
+
+```text
+sgm_fixed_pairs_2026-10-13/
+  graph_pairs/<model>/pair_seed_<seed>/       # one pair shared by both solvers
+  faq/<model>/pair_1_seed_<seed>/             # FAQ outcome files
+  goat/<model>/pair_1_seed_<seed>/            # GOAT outcome files
+```
+
+For example, ER FAQ writes to
+`.../faq/sparse_er/pair_1_seed_88424077/`; ER GOAT writes to
+`.../goat/sparse_er/pair_1_seed_88424077/`.
+Each dataset has `<model>_seed_sets.csv` (one row per set),
+`<model>_seed_sets_runs.csv` (one row per algorithm run), and
+`<model>_seed_sets.metadata.json`. A completed default dataset has
+`status="complete"`, `rows=1000`, `rows_completed=1000`, `solver_runs=1`,
+`run_rows=1000`, and `n_init=1`.
+
+Progress is printed every 25 sets. CSVs are flushed after each set and metadata
+is updated every 25 sets. Existing outcome files are protected. The collector
+does not resume a partial dataset automatically: use `--overwrite` to restart
+that solver, or choose a new `--output-dir`. If FAQ completed and GOAT was
+interrupted, target only `--solver goat --overwrite` to restart GOAT.
+Review numerical warnings and nonconvergence counts printed at completion and
+saved in metadata; flagged runs are retained for inspection.
+
+Pilot solver times were approximately one second per FAQ run and two seconds
+per GOAT run. Allow roughly 20-30 minutes per FAQ dataset and 35-60 minutes per
+GOAT dataset, plus sampling/features; runtime depends on the machine and pair.
+Older SGM and percolation data remain in their original directories.
+
+## Analyse or reproduce a collection
+
+Run `seed_set_classification.ipynb` from top to bottom to analyse the saved
+one-run collections. Set `SOLVER` to `faq` or `goat` and `GRAPH_MODEL` to
+`sparse_er`, `paper_pa`, or `chung_lu` in its first code cell. The notebook
+shows the six collection label distributions, then analyses the selected one
+with five-fold training cross-validation, held-out ROC-AUC and other
+classification metrics, feature importance, seed-set ranking, and
+degree-controlled contrasts. Its models train on uniformly random seed sets;
+the 200 random test sets remain held out, and constructed sets are analysed
+separately. A single observed label does not directly measure a seed set's
+success probability across solver RNG seeds.
+
+For a reproduction check using the recorded solver settings and shared pair:
 
 ```bash
 python -m fixed_pair_seed_set_classification.audits.reproduce_saved_sets \
   --graph-model sparse_er \
-  --data-dir fixed_pair_seed_set_classification/data/sgm_balanced_2026-10-07/sparse_er/pair_1_seed_4192889773
+  --data-dir fixed_pair_seed_set_classification/data/sgm_fixed_pairs_2026-10-13/goat/sparse_er/pair_1_seed_88424077
 ```
 
-Calibration evidence is in `audits/sgm_settings_calibration_2026-09-30.md`; next steps are in `research_notes/2026-10-06_next_steps.md`. `--graph-model all` includes the historical models. The Enron benchmark reads `utils/enron.mat` and keeps the 129 vertices active in both weekly snapshots.
+For optional additional graph pairs, supply `--pair-seeds SEED1 SEED2 ...` for
+one model. They use the same solver budgets, are checked structurally, and are
+written to separate numbered folders. Analyse pairs separately. For repeat
+audits, `--solver-runs 5` explicitly requests five `n_init=1` runs; use a new
+output directory. The old auxiliary graph models remain accessible with
+`--graph-model all --solver faq`; GOAT presets cover only the three focus models.
+
 
 ## Fixed-pair percolation collection
 
@@ -105,3 +210,47 @@ Outputs go to `data/percolation_fixed_pairs_2026-10-07/<model>/<pair>/`. A compl
 Run `percolation_seed_set_classification.ipynb` from top to bottom to analyse one collected pair. Change `GRAPH_MODEL` in its first code cell to switch among ER, PAPER, and Chung–Lu. The notebook keeps the 200 random test sets held out for final classification metrics and feature importance.
 
 After the analysis is working on the reference pair, the same fixed-pair analysis can be replicated on additional graph draws by appending `18472911 37051993` to `--pair-seeds`. Those pair datasets should be analysed separately rather than pooled automatically.
+
+## Many pairs for pooled models (30 Oct 2026)
+
+`multi_pair_collection.py` collects seed sets on many fresh pairs per setting, so that one pooled model per setting can be fitted in `multi_pair_models.ipynb`. The pooled weighted score is what best of N uses to screen random seed sets.
+
+| | ER | PAPER | Chung–Lu | Pairs per model |
+| --- | ---: | ---: | ---: | ---: |
+| Percolation | 8 | 7 | 5 | 50 |
+| GOAT | 15 | 12 | 9 | 32 |
+| FAQ | 29 | 29 | 27 | 24 |
+
+- **Pairs.** Fresh, structure-checked pairs with round 1's graph settings (`selection_rule_comparison.settings`), from a new seed stream. Round-1, borderline and fixed-pair seeds are never reused, so those pairs stay free for testing. FAQ and GOAT share pairs.
+- **Budgets.** Where a single run from a uniform random set succeeded about half the time on round 1's pairs. They match the fixed pairs above except GOAT ER (12 there) and FAQ PAPER (31 there).
+- **Seed sets.** 500 per pair, one run each, with round 1's solver settings. All are uniform random sets: 300 random; 100 tail sets, the top 5% of a 20,000-set random pool in degree, pair mass, uniqueness or the sum of their z-scores; and 100 contrast sets, 50 pairs with the same number of seed-to-nonseed edges but low against high pair mass or uniqueness. Tail and contrast sets are chosen by graph-A features only, never by outcomes.
+
+Run from the repository root. It takes about 35–40 hours with three pairs at a time, rows are written set by set, Ctrl-C stops it, and rerunning resumes:
+
+```bash
+conda activate ds
+python -m fixed_pair_seed_set_classification.multi_pair_collection
+python -m fixed_pair_seed_set_classification.multi_pair_collection --status
+```
+
+`--sets-per-pair 1000 --pairs percolation=25 goat=16 faq=12` gives 1,000 sets per pair on half as many pairs, in about the same time; choose before starting. Pairs run in order of pair index across all nine settings, so stopping early leaves every setting with a similar number of pairs. Outputs go to `data/multi_pair_2026-10-30/<algorithm>/<model>/pair_XXX/` (`pair.json`, `sets.csv`, `pool_features.npz`; about 0.4 MB per pair). Analyse with `multi_pair_models.ipynb` and `RUN_COLLECTION = False`.
+
+## SBM pairs for SBM's own weights (2 Nov 2026)
+
+`sbm_collection.py` collects the same kind of data as `multi_pair_collection.py`, but on SBM pairs, so SBM gets its own pooled weights. `sbm_models.ipynb` fits them and compares them with the ER, PAPER and Chung–Lu weights.
+
+- **Graphs.** The two main settings of `selection_rule_comparison/sbm_rules.py`: plain SBM ("ER plus communities") and degree-corrected SBM ("Chung–Lu plus communities"). Both have 4 equal blocks of 150 vertices, with 80% of edges inside blocks. The pairs come from their own seed stream.
+- **Budgets.** k50 from `sbm_rules`' budget calibration: the budget where a random set succeeds about half the time. A missing calibration runs first and is saved with `sbm_rules`' results.
+- **Pairs per setting.** Percolation 30, GOAT 20, FAQ 16.
+- **Seed sets and runs.** As in the multi-pair collection: 500 per pair (300 random, 100 tail, 100 contrast), one run each with round 1's solver settings. Every set, and every set of the 20,000-set pool, also records the largest block's share of its seeds and the number of blocks it covers. These come from the true block labels, so they are diagnostics; the saved weights use the four core features only.
+- **Direct test.** Section 7 of `sbm_models.ipynb` runs best of 100 and best of 1,000 with the fitted weights on `selection_rule_comparison/sbm_rules`' 20 test pairs per setting, which were never used for fitting. It compares them with random, top degree, degree alone and the averaged weights (about 25 minutes). Section 8 checks whether the score can pick among round 1's rules.
+
+Run from the repository root. It takes about 11 hours with three pairs at a time. Rows are written set by set, Ctrl-C stops it, and rerunning resumes:
+
+```bash
+conda activate ds
+python -m fixed_pair_seed_set_classification.sbm_collection
+python -m fixed_pair_seed_set_classification.sbm_collection --status
+```
+
+`--pairs goat=10 faq=8` sets fewer pairs; pairs run in order of pair index, so stopping early leaves every setting with a similar number. Outputs go to `data/sbm_multi_pair/<algorithm>/<setting>/pair_XXX/` (`pair.json`, `sets.csv` and `pool_features.npz`, as in the multi-pair collection). Analyse with `sbm_models.ipynb` and `RUN_COLLECTION = False`. Its last section saves SBM's weights to `data/sbm_multi_pair/pooled_weights.json`.

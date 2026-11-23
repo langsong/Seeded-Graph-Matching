@@ -24,7 +24,7 @@ os.environ.setdefault(
 
 import numpy as np
 
-from cross_pair_seed_set_quality.percolation_data_collection import (
+from archive.cross_pair_seed_set_quality.percolation_data_collection import (
     run_percolation_once,
 )
 from experiment_common.graphs import generate_graph_pair, preset_config

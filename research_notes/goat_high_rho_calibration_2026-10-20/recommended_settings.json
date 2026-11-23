@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-20",
+  "status": "historical_calibration_not_selected_for_main_experiment",
+  "decision_note": "User requested retaining ER rho=0.70 and PAPER rho=0.62 and calibrating mean degrees 10 and 12 instead. Preserve these estimates as historical results.",
+  "success_definition": "final_unseeded_accuracy >= 0.90",
+  "main_collection_per_model": {
+    "random_train": 400,
+    "random_test": 200,
+    "degree_weighted_train": 200,
+    "degree_controlled_train": 200,
+    "total": 1000,
+    "use_fresh_sets": true
+  },
+  "models": {
+    "sparse_er": {
+      "config": {
+        "graph_model": "sparse_er",
+        "n_graph_pairs": 1,
+        "candidates_per_pair": 50,
+        "vertex_count": 600,
+        "n_blocks": 3,
+        "n_per_block": 200,
+        "sbm_block_probabilities": [
+          [
+            0.02,
+            0.005,
+            0.01
+          ],
+          [
+            0.005,
+            0.02,
+            0.005
+          ],
+          [
+            0.01,
+            0.005,
+            0.02
+          ]
+        ],
+        "er_probability": 0.02671118530884808,
+        "paper_alpha": 2.0,
+        "paper_probability": 0.005,
+        "chung_lu_alpha": null,
+        "chung_lu_weight_scale": null,
+        "chung_lu_probability_floor": null,
+        "paper_pa_alpha": 0.0,
+        "paper_pa_beta": 1.0,
+        "paper_pa_probability": 0.005,
+        "ier_alpha": 1.0,
+        "ier_beta": 99.0,
+        "rho": 0.6,
+        "n_seeds": 3,
+        "max_iter": 100,
+        "tol": 0.01,
+        "random_seed": 1234,
+        "max_minutes": 30.0
+      },
+      "graph_pair_seed": 88424077,
+      "pair_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/research_notes/goat_high_rho_calibration_2026-10-20/intermediate/pairs/sparse_er/sparse_er_problem.npz",
+      "regularizer": 100,
+      "solver_settings": {
+        "n_init": 1,
+        "max_iter": 100,
+        "tol": 0.01,
+        "init": "barycenter",
+        "init_perturbation": 0,
+        "shuffle_input": true,
+        "transport": true,
+        "transport_tol": 0.05,
+        "transport_max_iter": 5000
+      },
+      "blas_threads": 4,
+      "confirmation": {
+        "model": "sparse_er",
+        "phase": "confirm",
+        "rho": "0.6",
+        "k": "3",
+        "sets": "100",
+        "successes": "45",
+        "success_rate": "0.45",
+        "mean_accuracy": "0.48547738693467335",
+        "converged_fraction": "0.99",
+        "warning_runs": "0",
+        "mean_seconds": "2.8038558674324303",
+        "wilson_low": "0.3561437510640346",
+        "wilson_high": "0.5475557296835656"
+      }
+    },
+    "paper_pa": {
+      "config": {
+        "graph_model": "paper_pa",
+        "n_graph_pairs": 1,
+        "candidates_per_pair": 50,
+        "vertex_count": 600,
+        "n_blocks": 3,
+        "n_per_block": 200,
+        "sbm_block_probabilities": [
+          [
+            0.02,
+            0.005,
+            0.01
+          ],
+          [
+            0.005,
+            0.02,
+            0.005
+          ],
+          [
+            0.01,
+            0.005,
+            0.02
+          ]
+        ],
+        "er_probability": 0.01,
+        "paper_alpha": 2.0,
+        "paper_probability": 0.005,
+        "chung_lu_alpha": null,
+        "chung_lu_weight_scale": null,
+        "chung_lu_probability_floor": null,
+        "paper_pa_alpha": 0.0,
+        "paper_pa_beta": 1.0,
+        "paper_pa_probability": 0.023378,
+        "ier_alpha": 1.0,
+        "ier_beta": 99.0,
+        "rho": 0.45,
+        "n_seeds": 9,
+        "max_iter": 100,
+        "tol": 0.01,
+        "random_seed": 1234,
+        "max_minutes": 30.0
+      },
+      "graph_pair_seed": 7301002,
+      "pair_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/research_notes/goat_high_rho_calibration_2026-10-20/recommended_rhos/pairs/paper_pa/paper_pa_problem.npz",
+      "regularizer": 300,
+      "solver_settings": {
+        "n_init": 1,
+        "max_iter": 100,
+        "tol": 0.01,
+        "init": "barycenter",
+        "init_perturbation": 0,
+        "shuffle_input": true,
+        "transport": true,
+        "transport_tol": 0.05,
+        "transport_max_iter": 5000
+      },
+      "blas_threads": 4,
+      "confirmation": {
+        "model": "paper_pa",
+        "phase": "confirm",
+        "rho": "0.45",
+        "k": "9",
+        "sets": "100",
+        "successes": "57",
+        "success_rate": "0.57",
+        "mean_accuracy": "0.6284602368866328",
+        "converged_fraction": "1.0",
+        "warning_runs": "0",
+        "mean_seconds": "2.014272630402702",
+        "wilson_low": "0.4721521169586435",
+        "wilson_high": "0.6626686099947162"
+      }
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-20",
+  "purpose": "Hold ER rho=0.70 and PAPER rho=0.62 fixed; calibrate density and seed budget",
+  "production_presets_changed": false,
+  "main_data_collected": false,
+  "sparse_er": {
+    "status": "recommended_for_fixed_pair_collection",
+    "target_mean_degree": 10,
+    "config": {
+      "graph_model": "sparse_er",
+      "n_graph_pairs": 1,
+      "candidates_per_pair": 50,
+      "vertex_count": 600,
+      "n_blocks": 3,
+      "n_per_block": 200,
+      "sbm_block_probabilities": [
+        [
+          0.02,
+          0.005,
+          0.01
+        ],
+        [
+          0.005,
+          0.02,
+          0.005
+        ],
+        [
+          0.01,
+          0.005,
+          0.02
+        ]
+      ],
+      "er_probability": 0.01669449081803005,
+      "paper_alpha": 2.0,
+      "paper_probability": 0.005,
+      "chung_lu_alpha": null,
+      "chung_lu_weight_scale": null,
+      "chung_lu_probability_floor": null,
+      "paper_pa_alpha": 0.0,
+      "paper_pa_beta": 1.0,
+      "paper_pa_probability": 0.005,
+      "ier_alpha": 1.0,
+      "ier_beta": 99.0,
+      "rho": 0.7,
+      "n_seeds": 3,
+      "max_iter": 100,
+      "tol": 0.01,
+      "random_seed": 1234,
+      "max_minutes": 30.0
+    },
+    "graph_pair_seed": 88424077,
+    "pair_file": "/Users/langsong/Desktop/Seeded-Graph-Matching/research_notes/goat_high_rho_density_calibration_2026-10-20/degree_10/pairs/sparse_er/sparse_er_problem.npz",
+    "regularizer": 100,
+    "solver_settings": {
+      "n_init": 1,
+      "max_iter": 100,
+      "tol": 0.01,
+      "init": "barycenter",
+      "init_perturbation": 0,
+      "shuffle_input": true,
+      "transport": true,
+      "transport_tol": 0.05,
+      "transport_max_iter": 5000
+    },
+    "blas_threads": 4,
+    "confirmation": {
+      "target_mean_degree": 10,
+      "model": "sparse_er",
+      "phase": "confirm",
+      "rho": "0.7",
+      "k": "3",
+      "sets": "100",
+      "successes": "58",
+      "success_rate": "0.58",
+      "mean_accuracy": "0.6176716917922948",
+      "converged_fraction": "1.0",
+      "warning_runs": "0",
+      "mean_seconds": "1.8770744778483641",
+      "wilson_low": "0.4820630799889527",
+      "wilson_high": "0.672017750814887"
+    },
+    "main_collection": {
+      "random_train": 400,
+      "random_test": 200,
+      "degree_weighted_train": 200,
+      "degree_controlled_train": 200,
+      "total": 1000,
+      "exclude_calibration_sets": true
+    }
+  },
+  "paper_pa": {
+    "status": "no_balanced_budget_found_in_tested_grid_on_this_pair",
+    "rho": 0.62,
+    "graph_pair_seed": 7301002,
+    "tested_mean_degrees": [
+      10,
+      12
+    ],
+    "tested_positive_budgets": [
+      1,
+      2,
+      4,
+      8,
+      12,
+      20
+    ],
+    "recommended_k": null,
+    "next_step": "Assess predefined replication pairs at the same high rho before choosing a main collection; do not select a harder pair silently or lower rho."
+  }
+}
